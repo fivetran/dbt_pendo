@@ -1,0 +1,90 @@
+config-version: 2
+
+name: 'pendo_integration_tests'
+version: '0.1.0'
+
+require-dbt-version: ">=0.20.0"
+profile: 'integration_tests'
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
+
+vars:
+  pendo:
+    account_history: "{{ ref('stg_pendo__account_history') }}"
+    application_history: "{{ ref('stg_pendo__application_history') }}"
+    event: "{{ ref('stg_pendo__event') }}"
+    feature_event: "{{ ref('stg_pendo__feature_event') }}"
+    feature_history: "{{ ref('stg_pendo__feature_history') }}"
+    group: "{{ ref('stg_pendo__group_data') }}"
+    guide_event: "{{ ref('stg_pendo__guide_event') }}"
+    guide_history: "{{ ref('stg_pendo__guide_history') }}"
+    guide_step_history: "{{ ref('stg_pendo__guide_step_history') }}"
+    page_event: "{{ ref('stg_pendo__page_event') }}"
+    page_history: "{{ ref('stg_pendo__page_history') }}"
+    page_rule_history: "{{ ref('stg_pendo__page_rule_history') }}"
+    user: "{{ ref('stg_pendo__user') }}"
+    visitor_history: "{{ ref('stg_pendo__visitor_history') }}"
+
+  pendo_source:
+    account_history: "{{ ref('account_history') }}"
+    application_history: "{{ ref('application_history') }}"
+    event: "{{ ref('event') }}"
+    feature_event: "{{ ref('feature_event') }}"
+    feature_history: "{{ ref('feature_history') }}"
+    group: "{{ ref('group_data') }}"
+    guide_event: "{{ ref('guide_event') }}"
+    guide_history: "{{ ref('guide_history') }}"
+    guide_step_history: "{{ ref('guide_step_history') }}"
+    page_event: "{{ ref('page_event') }}"
+    page_history: "{{ ref('page_history') }}"
+    page_rule_history: "{{ ref('page_rule_history') }}"
+    user: "{{ ref('user') }}"
+    visitor_history: "{{ ref('visitor_history') }}"
+    
+    pendo__event_pass_through_columns: []
+    pendo__feature_event_pass_through_columns: []
+    pendo__page_event_pass_through_columns: []
+    pendo__account_history_pass_through_columns: []
+    pendo__visitor_history_pass_through_columns: []
+    
+seeds:
+  pendo_integration_tests:
+    +quote_columns: "{{ true if target.type == 'redshift' else false }}"
+    +column_types:
+      _fivetran_synced: timestamp
+    guide_event:
+      +column_types:
+        latitude: numeric
+        longitude: numeric
+    application_history:
+      +column_types:
+        subscription_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    guide_history:
+      +column_types:
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    account_history:
+      +column_types:
+        id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    feature_history:
+      +column_types:
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    group_data:
+      +column_types:
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        color: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+    user:
+      +column_types:
+        id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    page_history:
+      +column_types:
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    visitor_history:
+      +column_types:
+        id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
