@@ -2,14 +2,12 @@ with feature_event as (
 
     select *
     from {{ var('feature_event') }}
-
 ),
 
 feature as (
 
     select *
     from {{ ref('int_pendo__feature_info') }}
-
 ),
 
 -- should we bring custom fields in from these? the default fields are not helpful to have but i could see 
@@ -18,14 +16,12 @@ account as (
 
     select *
     from {{ ref('int_pendo__latest_account') }}
-
 ), 
 
 visitor as (
 
     select *
     from {{ ref('int_pendo__latest_visitor') }}
-
 ),
 
 add_previous_feature as (
@@ -37,7 +33,6 @@ add_previous_feature as (
         lag(num_minutes) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_minutes
 
     from feature_event
-
 ), 
 
 feature_event_join as (

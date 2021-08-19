@@ -10,28 +10,24 @@ pendo_user as (
 
     select *
     from {{ var('user') }}
-
 ),
 
 page as (
 
     select *
     from {{ ref('int_pendo__latest_page') }}
-
 ),
 
 application as (
 
     select *
     from {{ ref('int_pendo__latest_application') }}
-
 ),
 
 product_area as (
 
     select *
     from {{ var('group') }}
-
 ),
 
 feature_join as (

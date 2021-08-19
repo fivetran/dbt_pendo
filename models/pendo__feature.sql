@@ -2,7 +2,6 @@ with feature_event as (
 
     select *
     from {{ ref('pendo__feature_event') }}
-
 ),
 
 calculate_metrics as (
