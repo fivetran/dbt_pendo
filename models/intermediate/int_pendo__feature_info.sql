@@ -39,8 +39,11 @@ feature_join as (
         page.created_at as page_created_at,
         application.display_name as app_display_name,
         application.platform as app_platform,
-        pendo_user.first_name || ' ' || pendo_user.last_name as created_by_user_full_name,
-        pendo_user.username as created_by_user_username
+        creator.first_name || ' ' || creator.last_name as created_by_user_full_name,
+        creator.username as created_by_user_username,
+        updater.first_name || ' ' || updater.last_name as last_updated_by_user_full_name,
+        updater.username as last_updated_by_user_username
+
 
     from feature
     left join page
@@ -49,8 +52,10 @@ feature_join as (
         on feature.group_id = product_area.group_id
     left join application 
         on feature.app_id = application.application_id
-    left join pendo_user 
-        on feature.created_by_user_id = pendo_user.user_id 
+    left join pendo_user as creator
+        on feature.created_by_user_id = creator.user_id 
+    left join pendo_user as updater
+        on feature.last_updated_by_user_id = updater.user_id 
 )
 
 select *
