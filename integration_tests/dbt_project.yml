@@ -26,6 +26,8 @@ vars:
     page_rule_history: "{{ ref('stg_pendo__page_rule_history') }}"
     user: "{{ ref('stg_pendo__user') }}"
     visitor_history: "{{ ref('stg_pendo__visitor_history') }}"
+    poll: "{{ ref('stg_pendo__poll') }}"
+    poll_event: "{{ ref('stg_pendo__poll_event') }}"
 
   pendo_source:
     account_history: "{{ ref('account_history') }}"
@@ -42,6 +44,8 @@ vars:
     page_rule_history: "{{ ref('page_rule_history') }}"
     user: "{{ ref('user') }}"
     visitor_history: "{{ ref('visitor_history') }}"
+    poll: "{{ ref('poll') }}"
+    poll_event: "{{ ref('poll_event') }}"
     
     pendo__event_pass_through_columns: []
     pendo__feature_event_pass_through_columns: []

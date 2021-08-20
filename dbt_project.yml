@@ -29,6 +29,8 @@ vars:
     page_rule_history: "{{ ref('stg_pendo__page_rule_history') }}"
     user: "{{ ref('stg_pendo__user') }}"
     visitor_history: "{{ ref('stg_pendo__visitor_history') }}"
+    poll: "{{ ref('stg_pendo__poll') }}"
+    poll_event: "{{ ref('stg_pendo__poll_event') }}"
 
     # pendo__event_pass_through_columns: []
     # pendo__feature_event_pass_through_columns: []
