@@ -44,7 +44,7 @@ feature_event_join as (
         current_feature.page_name,
         current_feature.product_area_name,
         current_feature.group_id as product_area_id,
-        current_feature.app_display_name
+        current_feature.app_display_name,
         current_feature.app_platform,
 
         previous_feature.feature_name as previous_feature_name,
@@ -62,15 +62,10 @@ feature_event_join as (
     left join feature as previous_feature 
         on add_previous_feature.previous_feature_id = previous_feature.feature_id
 
-{% if var('pendo__visitor_history_pass_through_columns') %}
     left join visitor 
         on visitor.visitor_id = add_previous_feature.visitor_id
-{% endif %}
-
-{% if var('pendo__account_history_pass_through_columns') %}
     left join account
         on account.account_id = add_previous_feature.account_id
-{% endif %}
 )
 
 

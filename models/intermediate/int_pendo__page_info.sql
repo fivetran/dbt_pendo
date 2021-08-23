@@ -39,6 +39,26 @@ agg_page_rule as (
     group by 1
 ),
 
+feature as (
+
+    select *
+    from {{ ref('int_pendo__latest_feature') }}
+),
+
+active_features as (
+
+    select
+        page_id,
+        count(feature_id) as count_active_features
+
+    from feature
+
+    -- give a buffer of a month
+    where {{ dbt_utils.datediff('valid_through', dbt_utils.current_timestamp(), 'day' ) }} <= 30
+
+    group by 1
+),
+
 page_join as (
 
     select 
@@ -50,7 +70,8 @@ page_join as (
         creator.first_name || ' ' || creator.last_name as created_by_user_full_name,
         creator.username as created_by_user_username,
         updater.first_name || ' ' || updater.last_name as last_updated_by_user_full_name,
-        updater.username as last_updated_by_user_username
+        updater.username as last_updated_by_user_username,
+        coalesce(active_features.count_active_features, 0) as count_active_features
 
     from page 
     left join application 
@@ -63,6 +84,8 @@ page_join as (
         on page.group_id = product_area.group_id 
     left join agg_page_rule
         on page.page_id = agg_page_rule.page_id
+    left join active_features
+        on page.page_id = active_features.page_id
 
 )
 

@@ -37,6 +37,7 @@ feature_join as (
         product_area.group_name as product_area_name,
         page.page_name,
         page.created_at as page_created_at,
+        page.valid_through as page_valid_through,
         application.display_name as app_display_name,
         application.platform as app_platform,
         creator.first_name || ' ' || creator.last_name as created_by_user_full_name,

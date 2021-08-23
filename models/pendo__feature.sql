@@ -38,8 +38,8 @@ final as (
         calculate_metrics.count_clicks,
         calculate_metrics.first_click_at,
         calculate_metrics.last_click_at,
-        calculate_metrics.avg_num_minutes,
-        calculate_metrics.avg_num_events
+        round(calculate_metrics.avg_num_minutes, 3) as avg_num_minutes,
+        round(calculate_metrics.avg_num_events, 3) as avg_num_events
 
     from feature_info 
     left join calculate_metrics 
