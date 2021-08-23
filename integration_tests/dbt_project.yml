@@ -46,6 +46,7 @@ vars:
     visitor_history: "{{ ref('visitor_history') }}"
     poll: "{{ ref('poll') }}"
     poll_event: "{{ ref('poll_event') }}"
+    visitor_account_history: "{{ ref('visitor_account_history') }}"
     
     pendo__event_pass_through_columns: []
     pendo__feature_event_pass_through_columns: []

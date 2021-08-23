@@ -4,7 +4,7 @@ with feature_event as (
         *,
         cast( {{ dbt_utils.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
-    from {{ ref('pendo__feature_event') }} -- or should i use the source table?
+    from {{ ref('pendo__feature_event') }}
 ),
 
 first_time_metrics as (
@@ -60,9 +60,9 @@ final as (
         count_accounts - count_first_time_accounts as count_return_accounts,
         avg_num_minutes,
         avg_num_events,
-        round(100.0 * count_clicks / total_feature_clicks, 2) as percent_of_daily_feature_clicks,
-        round(100.0 * count_visitors / total_feature_visitors, 2) as percent_of_daily_feature_visitors,
-        round(100.0 * count_accounts / total_feature_accounts, 2) as percent_of_daily_feature_accounts
+        round(100.0 * count_clicks / total_feature_clicks, 3) as percent_of_daily_feature_clicks,
+        round(100.0 * count_visitors / total_feature_visitors, 3) as percent_of_daily_feature_visitors,
+        round(100.0 * count_accounts / total_feature_accounts, 3) as percent_of_daily_feature_accounts
     
     from total_feature_metrics
 )
