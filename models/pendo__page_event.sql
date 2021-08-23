@@ -61,16 +61,10 @@ page_event_join as (
         on add_previous_page.page_id = current_page.page_id 
     left join page as previous_page
         on add_previous_page.previous_page_id = previous_page.page_id
-
-{% if var('pendo__visitor_history_pass_through_columns') %}
     left join visitor 
         on visitor.visitor_id = add_previous_page.visitor_id
-{% endif %}
-
-{% if var('pendo__account_history_pass_through_columns') %}
     left join account
         on account.account_id = add_previous_page.account_id
-{% endif %}
 )
 
 select *
