@@ -45,18 +45,19 @@ final as (
         page_spine.group_id,
         page_spine.product_area_name,
 
-        coalesce(daily_metrics.count_pageviews, 0) as count_pageviews,
+        coalesce(daily_metrics.sum_pageviews, 0) as sum_pageviews,
         coalesce(daily_metrics.count_visitors, 0) as count_visitors,
         coalesce(daily_metrics.count_accounts, 0) as count_accounts,
         coalesce(daily_metrics.count_first_time_visitors, 0) as count_first_time_visitors,
         coalesce(daily_metrics.count_first_time_accounts, 0) as count_first_time_accounts,
         coalesce(daily_metrics.count_return_visitors, 0) as count_return_visitors,
         coalesce(daily_metrics.count_return_accounts, 0) as count_return_accounts,
-        coalesce(daily_metrics.avg_num_minutes, 0) as avg_num_minutes,
-        coalesce(daily_metrics.avg_num_events, 0) as avg_num_events,
+        coalesce(daily_metrics.avg_daily_minutes_per_visitor, 0) as avg_daily_minutes_per_visitor,
+        coalesce(daily_metrics.avg_daily_pageviews_per_visitor, 0) as avg_daily_pageviews_per_visitor,
         coalesce(daily_metrics.percent_of_daily_pageviews, 0) as percent_of_daily_pageviews,
         coalesce(daily_metrics.percent_of_daily_page_visitors, 0) as percent_of_daily_page_visitors,
-        coalesce(daily_metrics.percent_of_daily_page_accounts, 0) as percent_of_daily_page_accounts
+        coalesce(daily_metrics.percent_of_daily_page_accounts, 0) as percent_of_daily_page_accounts,
+        coalesce(daily_metrics.count_pageview_events, 0) as count_pageview_events
 
     from page_spine
     left join daily_metrics

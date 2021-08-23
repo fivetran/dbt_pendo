@@ -49,18 +49,19 @@ final as (
         feature_spine.page_id,
         feature_spine.page_name,
 
-        coalesce(daily_metrics.count_clicks, 0) as count_clicks,
+        coalesce(daily_metrics.sum_clicks, 0) as sum_clicks,
         coalesce(daily_metrics.count_visitors, 0) as count_visitors,
         coalesce(daily_metrics.count_accounts, 0) as count_accounts,
         coalesce(daily_metrics.count_first_time_visitors, 0) as count_first_time_visitors,
         coalesce(daily_metrics.count_first_time_accounts, 0) as count_first_time_accounts,
         coalesce(daily_metrics.count_return_visitors, 0) as count_return_visitors,
         coalesce(daily_metrics.count_return_accounts, 0) as count_return_accounts,
-        coalesce(daily_metrics.avg_num_minutes, 0) as avg_num_minutes,
-        coalesce(daily_metrics.avg_num_events, 0) as avg_num_events,
+        coalesce(daily_metrics.avg_daily_minutes_per_visitor, 0) as avg_daily_minutes_per_visitor,
+        coalesce(daily_metrics.avg_daily_clicks_per_visitor, 0) as avg_daily_clicks_per_visitor,
         coalesce(daily_metrics.percent_of_daily_feature_clicks, 0) as percent_of_daily_feature_clicks,
         coalesce(daily_metrics.percent_of_daily_feature_visitors, 0) as percent_of_daily_feature_visitors,
-        coalesce(daily_metrics.percent_of_daily_feature_accounts, 0) as percent_of_daily_feature_accounts
+        coalesce(daily_metrics.percent_of_daily_feature_accounts, 0) as percent_of_daily_feature_accounts,
+        coalesce(daily_metrics.count_click_events, 0) as count_click_events
 
     from feature_spine
     left join daily_metrics
