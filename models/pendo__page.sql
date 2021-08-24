@@ -10,11 +10,12 @@ calculate_metrics as (
         page_id,
         count(distinct visitor_id) as count_visitors,
         count(distinct account_id) as count_accounts,
-        count(*) as count_pageviews,
+        sum(num_events) as sum_pageviews,
+        count(*) as count_pageview_events,
         min(occurred_at) as first_pageview_at,
         max(occurred_at) as last_pageview_at,
-        avg(num_minutes) as avg_num_minutes,
-        avg(num_events) as avg_num_events
+        sum(num_minutes) / count(distinct visitor_id) as avg_visitor_minutes,
+        sum(num_events) / count(distinct visitor_id) as avg_visitor_pageviews
 
     from page_event
     group by 1
@@ -33,11 +34,12 @@ final as (
         page_info.*,
         calculate_metrics.count_visitors,
         calculate_metrics.count_accounts,
-        calculate_metrics.count_pageviews,
+        calculate_metrics.sum_pageviews,
+        calculate_metrics.count_pageview_events,
         calculate_metrics.first_pageview_at,
         calculate_metrics.last_pageview_at,
-        round(calculate_metrics.avg_num_minutes, 3) as avg_num_minutes,
-        round(calculate_metrics.avg_num_events, 3) as avg_num_events
+        round(calculate_metrics.avg_visitor_minutes, 3) as avg_visitor_minutes,
+        round(calculate_metrics.avg_visitor_pageviews, 3) as avg_visitor_pageviews
 
     from page_info 
     left join calculate_metrics 

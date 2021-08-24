@@ -10,8 +10,6 @@ page as (
     from {{ ref('int_pendo__page_info') }}
 ),
 
--- should we bring custom fields in from these? the default fields are not helpful to have but i could see 
--- users adding custom ones in (perhaps we leave that to them then..)
 account as (
 
     select *
