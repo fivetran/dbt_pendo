@@ -1,7 +1,7 @@
-with visitor as (
+with account as (
 
     select *
-    from {{ ref('int_pendo__latest_visitor') }}
+    from {{ ref('int_pendo__latest_account') }}
 
 ),
 
@@ -11,32 +11,47 @@ visitor_account as (
     from {{ ref('int_pendo__latest_visitor_account') }}
 ),
 
-agg_accounts as (
+agg_visitors as (
 
     select 
-        visitor_id,
-        count(*) as count_associated_accounts
+        account_id,
+        count(distinct visitor_id) as count_visitors
 
     from visitor_account
     group by 1
 ),
 
-nps_rating as (
+nps_ratings as (
 
     select * 
     from {{ ref('int_pendo__latest_nps_rating') }}
 ),
 
+nps_metrics as (
+
+    select
+        account_id, 
+        min(nps_rating) as min_nps_rating,
+        max(nps_rating) as max_nps_rating,
+        avg(nps_rating) as avg_nps_rating
+
+    from nps_ratings
+    group by 1
+),
+
 daily_metrics as (
 
     select *
-    from {{ ref('int_pendo__visitor_daily_metrics') }}
+    from {{ ref('int_pendo__account_daily_metrics') }}
 ),
 
 calculate_metrics as (
 
     select
-        visitor_id,
+        account_id,
+        sum(count_active_visitors) as count_active_visitors, -- all-time, not currently
+        sum(count_page_viewing_visitors) as count_page_viewing_visitors,
+        sum(count_feature_clicking_visitors) as count_feature_clicking_visitors,
         count(distinct occurred_on) as count_active_days,
         count(distinct {{ dbt_utils.date_trunc('month', 'occurred_on') }} ) as count_active_months,
         sum(sum_minutes) as sum_minutes,
@@ -51,13 +66,18 @@ calculate_metrics as (
     group by 1
 ),
 
-visitor_join as (
+account_join as (
 
     select 
-        visitor.*,
-        agg_accounts.count_associated_accounts,
-        nps_rating.nps_rating as latest_nps_rating,
+        account.*,
+        coalesce(agg_visitors.count_visitors, 0) as count_associated_visitors,
+        nps_metrics.min_nps_rating,
+        nps_metrics.max_nps_rating,
+        nps_metrics.avg_nps_rating,
 
+        coalesce(calculate_metrics.count_active_visitors, 0) as count_active_visitors,
+        coalesce(calculate_metrics.count_page_viewing_visitors, 0) as count_page_viewing_visitors,
+        coalesce(calculate_metrics.count_feature_clicking_visitors, 0) as count_feature_clicking_visitors,
         coalesce(calculate_metrics.count_active_days, 0) as count_active_days,
         coalesce(calculate_metrics.count_active_months, 0) as count_active_months,
         coalesce(calculate_metrics.sum_minutes, 0) as sum_minutes,
@@ -67,15 +87,15 @@ visitor_join as (
         coalesce(calculate_metrics.average_daily_events, 0) as average_daily_events,
         calculate_metrics.first_event_on,
         calculate_metrics.last_event_on
-        
-    from visitor
-    left join agg_accounts 
-        on visitor.visitor_id = agg_accounts.visitor_id
-    left join nps_rating
-        on visitor.visitor_id = nps_rating.visitor_id
+
+    from account
+    left join agg_visitors 
+        on account.account_id = agg_visitors.account_id
+    left join nps_metrics
+        on account.account_id = nps_metrics.account_id
     left join calculate_metrics
-        on visitor.visitor_id = calculate_metrics.visitor_id
+        on account.account_id = calculate_metrics.account_id
 )
 
 select *
-from visitor_join
+from account_join

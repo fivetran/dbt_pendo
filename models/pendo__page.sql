@@ -32,14 +32,14 @@ final as (
 
     select 
         page_info.*,
-        calculate_metrics.count_visitors,
-        calculate_metrics.count_accounts,
-        calculate_metrics.sum_pageviews,
-        calculate_metrics.count_pageview_events,
+        coalesce(calculate_metrics.count_visitors, 0) as count_visitors,
+        coalesce(calculate_metrics.count_accounts, 0) as count_accounts,
+        coalesce(calculate_metrics.sum_pageviews, 0) as sum_pageviews,
+        coalesce(calculate_metrics.count_pageview_events, 0) as count_pageview_events,
         calculate_metrics.first_pageview_at,
         calculate_metrics.last_pageview_at,
-        round(calculate_metrics.avg_visitor_minutes, 3) as avg_visitor_minutes,
-        round(calculate_metrics.avg_visitor_pageviews, 3) as avg_visitor_pageviews
+        coalesce(round(calculate_metrics.avg_visitor_minutes, 3), 0) as avg_visitor_minutes,
+        coalesce(round(calculate_metrics.avg_visitor_pageviews, 3), 0) as avg_visitor_pageviews
 
     from page_info 
     left join calculate_metrics 

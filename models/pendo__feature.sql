@@ -32,14 +32,14 @@ final as (
 
     select 
         feature_info.*,
-        calculate_metrics.count_visitors,
-        calculate_metrics.count_accounts,
-        calculate_metrics.sum_clicks,
-        calculate_metrics.count_click_events,
+        coalesce(calculate_metrics.count_visitors, 0) as count_visitors,
+        coalesce(calculate_metrics.count_accounts, 0) as count_accounts,
+        coalesce(calculate_metrics.sum_clicks, 0) as sum_clicks,
+        coalesce(calculate_metrics.count_click_events, 0) as count_click_events,
         calculate_metrics.first_click_at,
         calculate_metrics.last_click_at,
-        round(calculate_metrics.avg_visitor_minutes, 3) as avg_visitor_minutes,
-        round(calculate_metrics.avg_visitor_events, 3) as avg_visitor_events
+        coalesce(round(calculate_metrics.avg_visitor_minutes, 3), 0) as avg_visitor_minutes,
+        coalesce(round(calculate_metrics.avg_visitor_events, 3), 0) as avg_visitor_events
 
     from feature_info 
     left join calculate_metrics 
