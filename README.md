@@ -3,7 +3,7 @@
 
 This package models Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo). It uses data in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation).
 
-Tthis package does soime stuff. it does this by
+This package enables you to better understand how your digital product is being adopted and experienced by users. It does so by:
 -
 -
 -
@@ -14,17 +14,20 @@ This package contains transformation models, designed to work simultaneously wit
 
 | **model**                | **description**                                                                                                                                |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| [pendo__account](models/pendo__account.sql)             | beep beep. |
-| [pendo__feature](models/pendo__feature.sql)             | beep beep. |
-| [pendo__page](models/pendo__page.sql)             | beep beep. |
-| [pendo__visitor](models/pendo__visitor.sql)             | beep beep. |
-| [pendo_guide](models/pendo__guide.sql)             | beep beep. |
-| [pendo__account_daily_metrics](models/pendo__account_daily_metrics.sql)             | beep beep. |
-| [pendo__feature_daily_metrics](models/pendo__feature_daily_metrics.sql)             | beep beep. |
-| [pendo__page_daily_metrics](models/pendo__page_daily_metrics.sql)             | beep beep. |
-| [pendo__visitor_daily_metrics](models/pendo__visitor_daily_metrics.sql)             | beep beep. |
-| [pendo__guide_daily_metrics](models/pendo__guide_daily_metrics.sql)             | beep beep. |
-| [pendo__visitor_feature](models/pendo__visitor_feature.sql)             | beep beep. |
+| [pendo__account](models/pendo__account.sql)             | Each record represents a unique account in Pendo, enriched with metrics regarding associated visitors, their feature, page, and overall product activity (total and daily averages), the frequency and longevity of their product usage, and their aggregated NPS ratings. |
+| [pendo__feature](models/pendo__feature.sql)             | Each record represent a unique tagged feature in Pendo, enriched with information about the page it lives on, the application and product area it is a part of, and the internal users who created and/or updated it last. Also includes metrics regarding click-interactions with individual visitors and accounts, and their time spent using the feature. |
+| [pendo__page](models/pendo__page.sql)             | Each record represents a unique tagged page in Pendo, enriched with information about its URL rules, the application and product area it is a part of, the internal users who created and/or updated it last, and the features that are currently live on it. Also includes metrics regarding pageview-interactions with individual visitors and accounts, and their time spent on the page. |
+| [pendo__visitor](models/pendo__visitor.sql)             | Each record represents a unique visitor in Pendo, enriched with metrics regarding associated accounts, the visitor's latest NPS rating, the frequency, longevity, and average length of their daily product usage.  |
+| [pendo_guide](models/pendo__guide.sql)             | Each record represents a unique guide presented to visitors via Pendo. Includes metrics about the number of visitors and accounts performing various activities upon guides, such as completing or dismissing them. |
+| [pendo__account_daily_metrics](models/pendo__account_daily_metrics.sql)             | A daily historical timeline of the overall product, feature, and page activity associated with each account, along with the number of associated users performing each kind of interaction. |
+| [pendo__feature_daily_metrics](models/pendo__feature_daily_metrics.sql)             | A daily historical timeline, beginning at the creation of each feature, of the accounts and visitors clicking on each feature, the average daily time spent using the feature, and the percent share of total daily feature activity pertaining to this particular feature. |
+| [pendo__page_daily_metrics](models/pendo__page_daily_metrics.sql)             | A daily historical timeline, beginning at the creation of each page, of the accounts and visitors loading on each page, the average daily time spent on the page, and the percent share of total daily pageview activity pertaining to this particular page. |
+| [pendo__visitor_daily_metrics](models/pendo__visitor_daily_metrics.sql)             | A daily historical timeline of the overall product, feature, and page activity tracked for an individual visitor. Includes the daily number of different pages and features interacted with. |
+| [pendo__guide_daily_metrics](models/pendo__guide_daily_metrics.sql)             | A daily historical timeline of the accounts and individual visitors interacting with guides via different types of actions. |
+| [pendo__feature_event](models/pendo__guide_daily_metrics.sql)             | The event stream of clicks on tagged features in Pendo. Enriched with any visitor and/or account passthrough columns, the previous feature and page that the interacted with, the application and platform the event occurred on, and information on the feature and its product area. |
+| [pendo__page_event](models/pendo__guide_daily_metrics.sql)             | The event stream of views of tagged pages in Pendo. Enriched with any visitor and/or account passthrough columns, the previous page that the interacted with, the application and platform the event occurred on, and information on the page and its product area. |
+| [pendo__guide_event](models/pendo__guide_daily_metrics.sql)             | The event stream of different kinds of interactions visitors have with guides. Enriched with any visitor and/or account passthrough columns, and the application and platform that the event occurred on. |
+| [pendo__visitor_feature](models/pendo__visitor_feature.sql)             | Each record represents a unique combination of visitors and features, aimed at making "power-users" of particular features easy to find. Includes metrics reflecting the longevity and frequency of feature usage. |
 
 ## Installation Instructions
 
@@ -54,9 +57,9 @@ vars:
 
 ### Passthrough Columns
 
-Additionally, the Pendo package includes all source columns defined in the [macros folder](https://github.com/fivetran/dbt_pendo_source/tree/main/macros) of the source package. We highly recommend including custom fields in this package as models now only bring in the standard fields for the `EVENT` and `PERSON` tables.
+Additionally, this package includes all source columns defined in the macros folder. We highly recommend including custom fields in this package as models now only bring in the standard fields for the `EVENT`, `FEATURE_EVENT`, `PAGE_EVENT`, `ACCOUNT_HISTORY`, and `VISITOR_HISTORY` tables.
 
-You can add more columns using our passthrough column variables. These variables allow for the passthrough fields to be aliased (`alias`) and casted (`transform_sql`) if desired, although it is not required. Datatype casting is configured via a SQL snippet within the `transform_sql` key. You may add the desired SQL snippet while omitting the `as field_name` part of the casting statement - this will be dealt with by the alias attribute - and your custom passthrough fields will be casted accordingly.
+You can add more columns using our passthrough column variables. These variables allow the passthrough fields to be aliased (`alias`) and casted (`transform_sql`) if desired, although it is not required. Datatype casting is configured via a SQL snippet within the `transform_sql` key. You may add the desired SQL snippet while omitting the `as field_name` part of the casting statement - this will be dealt with by the alias attribute - and your custom passthrough fields will be casted accordingly.
 
 Use the following format for declaring the respective passthrough variables:
 
