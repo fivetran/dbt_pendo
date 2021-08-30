@@ -11,24 +11,6 @@ dispatch:
     search_order: ['spark_utils', 'dbt_utils']
 
 vars:
-  pendo:
-    account_history: "{{ ref('stg_pendo__account_history') }}"
-    application_history: "{{ ref('stg_pendo__application_history') }}"
-    event: "{{ ref('stg_pendo__event') }}"
-    feature_event: "{{ ref('stg_pendo__feature_event') }}"
-    feature_history: "{{ ref('stg_pendo__feature_history') }}"
-    group: "{{ ref('stg_pendo__group_data') }}"
-    guide_event: "{{ ref('stg_pendo__guide_event') }}"
-    guide_history: "{{ ref('stg_pendo__guide_history') }}"
-    guide_step_history: "{{ ref('stg_pendo__guide_step_history') }}"
-    page_event: "{{ ref('stg_pendo__page_event') }}"
-    page_history: "{{ ref('stg_pendo__page_history') }}"
-    page_rule_history: "{{ ref('stg_pendo__page_rule_history') }}"
-    user: "{{ ref('stg_pendo__user') }}"
-    visitor_history: "{{ ref('stg_pendo__visitor_history') }}"
-    poll: "{{ ref('stg_pendo__poll') }}"
-    poll_event: "{{ ref('stg_pendo__poll_event') }}"
-
   pendo_source:
     account_history: "{{ ref('account_history') }}"
     application_history: "{{ ref('application_history') }}"
