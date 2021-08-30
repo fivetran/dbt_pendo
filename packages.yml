@@ -1,2 +1,4 @@
 packages:
-- local: ../dbt_pendo_source
+   - git: https://github.com/fivetran/dbt_pendo_source.git
+     revision: dev-jamie
+     warn-unpinned: false
