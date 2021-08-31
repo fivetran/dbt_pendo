@@ -33,8 +33,8 @@ vars:
     poll_event: "{{ ref('stg_pendo__poll_event') }}"
     visitor_account_history: "{{ ref('stg_pendo__visitor_account_history') }}"
 
-    # pendo__event_pass_through_columns: []
-    # pendo__feature_event_pass_through_columns: []
-    # pendo__page_event_pass_through_columns: []
-    # pendo__account_history_pass_through_columns: []
-    # pendo__visitor_history_pass_through_columns: []
+    pendo__event_pass_through_columns: []
+    pendo__feature_event_pass_through_columns: []
+    pendo__page_event_pass_through_columns: []
+    pendo__account_history_pass_through_columns: []
+    pendo__visitor_history_pass_through_columns: []
