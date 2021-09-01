@@ -30,8 +30,6 @@ daily_metrics as (
         count(distinct case when occurred_on = visitor_first_event_on then visitor_id end) as count_first_time_visitors,
         count(distinct case when occurred_on = account_first_event_on then visitor_id end) as count_first_time_accounts,
 
-        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'), prefix='count_') }}
-        ,
         {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'), 
                             prefix='count_visitors_', agg='count', then_value='visitor_id', else_value='null', distinct=true) }}
         
