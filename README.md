@@ -7,7 +7,7 @@ This package enables you to better understand how users are experiencing and ado
 - Calculating usage of features, pages, guides, and the overall product at the account and individual visitor level
 - Enhancing event stream tables with visitor and product information, referring pages, and features to cultivate a customer journey through the application
 - Creating daily activity timelines for features, pages, and guides that reflect their adoption rates, discoverability, and usage promotion efficacy
-- Directly visitors and features to determine activation rates, power-usage, and churn risk
+- Directly ties visitors and features together to determine activation rates, power-usage, and churn risk
 
 ## Models
 
