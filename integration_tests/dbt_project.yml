@@ -45,6 +45,7 @@ seeds:
       +column_types:
         latitude: numeric
         longitude: numeric
+        timestamp: timestamp
     application_history:
       +column_types:
         subscription_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
@@ -65,6 +66,7 @@ seeds:
       +column_types:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         color: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
     user:
       +column_types:
         id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
