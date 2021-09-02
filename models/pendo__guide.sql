@@ -15,6 +15,7 @@ final as (
 
     select
         guide_info.*,
+        -- these won't be coalesced to 0
         {{ dbt_utils.star(from=ref('int_pendo__guide_alltime_metrics'), except='guide_id' if target.type != 'snowflake' else 'GUIDE_ID') }}
 
     from guide_info
