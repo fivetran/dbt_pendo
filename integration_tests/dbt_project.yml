@@ -64,6 +64,10 @@ seeds:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         group_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        created_at: timestamp
+    feature_event:
+      +column_types:
+        timestamp: timestamp
     group_data:
       +column_types:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
@@ -77,6 +81,10 @@ seeds:
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         group_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        created_at: timestamp
+    page_event:
+      +column_types:
+        timestamp: timestamp
     visitor_history:
       +column_types:
         id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
