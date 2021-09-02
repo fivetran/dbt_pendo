@@ -47,7 +47,7 @@ final as (
         daily_metrics.count_pages_viewed,
         daily_metrics.count_features_clicked,
         daily_metrics.count_page_viewing_visitors,
-        daily_metrics.count_feature_clicking_visitors,
+        daily_metrics.count_feature_clicking_visitors
 
     from account_spine
     left join daily_metrics
