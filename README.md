@@ -5,7 +5,7 @@ This package models Pendo data from [Fivetran's connector](https://fivetran.com/
 
 This package enables you to better understand how users are experiencing and adopting your product. It does so by:
 - Calculating usage of features, pages, guides, and the overall product at the account and individual visitor level
-- Enhancing event stream tables with visitor and product information, referring pages, and features to cultivate a customer journey through the application
+- Enhancing event stream tables with visitor and product information, referring pages, and features to track the customer journey through the application
 - Creating daily activity timelines for features, pages, and guides that reflect their adoption rates, discoverability, and usage promotion efficacy
 - Directly ties visitors and features together to determine activation rates, power-usage, and churn risk
 
