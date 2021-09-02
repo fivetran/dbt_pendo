@@ -1,3 +1,4 @@
+-- depends_on: {{ ref('stg_pendo__application_history') }}
 {{
     config(
         materialized='incremental',
