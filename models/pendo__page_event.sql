@@ -51,8 +51,8 @@ page_event_join as (
         previous_page.product_area_name as previous_product_area_name,
         previous_page.group_id as previous_page_product_area_id
 
-        {{ persist_pass_through_columns('pendo__account_history_pass_through_columns') }}
-        {{ persist_pass_through_columns('pendo__visitor_history_pass_through_columns') }}
+        {{ fivetran_utils.persist_pass_through_columns('pendo__account_history_pass_through_columns') }}
+        {{ fivetran_utils.persist_pass_through_columns('pendo__visitor_history_pass_through_columns') }}
 
     from add_previous_page
     join page as current_page

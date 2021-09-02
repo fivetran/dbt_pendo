@@ -53,8 +53,8 @@ feature_event_join as (
         previous_feature.product_area_name as previous_feature_product_area_name,
         previous_feature.group_id as previous_feature_product_area_id
 
-        {{ persist_pass_through_columns('pendo__account_history_pass_through_columns') }}
-        {{ persist_pass_through_columns('pendo__visitor_history_pass_through_columns') }}
+        {{ fivetran_utils.persist_pass_through_columns('pendo__account_history_pass_through_columns') }}
+        {{ fivetran_utils.persist_pass_through_columns('pendo__visitor_history_pass_through_columns') }}
 
     from add_previous_feature
     join feature as current_feature

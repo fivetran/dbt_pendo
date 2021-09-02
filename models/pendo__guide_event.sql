@@ -30,8 +30,8 @@ guide_event_join as (
         guide.app_display_name,
         guide.app_platform
 
-        {{ persist_pass_through_columns('pendo__account_history_pass_through_columns') }}
-        {{ persist_pass_through_columns('pendo__visitor_history_pass_through_columns') }}
+        {{ fivetran_utils.persist_pass_through_columns('pendo__account_history_pass_through_columns') }}
+        {{ fivetran_utils.persist_pass_through_columns('pendo__visitor_history_pass_through_columns') }}
 
     from guide_event
     join guide
