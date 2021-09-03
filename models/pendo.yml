@@ -330,6 +330,16 @@ models:
         description: Username (probably email) of the internal user who last updated the guide. 
       - name: count_steps
         description: Number of steps that visitors must navigate to complete the guide. 
+      - name: count_visitors
+        description: Count of visitors who have interacted with the guide. 
+      - name: count_accounts
+        description: Count of accounts who have been tracked interacting with the guide.
+      - name: count_events
+        description: Count of records in `guide_event` for this guide.  
+      - name: first_event_at
+        description: Timestamp of when the guide was first interacted with.
+      - name: last_event_at
+        description: Timestamp of when the guide was last interacted with.
 
   - name: pendo__guide_daily_metrics
     description: >
@@ -349,6 +359,16 @@ models:
         description: Unique identifier of the guide.
       - name: guide_name
         description: Name of the guide.
+      - name: count_visitors
+        description: Count of visitors interacting with the guide on this day.
+      - name: count_accounts
+        description: Count of accounts interacting with the guide on this day.
+      - name: count_guide_events
+        description: Count of records in `guide_event` for this guide on this day.
+      - name: count_first_time_visitors
+        description: Count of visitors interacting with the guide for the first time on this day. 
+      - name: count_first_time_accounts
+        description: Count of accounts interacting with the guide for the first time on this day. 
 
   - name: pendo__guide_event
     description: >
