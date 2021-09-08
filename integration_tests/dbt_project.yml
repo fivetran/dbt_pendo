@@ -1,0 +1,90 @@
+config-version: 2
+
+name: 'pendo_integration_tests'
+version: '0.1.0'
+
+require-dbt-version: ">=0.20.0"
+profile: 'integration_tests'
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: [spark_utils, dbt_utils]
+
+vars:
+  pendo_source:
+    account_history: "{{ ref('account_history') }}"
+    application_history: "{{ ref('application_history') }}"
+    event: "{{ ref('event') }}"
+    feature_event: "{{ ref('feature_event') }}"
+    feature_history: "{{ ref('feature_history') }}"
+    group: "{{ ref('group_data') }}"
+    guide_event: "{{ ref('guide_event') }}"
+    guide_history: "{{ ref('guide_history') }}"
+    guide_step_history: "{{ ref('guide_step_history') }}"
+    page_event: "{{ ref('page_event') }}"
+    page_history: "{{ ref('page_history') }}"
+    page_rule_history: "{{ ref('page_rule_history') }}"
+    user: "{{ ref('user') }}"
+    visitor_history: "{{ ref('visitor_history') }}"
+    poll: "{{ ref('poll') }}"
+    poll_event: "{{ ref('poll_event') }}"
+    visitor_account_history: "{{ ref('visitor_account_history') }}"
+    
+    pendo__event_pass_through_columns: []
+    pendo__feature_event_pass_through_columns: []
+    pendo__page_event_pass_through_columns: []
+    pendo__account_history_pass_through_columns: []
+    pendo__visitor_history_pass_through_columns: []
+    
+seeds:
+  pendo_integration_tests:
+    +quote_columns: "{{ true if target.type == 'redshift' else false }}"
+    +column_types:
+      _fivetran_synced: timestamp
+    guide_event:
+      +column_types:
+        latitude: numeric
+        longitude: numeric
+        timestamp: timestamp
+    application_history:
+      +column_types:
+        subscription_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    guide_history:
+      +column_types:
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        created_at: timestamp
+    account_history:
+      +column_types:
+        id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    feature_history:
+      +column_types:
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        group_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        created_at: timestamp
+    feature_event:
+      +column_types:
+        timestamp: timestamp
+    group_data:
+      +column_types:
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        color: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+    user:
+      +column_types:
+        id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    page_history:
+      +column_types:
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        group_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        created_at: timestamp
+    page_event:
+      +column_types:
+        timestamp: timestamp
+    visitor_history:
+      +column_types:
+        id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
