@@ -36,7 +36,6 @@ guide_spine as (
 final as (
 
     {% set exclude_fields = [ 'guide_id', 'occurred_on'] %}
-    {% set exclude_fields = exclude_fields | upper if target.type == 'snowflake' else exclude_fields %} -- snowflake needs uppercase :)
 
     select
         guide_spine.date_day,
