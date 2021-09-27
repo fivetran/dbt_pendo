@@ -1,7 +1,7 @@
 with feature as (
 
     select 
-        {{ dbt_utils.star(from=ref('int_pendo__latest_feature'), except='LATEST_FEATURE_INDEX' if target.type == 'snowflake' else 'latest_feature_index') }}
+        {{ dbt_utils.star(from=ref('int_pendo__latest_feature'), except=['latest_feature_index']) }}
 
     from {{ ref('int_pendo__latest_feature') }}
 ),
