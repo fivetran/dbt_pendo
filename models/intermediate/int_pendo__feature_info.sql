@@ -34,7 +34,7 @@ feature_join as (
 
     select 
         feature.*,
-        product_area.group_name as product_area_name,
+        product_area.name as product_area_name,
         page.page_name,
         page.created_at as page_created_at,
         page.valid_through as page_valid_through,
@@ -50,7 +50,7 @@ feature_join as (
     left join page
         on feature.page_id = page.page_id
     left join product_area
-        on feature.group_id = product_area.group_id
+        on feature.group_id = product_area.id
     left join application 
         on feature.app_id = application.application_id
     left join pendo_user as creator

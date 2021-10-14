@@ -64,7 +64,7 @@ page_join as (
     select 
         page.*,
         agg_page_rule.rules,
-        product_area.group_name as product_area_name,
+        product_area.name as product_area_name,
         application.display_name as app_display_name,
         application.platform as app_platform,
         creator.first_name || ' ' || creator.last_name as created_by_user_full_name,
@@ -81,7 +81,7 @@ page_join as (
     left join pendo_user as updater
         on page.last_updated_by_user_id = updater.user_id
     left join product_area
-        on page.group_id = product_area.group_id 
+        on page.group_id = product_area.id 
     left join agg_page_rule
         on page.page_id = agg_page_rule.page_id
     left join active_features
