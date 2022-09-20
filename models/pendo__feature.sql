@@ -14,8 +14,8 @@ calculate_metrics as (
         count(*) as count_click_events,
         min(occurred_at) as first_click_at,
         max(occurred_at) as last_click_at,
-        sum(num_minutes) / count(distinct visitor_id) as avg_visitor_minutes,
-        sum(num_events) / count(distinct visitor_id) as avg_visitor_events
+        sum(num_minutes) / nullif(count(distinct visitor_id),0) as avg_visitor_minutes,
+        sum(num_events) / nullif(count(distinct visitor_id),0) as avg_visitor_events
 
     from feature_event
     group by 1

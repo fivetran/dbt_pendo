@@ -57,8 +57,8 @@ calculate_metrics as (
         sum(sum_minutes) as sum_minutes,
         sum(sum_events) as sum_events,
         sum(count_event_records) as count_event_records,
-        sum(sum_minutes) / count(distinct occurred_on) as average_daily_minutes,
-        sum(sum_events) / count(distinct occurred_on) as average_daily_events,
+        sum(sum_minutes) / nullif(count(distinct occurred_on),0) as average_daily_minutes,
+        sum(sum_events) / nullif(count(distinct occurred_on),0) as average_daily_events,
         min(occurred_on) as first_event_on,
         max(occurred_on) as last_event_on
         

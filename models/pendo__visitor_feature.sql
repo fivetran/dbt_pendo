@@ -35,7 +35,7 @@ final as (
         last_click_at,
         sum_clicks,
         sum_minutes,
-        round(sum_minutes / count_active_days, 3) as avg_daily_minutes,
+        round(sum_minutes / nullif(count_active_days,0) , 3) as avg_daily_minutes,
         count_active_days,
         count_click_events
 

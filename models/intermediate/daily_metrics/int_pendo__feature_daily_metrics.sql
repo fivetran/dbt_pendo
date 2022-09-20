@@ -59,11 +59,11 @@ final as (
         count_first_time_accounts,
         count_visitors - count_first_time_visitors as count_return_visitors,
         count_accounts - count_first_time_accounts as count_return_accounts,
-        round(sum_minutes / count_visitors, 3) as avg_daily_minutes_per_visitor,
-        round(sum_clicks / count_visitors, 3) as avg_daily_clicks_per_visitor,
-        round(100.0 * sum_clicks / total_feature_clicks, 3) as percent_of_daily_feature_clicks,
-        round(100.0 * count_visitors / total_feature_visitors, 3) as percent_of_daily_feature_visitors,
-        round(100.0 * count_accounts / total_feature_accounts, 3) as percent_of_daily_feature_accounts
+        round(sum_minutes / nullif(count_visitors,0) , 3) as avg_daily_minutes_per_visitor,
+        round(sum_clicks / nullif(count_visitors,0) , 3) as avg_daily_clicks_per_visitor,
+        round(100.0 * sum_clicks / nullif(total_feature_clicks,0) , 3) as percent_of_daily_feature_clicks,
+        round(100.0 * count_visitors / nullif(total_feature_visitors,0) , 3) as percent_of_daily_feature_visitors,
+        round(100.0 * count_accounts / nullif(total_feature_accounts,0) , 3) as percent_of_daily_feature_accounts
     
     from total_feature_metrics
 )
