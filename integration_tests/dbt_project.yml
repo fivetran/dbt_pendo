@@ -12,7 +12,7 @@ dispatch:
 
 vars:
   pendo_source:
-    pendo_schema: pendo_integration_tests_1
+    pendo_schema: pendo_integration_tests_2
     account_history: "{{ ref('account_history') }}"
     application_history: "{{ ref('application_history') }}"
     event: "{{ ref('event') }}"
