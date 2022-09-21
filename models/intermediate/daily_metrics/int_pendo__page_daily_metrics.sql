@@ -59,11 +59,11 @@ final as (
         count_first_time_accounts,
         count_visitors - count_first_time_visitors as count_return_visitors,
         count_accounts - count_first_time_accounts as count_return_accounts,
-        round(sum_minutes / count_visitors, 3) as avg_daily_minutes_per_visitor,
-        round(sum_pageviews / count_visitors, 3) as avg_daily_pageviews_per_visitor,
-        round(100.0 * sum_pageviews / total_pageviews, 3) as percent_of_daily_pageviews,
-        round(100.0 * count_visitors / total_page_visitors, 3) as percent_of_daily_page_visitors,
-        round(100.0 * count_accounts / total_page_accounts, 3) as percent_of_daily_page_accounts
+        round(sum_minutes / nullif(count_visitors,0) , 3) as avg_daily_minutes_per_visitor,
+        round(sum_pageviews / nullif(count_visitors,0) , 3) as avg_daily_pageviews_per_visitor,
+        round(100.0 * sum_pageviews / nullif(total_pageviews,0) , 3) as percent_of_daily_pageviews,
+        round(100.0 * count_visitors / nullif(total_page_visitors,0) , 3) as percent_of_daily_page_visitors,
+        round(100.0 * count_accounts / nullif(total_page_accounts,0) , 3) as percent_of_daily_page_accounts
     
     from total_page_metrics
 )

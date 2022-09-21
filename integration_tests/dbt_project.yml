@@ -1,7 +1,7 @@
 config-version: 2
 
 name: 'pendo_integration_tests'
-version: '0.1.1'
+version: '0.2.1'
 
 require-dbt-version: ">=0.20.0"
 profile: 'integration_tests'
@@ -12,6 +12,7 @@ dispatch:
 
 vars:
   pendo_source:
+    pendo_schema: pendo_integration_tests_3
     account_history: "{{ ref('account_history') }}"
     application_history: "{{ ref('application_history') }}"
     event: "{{ ref('event') }}"

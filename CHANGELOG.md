@@ -1,3 +1,9 @@
+# dbt_pendo v0.2.1
+## 🐞 Bugfix 
+- Include `nullif` to all division fields to prevent divide by zero. ([#16](https://github.com/fivetran/dbt_pendo/pull/16))
+## Contributors
+[@darreldonnelly](https://github.com/darreldonnelly) ([[#15](https://github.com/fivetran/dbt_pendo/issues/15)])
+
 # dbt_pendo v0.2.0
 🎉 dbt v1.0.0 Compatibility 🎉
 ## 🚨 Breaking Changes 🚨
