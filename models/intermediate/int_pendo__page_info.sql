@@ -54,7 +54,7 @@ active_features as (
     from feature
 
     -- give a buffer of a month
-    where {{ dbt_utils.datediff('valid_through', dbt_utils.current_timestamp(), 'day' ) }} <= 30
+    where {{ dbt.datediff('valid_through', dbt.current_timestamp_backcompat(), 'day' ) }} <= 30
 
     group by 1
 ),

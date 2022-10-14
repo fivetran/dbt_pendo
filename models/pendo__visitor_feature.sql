@@ -17,7 +17,7 @@ calculate_metrics as (
         sum(num_events) as sum_clicks,
         count(*) as count_click_events,
         sum(num_minutes) as sum_minutes,
-        count(distinct {{ dbt_utils.date_trunc('day', 'occurred_at') }} ) as count_active_days
+        count(distinct {{ dbt.date_trunc('day', 'occurred_at') }} ) as count_active_days
 
     from feature_event
     {{ dbt_utils.group_by(n=5) }}

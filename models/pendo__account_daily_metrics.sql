@@ -31,7 +31,7 @@ account_spine as (
     from spine 
     join account_timeline
         on spine.date_day >= account_timeline.first_event_on
-        and spine.date_day <= cast( {{ dbt_utils.current_timestamp() }} as date)
+        and spine.date_day <= cast( {{ dbt.current_timestamp_backcompat() }} as date)
 
 ),
 

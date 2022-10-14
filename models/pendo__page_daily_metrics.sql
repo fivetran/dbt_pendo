@@ -14,8 +14,8 @@ page as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'created_at') }} as date) as created_on,
-        cast( {{ dbt_utils.date_trunc('day', 'last_pageview_at') }} as date) as last_pageview_on
+        cast( {{ dbt.date_trunc('day', 'created_at') }} as date) as created_on,
+        cast( {{ dbt.date_trunc('day', 'last_pageview_at') }} as date) as last_pageview_on
 
     from {{ ref('pendo__page') }}
 ),

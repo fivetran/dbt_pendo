@@ -2,7 +2,7 @@ with events as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'occurred_at') }} as date) as occurred_on
+        cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
     from {{ var('event') }}
 ),
@@ -11,7 +11,7 @@ feature_event as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'occurred_at') }} as date) as occurred_on
+        cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
     from {{ var('feature_event') }}
 ),
@@ -20,7 +20,7 @@ page_event as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'occurred_at') }} as date) as occurred_on
+        cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
     from {{ var('page_event') }}
 ),

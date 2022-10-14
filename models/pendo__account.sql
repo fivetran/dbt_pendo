@@ -53,7 +53,7 @@ calculate_metrics as (
         sum(count_page_viewing_visitors) as count_page_viewing_visitors,
         sum(count_feature_clicking_visitors) as count_feature_clicking_visitors,
         count(distinct occurred_on) as count_active_days,
-        count(distinct {{ dbt_utils.date_trunc('month', 'occurred_on') }} ) as count_active_months,
+        count(distinct {{ dbt.date_trunc('month', 'occurred_on') }} ) as count_active_months,
         sum(sum_minutes) as sum_minutes,
         sum(sum_events) as sum_events,
         sum(count_event_records) as count_event_records,
