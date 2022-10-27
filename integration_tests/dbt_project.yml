@@ -64,7 +64,7 @@ seeds:
       +column_types:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        group_id: "{{ 'string' if target.name in ('bigquery', '!!!!!!! REPLACE 'spark' WITH 'spark','databricks' OR EQUIV !!!!!!!') else 'varchar' }}"
+        group_id: "{{ 'string' if target.name in ['spark','databricks'] else 'varchar' }}"
         created_at: timestamp
     feature_event:
       +column_types:
@@ -72,8 +72,8 @@ seeds:
     group_data:
       +column_types:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        color: "{{ 'string' if target.name in ('bigquery', '!!!!!!! REPLACE 'spark' WITH 'spark','databricks' OR EQUIV !!!!!!!') else 'varchar' }}"
-        id: "{{ 'string' if target.name in ('bigquery', '!!!!!!! REPLACE 'spark' WITH 'spark','databricks' OR EQUIV !!!!!!!') else 'varchar' }}"
+        color: "{{ 'string' if target.name in ['spark','databricks'] else 'varchar' }}"
+        id: "{{ 'string' if target.name in ['spark','databricks'] else 'varchar' }}"
     user:
       +column_types:
         id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
@@ -81,7 +81,7 @@ seeds:
       +column_types:
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        group_id: "{{ 'string' if target.name in ('bigquery', '!!!!!!! REPLACE 'spark' WITH 'spark','databricks' OR EQUIV !!!!!!!') else 'varchar' }}"
+        group_id: "{{ 'string' if target.name in ['spark','databricks'] else 'varchar' }}"
         created_at: timestamp
     page_event:
       +column_types:
