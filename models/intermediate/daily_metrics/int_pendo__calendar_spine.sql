@@ -5,7 +5,7 @@
         partition_by = {'field': 'date_day', 'data_type': 'date'}
             if target.type not in ['spark','databricks'] else None,
         unique_key='date_day',
-        incremental_strategy = 'merge',
+        incremental_strategy = 'merge' if target.type not in ('postgres', 'redshift') else 'delete+insert',
         file_format = 'delta'
     )
 }}
