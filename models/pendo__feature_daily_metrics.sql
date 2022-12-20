@@ -14,8 +14,8 @@ feature as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'created_at') }} as date) as created_on,
-        cast( {{ dbt_utils.date_trunc('day', 'last_click_at') }} as date) as last_click_on
+        cast( {{ dbt.date_trunc('day', 'created_at') }} as date) as created_on,
+        cast( {{ dbt.date_trunc('day', 'last_click_at') }} as date) as last_click_on
 
     from {{ ref('pendo__feature') }}
 ),

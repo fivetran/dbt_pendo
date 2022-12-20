@@ -36,7 +36,7 @@ latest_response as (
     select 
         visitor_id,
         account_id,
-        cast(poll_response as {{ dbt_utils.type_int() }}) as nps_rating
+        cast(poll_response as {{ dbt.type_int() }}) as nps_rating
 
     from order_responses
     where latest_response_index = 1

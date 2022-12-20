@@ -1,35 +1,35 @@
 config-version: 2
 
 name: 'pendo_integration_tests'
-version: '0.2.1'
+version: '0.3.0'
 
 require-dbt-version: ">=0.20.0"
 profile: 'integration_tests'
 
 dispatch:
   - macro_namespace: dbt_utils
-    search_order: [spark_utils, dbt_utils]
+    search_order: ['spark_utils', 'dbt_utils']
 
 vars:
   pendo_source:
-    pendo_schema: pendo_integration_tests_3
-    account_history: "{{ ref('account_history') }}"
-    application_history: "{{ ref('application_history') }}"
-    event: "{{ ref('event') }}"
-    feature_event: "{{ ref('feature_event') }}"
-    feature_history: "{{ ref('feature_history') }}"
-    group: "{{ ref('group_data') }}"
-    guide_event: "{{ ref('guide_event') }}"
-    guide_history: "{{ ref('guide_history') }}"
-    guide_step_history: "{{ ref('guide_step_history') }}"
-    page_event: "{{ ref('page_event') }}"
-    page_history: "{{ ref('page_history') }}"
-    page_rule_history: "{{ ref('page_rule_history') }}"
-    user: "{{ ref('user') }}"
-    visitor_history: "{{ ref('visitor_history') }}"
-    poll: "{{ ref('poll') }}"
-    poll_event: "{{ ref('poll_event') }}"
-    visitor_account_history: "{{ ref('visitor_account_history') }}"
+    pendo_schema: pendo_integration_tests_2000
+    pendo_account_history_identifier: "account_history"
+    pendo_application_history_identifier: "application_history"
+    pendo_event_identifier: "event"
+    pendo_feature_event_identifier: "feature_event"
+    pendo_feature_history_identifier: "feature_history"
+    pendo_group_identifier: "group_data"
+    pendo_guide_event_identifier: "guide_event"
+    pendo_guide_history_identifier: "guide_history"
+    pendo_guide_step_history_identifier: "guide_step_history"
+    pendo_page_event_identifier: "page_event"
+    pendo_page_history_identifier: "page_history"
+    pendo_page_rule_history_identifier: "page_rule_history"
+    pendo_user_identifier: "user"
+    pendo_visitor_history_identifier: "visitor_history"
+    pendo_poll_identifier: "poll"
+    pendo_poll_event_identifier: "poll_event"
+    pendo_visitor_account_history_identifier: "visitor_account_history"
     
     pendo__event_pass_through_columns: []
     pendo__feature_event_pass_through_columns: []
@@ -64,7 +64,7 @@ seeds:
       +column_types:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        group_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        group_id: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
         created_at: timestamp
     feature_event:
       +column_types:
@@ -72,8 +72,8 @@ seeds:
     group_data:
       +column_types:
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        color: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
-        id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        color: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
+        id: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
     user:
       +column_types:
         id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
@@ -81,7 +81,7 @@ seeds:
       +column_types:
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        group_id: "{{ 'string' if target.name in ('bigquery', 'spark') else 'varchar' }}"
+        group_id: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
         created_at: timestamp
     page_event:
       +column_types:

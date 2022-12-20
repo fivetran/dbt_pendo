@@ -2,7 +2,7 @@ with guide_event as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'occurred_at') }} as date) as occurred_on
+        cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
     from {{ ref('pendo__guide_event') }}
 ),

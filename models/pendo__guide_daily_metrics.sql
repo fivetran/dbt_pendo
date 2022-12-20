@@ -14,7 +14,7 @@ guide as (
 
     select 
         *,
-        cast( {{ dbt_utils.date_trunc('day', 'created_at') }} as date) as created_on
+        cast( {{ dbt.date_trunc('day', 'created_at') }} as date) as created_on
 
     from {{ ref('pendo__guide') }}
 ),
@@ -29,7 +29,7 @@ guide_spine as (
     from spine 
     join guide
         on spine.date_day >= guide.created_on
-        and spine.date_day <= cast( {{ dbt_utils.current_timestamp() }} as date)
+        and spine.date_day <= cast( {{ dbt.current_timestamp_backcompat() }} as date)
 
 ),
 

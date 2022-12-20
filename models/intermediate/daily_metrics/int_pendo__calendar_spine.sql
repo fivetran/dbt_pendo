@@ -3,9 +3,9 @@
     config(
         materialized='incremental',
         partition_by = {'field': 'date_day', 'data_type': 'date'}
-            if target.type != 'spark' else None,
+            if target.type not in ['spark','databricks'] else None,
         unique_key='date_day',
-        incremental_strategy = 'merge',
+        incremental_strategy = 'merge' if target.type not in ('postgres', 'redshift') else 'delete+insert',
         file_format = 'delta'
     )
 }}
@@ -29,7 +29,7 @@ with spine as (
             dbt_utils.date_spine(
                 datepart = "day", 
                 start_date =  "cast('" ~ first_date[0:10] ~ "' as date)",
-                end_date = dbt_utils.dateadd("week", 1, "current_date")
+                end_date = dbt.dateadd("week", 1, "current_date")
             )   
         }} 
     ) as date_spine
