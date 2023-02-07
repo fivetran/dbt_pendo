@@ -1,3 +1,6 @@
+# dbt_pendo v0.3.1
+## Bug Fixes
+- Updated readme for workaround if the pendo_<default_source_table_name>_identifer is having trouble with Snowflake reserved words. ([#19](https://github.com/fivetran/dbt_pendo/pull/19))
 # dbt_pendo v0.3.0
 [PR #17](https://github.com/fivetran/dbt_pendo/pull/17) includes the following breaking changes:
 ## 🚨 Breaking Changes 🚨:
