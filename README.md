@@ -167,6 +167,9 @@ packages:
 
     - package: fivetran/pendo_source
       version: [">=0.3.0", "<0.4.0"]
+
+    - package: dbt-labs/spark_utils
+      version: [">=0.3.0", "<0.4.0"]
 ```
 
 # 🙌 How is this package maintained and can I contribute?
@@ -181,4 +184,4 @@ We highly encourage and welcome contributions to this package. Check out [this d
 # 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_pendo/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
-- Have questions or want to just say hi? Book a time during our office hours [on Calendly](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or email us at solutions@fivet
+- Have questions or want to just say hi? Book a time during our office hours [on Calendly](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or email us at solutions@fivetran.com.
