@@ -46,14 +46,6 @@ To use this dbt package, you must have the following:
 - At least one Fivetran Pendo connector syncing data into your destination. 
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
-### Databricks Dispatch Configuration
-If you are using a Databricks destination with this package you will need to add the below (or a variation of the below) dispatch configuration within your `dbt_project.yml`. This is required in order for the package to accurately search for macros within the `dbt-labs/spark_utils` then the `dbt-labs/dbt_utils` packages respectively.
-```yml
-dispatch:
-  - macro_namespace: dbt_utils
-    search_order: ['spark_utils', 'dbt_utils']
-```
-
 ## Step 2: Install the package
 Include the following pendo_source package version in your `packages.yml` file.
 > TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
@@ -131,6 +123,19 @@ vars:
   pendo_source:
     pendo_<default_source_table_name>_identifier: your_table_name 
 ```
+
+#### 🚨 Snowflake Users
+You may need to provide the case-sensitive spelling of your source tables that are also Snowflake reserved words.
+
+In this package, this would apply to the `GROUP` source. If you are receiving errors for this source, include the following in your `dbt_project.yml` file:
+
+```yml
+vars:
+  pendo_group_identifier: '"Group"' # as an example, must include this quoting pattern and your exact casing
+
+quoting:
+  identifier: true
+```
 </details>
 
 ## (Optional) Step 5: Orchestrate your models with Fivetran Transformations for dbt Core™
@@ -153,9 +158,6 @@ packages:
       version: [">=1.0.0", "<2.0.0"]
 
     - package: fivetran/pendo_source
-      version: [">=0.3.0", "<0.4.0"]
-
-    - package: dbt-labs/spark_utils
       version: [">=0.3.0", "<0.4.0"]
 ```
 
