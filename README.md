@@ -131,6 +131,19 @@ vars:
   pendo_source:
     pendo_<default_source_table_name>_identifier: your_table_name 
 ```
+
+#### 🚨 Snowflake Users
+You may need to provide the case-sensitive spelling of your source tables that are also Snowflake reserved words.
+
+In this package, this would apply to the `GROUP` source. If you are receiving errors for this source, include the following in your `dbt_project.yml` file:
+
+```yml
+vars:
+  pendo_group_identifier: '"Group"' # as an example, must include this quoting pattern and your exact casing
+
+quoting:
+  identifier: true
+```
 </details>
 
 ## (Optional) Step 5: Orchestrate your models with Fivetran Transformations for dbt Core™
@@ -171,4 +184,4 @@ We highly encourage and welcome contributions to this package. Check out [this d
 # 🏪 Are there any resources available?
 - If you have questions or want to reach out for help, please refer to the [GitHub Issue](https://github.com/fivetran/dbt_pendo/issues/new/choose) section to find the right avenue of support for you.
 - If you would like to provide feedback to the dbt package team at Fivetran or would like to request a new dbt package, fill out our [Feedback Form](https://www.surveymonkey.com/r/DQ7K7WW).
-- Have questions or want to just say hi? Book a time during our office hours [on Calendly](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or email us at solutions@fivet
+- Have questions or want to just say hi? Book a time during our office hours [on Calendly](https://calendly.com/fivetran-solutions-team/fivetran-solutions-team-office-hours) or email us at solutions@fivetran.com.
