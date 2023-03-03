@@ -1,6 +1,7 @@
 packages:
 # - package: fivetran/pendo_source
-#   version: [">=0.3.0", "<0.4.0"]
+#   version: [">=0.4.0", "<0.5.0"] 
+# change before release to above!!!!!
   - git: https://github.com/fivetran/dbt_pendo_source.git
     revision: bug/add_fivetran_id
     warn-unpinned: false
