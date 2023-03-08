@@ -141,7 +141,9 @@ vars:
   pendo_group_identifier: '"Group"' # as an example, must include this quoting pattern and adjust for your exact casing
 ```
 
-**Note!** if you have sources defined in your project's yml, the above will not work. Instead you will need to add the following where your group table is defined in your yaml:
+**Note!** if you have sources defined in one of your project's yml files, for example if you have a yml file with a `sources` level like in the following example, the prior code will not work. 
+
+Instead you will need to add the following where your group source table is defined in your yml:
 ```yml
 sources:
   tables:
