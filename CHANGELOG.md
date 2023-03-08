@@ -1,3 +1,10 @@
+# dbt_pendo v0.4.0
+## 🚨 Breaking Changes 🚨:
+- This is a breaking change due to changes made in the source package. (See [Source CHANGELOG](https://github.com/fivetran/dbt_pendo_source/blob/main/CHANGELOG.md)). 
+## ✨ Features
+- Updated documentation and packages to reference the latest version of the source package. ([#20](https://github.com/fivetran/dbt_pendo/pull/20))
+- Revised readme instructions for successfully setting up the `GROUP` table with Snowflake. ([#20](https://github.com/fivetran/dbt_pendo/pull/20))
+
 # dbt_pendo v0.3.1
 ## Bug Fixes
 - Updated readme for workaround if the pendo_<default_source_table_name>_identifer is having trouble with Snowflake reserved words. ([#19](https://github.com/fivetran/dbt_pendo/pull/19))
