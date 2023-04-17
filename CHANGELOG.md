@@ -1,3 +1,10 @@
+# dbt_pendo v0.5.0
+## 🚨 Breaking Changes 🚨:
+- This is a breaking change due to changes made in the source package. (See [Source CHANGELOG](https://github.com/fivetran/dbt_pendo_source/blob/main/CHANGELOG.md)). 
+
+## ✨ Features
+- Updated documentation and packages to reference the latest version of the source package. ([#22](https://github.com/fivetran/dbt_pendo/pull/22))
+
 # dbt_pendo v0.4.0
 ## 🚨 Breaking Changes 🚨:
 - This is a breaking change due to changes made in the source package. (See [Source CHANGELOG](https://github.com/fivetran/dbt_pendo_source/blob/main/CHANGELOG.md)). 
