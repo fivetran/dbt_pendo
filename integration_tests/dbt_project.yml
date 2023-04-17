@@ -17,8 +17,8 @@ vars:
     pendo_event_identifier: "event"
     pendo_feature_event_identifier: "feature_event"
     pendo_feature_history_identifier: "feature_history"
-    # group: "{{ ref('group_data') }}" # Comment out when generating docs; remember to uncomment before committing
-    pendo_group_identifier: "group_data" # Uncomment when generating docs; remember to comment out before committing
+    group: "{{ ref('group_data') }}" # Comment out when generating docs; remember to uncomment before committing
+    # pendo_group_identifier: "group_data" # Uncomment when generating docs; remember to comment out before committing
     pendo_guide_event_identifier: "guide_event"
     pendo_guide_history_identifier: "guide_history"
     pendo_guide_step_history_identifier: "guide_step_history"
