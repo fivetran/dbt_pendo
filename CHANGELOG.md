@@ -1,3 +1,21 @@
+# dbt_pendo v0.5.0
+PR [#21](https://github.com/fivetran/dbt_pendo/pull/21) includes the following updates:
+## 🚨 Breaking Changes 🚨:
+- This is a breaking change due to changes made in the source package. (See [Source CHANGELOG](https://github.com/fivetran/dbt_pendo_source/blob/main/CHANGELOG.md)).
+- Due to changes made in this release and v0.4.0, `_fivetran_id` has been added to the following models:
+	  - `pendo__feature_event`
+	  - `pendo__guide_event`
+	  - `pendo__page_event`
+
+- `_fivetran_id` has also been added to the hashing formula used in the following fields:
+  - `feature_event_key` in `pendo__feature_event`
+  - `guide_event_key` in `pendo__guide_event`
+  - `page_event_key` in `pendo__page_event`
+
+## ✨ Features
+- Updated documentation for new `_fivetran_id` field.
+- Updated documentation and packages to reference the latest version of the source package.
+
 # dbt_pendo v0.4.0
 ## 🚨 Breaking Changes 🚨:
 - This is a breaking change due to changes made in the source package. (See [Source CHANGELOG](https://github.com/fivetran/dbt_pendo_source/blob/main/CHANGELOG.md)). 

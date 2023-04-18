@@ -17,5 +17,6 @@ echo `pwd`
 cd integration_tests
 dbt deps
 dbt seed --target "$db" --full-refresh
+dbt compile --target "$db"
 dbt run --target "$db" --full-refresh
 dbt test --target "$db"
