@@ -1,0 +1,10 @@
+dbt_pendo:
+  target: databricks_job
+    outputs:
+      databricks_job:
+        type: databricks
+        method: http
+        schema: "pendo"
+        host: "dbc-dc9376bf-47b3.cloud.databricks.com"
+        http_path: "/sql/1.0/warehouses/2121bb522d624e4a"
+        token: "{{ env_var('DBT_ACCESS_TOKEN') }}"

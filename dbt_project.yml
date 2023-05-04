@@ -33,3 +33,7 @@ vars:
     pendo__page_event_pass_through_columns: []
     pendo__account_history_pass_through_columns: []
     pendo__visitor_history_pass_through_columns: []
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']
