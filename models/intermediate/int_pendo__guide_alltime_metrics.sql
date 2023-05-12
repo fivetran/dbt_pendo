@@ -14,7 +14,7 @@ calculate_metrics as (
         count(*) as count_events,
         min(occurred_at) as first_event_at,
         max(occurred_at) as last_event_at,
-        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'), 
+        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('stg_pendo__guide_event'), 'type'), 
                             prefix='count_visitors_', agg='count', then_value='visitor_id', else_value='null', distinct=true) }}
 
     from guide_event
