@@ -1,9 +1,9 @@
 # dbt_pendo v0.UPDATE.UPDATE
 
  ## Under the Hood:
-
 - Incorporated the new `fivetran_utils.drop_schemas_automation` macro into the end of each Buildkite integration test job.
 - Updated the pull request [templates](/.github).
+
 # dbt_pendo v0.5.0
 PR [#21](https://github.com/fivetran/dbt_pendo/pull/21) includes the following updates:
 ## 🚨 Breaking Changes 🚨:
