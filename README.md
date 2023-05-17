@@ -62,8 +62,10 @@ Include the following pendo_source package version in your `packages.yml` file.
 # packages.yml
 packages:
   - package: fivetran/pendo
-    version: [">=0.5.0", "<0.6.0"]
+    version: [">=0.5.0", "<0.6.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
+
+Do NOT include the `pendo_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
 
 ## Step 3: Define database and schema variables
 By default, this package runs using your destination and the `pendo` schema. If this is not where your Pendo data is (for example, if your Pendo schema is named `pendo_fivetran`), add the following configuration to your root `dbt_project.yml` file:

@@ -17,6 +17,7 @@ echo `pwd`
 cd integration_tests
 dbt deps
 dbt seed --target "$db" --full-refresh
-dbt compile --target "$db"
 dbt run --target "$db" --full-refresh
 dbt test --target "$db"
+
+dbt run-operation fivetran_utils.drop_schemas_automation --target "$db"
