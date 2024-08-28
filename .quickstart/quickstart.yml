@@ -8,3 +8,20 @@ destination_configurations:
     dispatch:
       - macro_namespace: dbt_utils
         search_order: [ 'spark_utils', 'dbt_utils' ]
+
+public_models: [
+  "pendo__visitor",
+  "pendo__feature_event",
+  "pendo__feature",
+  "pendo__guide",
+  "pendo__page_daily_metrics",
+  "pendo__feature_daily_metrics",
+  "pendo__account",
+  "pendo__guide_event",
+  "pendo__page_event",
+  "pendo__visitor_feature",
+  "pendo__guide_daily_metrics",
+  "pendo__visitor_daily_metrics",
+  "pendo__account_daily_metrics",
+  "pendo__page"
+]
