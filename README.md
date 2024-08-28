@@ -15,15 +15,18 @@
 - Produces modeled tables that pendoage Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo) in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation) and builds off the output of our [Pendo source package](https://github.com/fivetran/dbt_pendo_source).
 
 - Enables you to understand how users are experiencing and adopting your product. It achieves thi by:
-- Calculating usage of features, pages, guides, and the overall product at the account and individual visitor level
-- Enhancing event stream tables with visitor and product information, referring pages, and features to track the customer journey through the application
-- Creating daily activity timelines for features, pages, and guides that reflect their adoption rates, discoverability, and usage promotion efficacy
-- Directly tying visitors and features together to determine activation rates, power-usage, and churn risk
+  - Calculating usage of features, pages, guides, and the overall product at the account and individual visitor level
+  - Enhancing event stream tables with visitor and product information, referring pages, and features to track the customer journey through the application
+  - Creating daily activity timelines for features, pages, and guides that reflect their adoption rates, discoverability, and usage promotion efficacy
+  - Directly tying visitors and features together to determine activation rates, power-usage, and churn risk
 
-The following table provides a detailed list of all models materialized within this package by default.
-> TIP: See more details about these models in the package's [dbt docs site](https://fivetran.github.io/dbt_pendo/#!/overview?g_v=1).
 
-| **Model**                | **Description**                                                                                                                                |
+<!--section=“pendo_transformation_model"-->
+
+The following table provides a detailed list of all tables materialized within this package by default.
+> TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_pendo/#!/overview?g_v=1).
+
+| **Table**                | **Description**                                                                                                                                |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | [pendo__account](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__account)             | Each record represents a unique account in Pendo, enriched with metrics regarding associated visitors and their feature, page, and overall product activity (total and daily averages). Also includes their aggregated NPS ratings and the frequency and longevity of their product usage. |
 | [pendo__feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__feature)             | Each record represents a unique tagged feature in Pendo, enriched with information about the page it lives on, the application and product area it is a part of, and the internal users who created and/or updated it last. Also includes metrics regarding the visitors' time spent using the feature and click-interactions with individual visitors and accounts. |
@@ -39,6 +42,8 @@ The following table provides a detailed list of all models materialized within t
 | [pendo__page_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | The event stream of views of tagged pages in Pendo. Enriched with any visitor and/or account passthrough columns, the previous page that the visitor interacted with, the application and platform the event occurred on, and information on the page and its product area. |
 | [pendo__guide_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | The event stream of different kinds of interactions visitors have with guides. Enriched with any visitor and/or account passthrough columns, as well as the application and platform that the event occurred on. |
 | [pendo__visitor_feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor_feature)             | Each record represents a unique combination of visitors and features, aimed at making "power-users" of particular features easy to find. Includes metrics reflecting the longevity and frequency of feature usage. |
+
+<!--section-end-->
 
 ## How do I use the dbt package?
 ### Step 1: Prerequisites
@@ -143,7 +148,7 @@ vars:
   pendo_group_identifier: '"Group"' # as an example, must include this quoting pattern and adjust for your exact casing
 ```
 
-**Note!** if you have sources defined in one of your project's yml files, for example if you have a yml file with a `sources` level like in the following example, the prior code will not work.
+**Note:** if you have sources defined in one of your project's yml files, for example if you have a yml file with a `sources` level like in the following example, the prior code will not work.
 
 Instead you will need to add the following where your group source table is defined in your yml:
 ```yml
