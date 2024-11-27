@@ -12,7 +12,7 @@
 
 with spine as (
 
-    {% if execute %}
+    {% if execute and flags.WHICH in ('run', 'build') %}
     {% set first_date_query %}
     -- start at the first event
         select  min( created_at ) as min_date from {{ var('application_history') }}

@@ -1,4 +1,6 @@
 -- making this its own model so i can use dbt_utils.star for the pivoted out columns
+
+--depends on: {{ ref('pendo__guide_event') }}
 with guide_event as (
 
     select *
