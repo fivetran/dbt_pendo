@@ -1,3 +1,9 @@
+# dbt_pendo version.version
+
+## Documentation
+- Added Quickstart model counts to README. ([#29](https://github.com/fivetran/dbt_pendo/pull/29))
+- Corrected references to connectors and connections in the README. ([#29](https://github.com/fivetran/dbt_pendo/pull/29))
+
 # dbt_pendo v0.UPDATE.UPDATE
 
  ## Under the Hood:
