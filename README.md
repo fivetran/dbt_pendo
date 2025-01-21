@@ -1,4 +1,6 @@
-<p align="center">
+# Pendo Transformation dbt Package ([Docs](https://fivetran.github.io/dbt_pendo/))
+
+<p align="left">
     <a alt="License"
         href="https://github.com/fivetran/dbt_pendo/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
@@ -10,7 +12,6 @@
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
 </p>
 
-# Pendo Transformation dbt Package ([Docs](https://fivetran.github.io/dbt_pendo/))
 ## What does this dbt package do?
 - Produces modeled tables that pendoage Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo) in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation) and builds off the output of our [Pendo source package](https://github.com/fivetran/dbt_pendo_source).
 
