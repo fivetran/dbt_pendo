@@ -1,4 +1,6 @@
-<p align="center">
+# Pendo Transformation dbt Package ([Docs](https://fivetran.github.io/dbt_pendo/))
+
+<p align="left">
     <a alt="License"
         href="https://github.com/fivetran/dbt_pendo/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a>
@@ -10,7 +12,6 @@
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
 </p>
 
-# Pendo Transformation dbt Package ([Docs](https://fivetran.github.io/dbt_pendo/))
 ## What does this dbt package do?
 - Produces modeled tables that pendoage Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo) in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation) and builds off the output of our [Pendo source package](https://github.com/fivetran/dbt_pendo_source).
 
@@ -43,12 +44,14 @@ The following table provides a detailed list of all tables materialized within t
 | [pendo__guide_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | The event stream of different kinds of interactions visitors have with guides. Enriched with any visitor and/or account passthrough columns, as well as the application and platform that the event occurred on. |
 | [pendo__visitor_feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor_feature)             | Each record represents a unique combination of visitors and features, aimed at making "power-users" of particular features easy to find. Includes metrics reflecting the longevity and frequency of feature usage. |
 
+### Materialized Models
+Each Quickstart transformation job run materializes 68 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
 
 ## How do I use the dbt package?
 ### Step 1: Prerequisites
 To use this dbt package, you must have the following:
-- At least one Fivetran Pendo connector syncing data into your destination.
+- At least one Fivetran Pendo connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
 #### Databricks Dispatch Configuration
