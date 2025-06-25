@@ -1,7 +1,7 @@
 config-version: 2
 
 name: 'pendo_integration_tests'
-version: '0.5.0'
+version: '0.6.0'
 
 profile: 'integration_tests'
 
@@ -89,3 +89,7 @@ seeds:
     visitor_history:
       +column_types:
         id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+
+flags:
+  send_anonymous_usage_stats: False
+

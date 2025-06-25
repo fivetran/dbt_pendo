@@ -70,7 +70,7 @@ Include the following pendo_source package version in your `packages.yml` file.
 # packages.yml
 packages:
   - package: fivetran/pendo
-    version: [">=0.5.0", "<0.6.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.6.0", "<0.7.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 Do NOT include the `pendo_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
@@ -185,7 +185,7 @@ packages:
       version: [">=1.0.0", "<2.0.0"]
 
     - package: fivetran/pendo_source
-      version: [">=0.5.0", "<0.6.0"]
+      version: [">=0.6.0", "<0.7.0"]
 
     - package: dbt-labs/spark_utils
       version: [">=0.3.0", "<0.4.0"]
