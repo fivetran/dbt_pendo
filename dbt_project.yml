@@ -10,8 +10,10 @@ models:
     +materialized: table
     +schema: pendo
     staging:
-      +schema: pendo_source
-      +materialized: view
+      +schema: stg_pendo
+      +materialized: table
+      tmp:
+        +materialized: view
 vars:
   pendo:
     account_history: "{{ source('pendo', 'account_history') }}"
