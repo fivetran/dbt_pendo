@@ -1,7 +1,7 @@
 with guide_step_history as (
 
     select *
-    from {{ var('guide_step_history') }}
+    from {{ ref('stg_pendo__guide_step_history') }}
 
 ),
 

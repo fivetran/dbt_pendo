@@ -1,7 +1,7 @@
 with feature_history as (
 
     select *
-    from {{ var('feature_history') }}
+    from {{ ref('stg_pendo__feature_history') }}
 
 ),
 

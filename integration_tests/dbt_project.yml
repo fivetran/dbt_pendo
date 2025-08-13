@@ -1,7 +1,7 @@
 config-version: 2
 
 name: 'pendo_integration_tests'
-version: '0.6.0'
+version: '1.0.0'
 
 profile: 'integration_tests'
 
@@ -10,7 +10,7 @@ dispatch:
     search_order: ['spark_utils', 'dbt_utils']
 
 vars:
-  pendo_source:
+  pendo:
     pendo_schema: pendo_integration_tests_2002
     pendo_account_history_identifier: "account_history"
     pendo_application_history_identifier: "application_history"

@@ -1,7 +1,7 @@
 with account_history as (
 
     select *
-    from {{ var('account_history') }}
+    from {{ ref('stg_pendo__account_history') }}
 
 ),
 
