@@ -38,6 +38,8 @@ vars:
     pendo__visitor_history_pass_through_columns: []
     
 seeds:
+  +docs:
+    show: False
   pendo_integration_tests:
     +quote_columns: "{{ true if target.type == 'redshift' else false }}"
     +column_types:
@@ -93,3 +95,5 @@ seeds:
 flags:
   send_anonymous_usage_stats: False
 
+
+  use_colors: True
