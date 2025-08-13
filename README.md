@@ -112,7 +112,7 @@ vars:
     - name:           "well_named_field_1"
   pendo__visitor_history_pass_through_columns: # will be passed to pendo__visitor, pendo__feature_event, and pendo__page_event 
     - name:           "well_named_field_2"
-  pendo__event_pass_through_columns: # will be passed to stg_pendo__event (in source package only)
+  pendo__event_pass_through_columns: # will be passed to stg_pendo__event only
     - name:           "well_named_field_3"
 ```
 
@@ -133,7 +133,7 @@ models:
 
 #### Change the source table references
 If an individual source table has a different name than the package expects, add the table name as it appears in your destination to the respective variable:
-> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_pendo_source/blob/main/dbt_project.yml) variable declarations to see the expected names.
+> IMPORTANT: See this project's [`dbt_project.yml`](https://github.com/fivetran/dbt_pendo/blob/main/dbt_project.yml) variable declarations to see the expected names.
 
 ```yml
 vars:
