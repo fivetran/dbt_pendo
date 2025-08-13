@@ -1,7 +1,7 @@
 with application_history as (
 
     select *
-    from {{ var('application_history') }}
+    from {{ ref('stg_pendo__application_history') }}
 
 ),
 

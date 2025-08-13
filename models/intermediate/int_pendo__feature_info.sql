@@ -9,7 +9,7 @@ with feature as (
 pendo_user as (
 
     select *
-    from {{ var('user') }}
+    from {{ ref('stg_pendo__user') }}
 ),
 
 page as (
@@ -27,7 +27,7 @@ application as (
 product_area as (
 
     select *
-    from {{ var('group') }}
+    from {{ ref('stg_pendo__group') }}
 ),
 
 feature_join as (

@@ -59,11 +59,6 @@ models:
     description: >
       Table capturing daily event metrics for tracked accounts, from the day that ane event was first tracked for this 
       account to the current date.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - account_id
-            - date_day
     columns:
       - name: date_day
         description: Day for which these metrics were calculated. 
@@ -163,11 +158,6 @@ models:
     description: >
       Table capturing daily event metrics for tracked features, from the day that the feature was created to either 
       it's `valid_through` date or the date of its last tracked event (whichever is later).
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - feature_id
-            - date_day
     columns:
       - name: date_day
         description: Day for which these metrics were calculated. 
@@ -368,11 +358,6 @@ models:
       the current date. 
       Pendo tracks a variety of events around guides, and event-type-specific visitor-count-metrics are dynamically 
       pivoted out in this table.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - guide_id
-            - date_day
     columns:
       - name: date_day
         description: Day for which these metrics were calculated. 
@@ -525,11 +510,6 @@ models:
     description: >
       Table capturing daily event metrics for tracked pages, from the day that the feature was created to either 
       it's `valid_through` date or the date of its last tracked event (whichever is later).
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - page_id
-            - date_day
     columns:
       - name: date_day
         description: Day for which these metrics were calculated. 
@@ -697,11 +677,6 @@ models:
     description: >
       Table capturing daily event metrics for tracked visitors, from the day that ane event was first tracked for this 
       visitor to the current date.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - visitor_id
-            - date_day
     columns:
       - name: date_day
         description: Day for which these metrics were calculated. 

@@ -1,7 +1,7 @@
 with page_history as (
 
     select *
-    from {{ var('page_history') }}
+    from {{ ref('stg_pendo__page_history') }}
 
 ),
 

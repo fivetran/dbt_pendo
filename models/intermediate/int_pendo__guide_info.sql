@@ -29,7 +29,7 @@ application as (
 pendo_user as (
 
     select *
-    from {{ var('user') }}
+    from {{ ref('stg_pendo__user') }}
 ),
 
 guide_join as (

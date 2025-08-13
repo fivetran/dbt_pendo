@@ -13,13 +13,13 @@ application as (
 pendo_user as (
 
     select *
-    from {{ var('user') }}
+    from {{ ref('stg_pendo__user') }}
 ),
 
 product_area as (
 
     select *
-    from {{ var('group') }}
+    from {{ ref('stg_pendo__group') }}
 ),
 
 page_rule as (

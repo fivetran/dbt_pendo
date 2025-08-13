@@ -1,7 +1,7 @@
 with visitor_account_history as (
 
     select *
-    from {{ var('visitor_account_history') }}
+    from {{ ref('stg_pendo__visitor_account_history') }}
 
 ),
 

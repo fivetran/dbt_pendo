@@ -13,7 +13,7 @@
 </p>
 
 ## What does this dbt package do?
-- Produces modeled tables that pendoage Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo) in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation) and builds off the output of our [Pendo source package](https://github.com/fivetran/dbt_pendo_source).
+- Produces modeled tables that pendoage Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo) in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation).
 
 - Enables you to understand how users are experiencing and adopting your product. It achieves thi by:
   - Calculating usage of features, pages, guides, and the overall product at the account and individual visitor level
@@ -70,10 +70,10 @@ Include the following pendo_source package version in your `packages.yml` file.
 # packages.yml
 packages:
   - package: fivetran/pendo
-    version: [">=0.6.0", "<0.7.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=1.0.0", "<1.1.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
-Do NOT include the `pendo_source` package in this file. The transformation package itself has a dependency on it and will install the source package as well.
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/pendo_source` in your `packages.yml` since this package has been deprecated.
 
 ### Step 3: Define database and schema variables
 By default, this package runs using your destination and the `pendo` schema. If this is not where your Pendo data is (for example, if your Pendo schema is named `pendo_fivetran`), add the following configuration to your root `dbt_project.yml` file:
@@ -85,8 +85,7 @@ vars:
 ```
 
 ### (Optional) Step 4: Additional configurations
-
-<details><summary>Expand for configurations</summary>
+<details open><summary>Expand/Collapse details</summary>
 
 #### Passthrough Columns
 
@@ -122,12 +121,10 @@ By default, this package builds the Pendo final models within a schema titled (`
 ```yml
 ...
 models:
-  pendo:
-    +schema: my_new_schema_name # leave blank for just the target_schema
-    intermediate:
-      +schema: my_new_schema_name # leave blank for just the target_schema
-  pendo_source:
-    +schema: my_new_schema_name # leave blank for just the target_schema
+    pendo:
+      +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
+      staging:
+        +schema: my_new_schema_name # Leave +schema: blank to use the default target_schema.
 ```
 
 > NOTE: If your profile does not have permissions to create schemas in your destination, you can set each `+schema` to blank. The package will then write all tables to your pre-existing target schema.
@@ -138,7 +135,7 @@ If an individual source table has a different name than the package expects, add
     
 ```yml
 vars:
-  pendo_source:
+  pendo:
     pendo_<default_source_table_name>_identifier: your_table_name 
 ```
 
@@ -184,8 +181,6 @@ packages:
     - package: dbt-labs/dbt_utils
       version: [">=1.0.0", "<2.0.0"]
 
-    - package: fivetran/pendo_source
-      version: [">=0.6.0", "<0.7.0"]
 
     - package: dbt-labs/spark_utils
       version: [">=0.3.0", "<0.4.0"]
