@@ -4,7 +4,7 @@ with events as (
         *,
         cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
-    from {{ var('event') }}
+    from {{ ref('stg_pendo__event') }}
 ),
 
 feature_event as (
@@ -13,7 +13,7 @@ feature_event as (
         *,
         cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
-    from {{ var('feature_event') }}
+    from {{ ref('stg_pendo__feature_event') }}
 ),
 
 page_event as (
@@ -22,7 +22,7 @@ page_event as (
         *,
         cast( {{ dbt.date_trunc('day', 'occurred_at') }} as date) as occurred_on
 
-    from {{ var('page_event') }}
+    from {{ ref('stg_pendo__page_event') }}
 ),
 
 daily_event_metrics as (

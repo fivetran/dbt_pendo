@@ -1,7 +1,7 @@
 with page_event as (
 
     select *
-    from {{ var('page_event') }}
+    from {{ ref('stg_pendo__page_event') }}
 ),
 
 page as (

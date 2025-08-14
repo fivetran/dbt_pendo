@@ -1,6 +1,6 @@
 config-version: 2
 name: 'pendo'
-version: '0.6.0'
+version: '1.0.0'
 require-dbt-version: [">=1.3.0", "<2.0.0"]
 models:
   pendo:
@@ -9,25 +9,30 @@ models:
       +schema: int_pendo
     +materialized: table
     +schema: pendo
+    staging:
+      +schema: stg_pendo
+      +materialized: table
+      tmp:
+        +materialized: view
 vars:
   pendo:
-    account_history: "{{ ref('stg_pendo__account_history') }}"
-    application_history: "{{ ref('stg_pendo__application_history') }}"
-    event: "{{ ref('stg_pendo__event') }}"
-    feature_event: "{{ ref('stg_pendo__feature_event') }}"
-    feature_history: "{{ ref('stg_pendo__feature_history') }}"
-    group: "{{ ref('stg_pendo__group') }}"
-    guide_event: "{{ ref('stg_pendo__guide_event') }}"
-    guide_history: "{{ ref('stg_pendo__guide_history') }}"
-    guide_step_history: "{{ ref('stg_pendo__guide_step_history') }}"
-    page_event: "{{ ref('stg_pendo__page_event') }}"
-    page_history: "{{ ref('stg_pendo__page_history') }}"
-    page_rule_history: "{{ ref('stg_pendo__page_rule_history') }}"
-    user: "{{ ref('stg_pendo__user') }}"
-    visitor_history: "{{ ref('stg_pendo__visitor_history') }}"
-    poll: "{{ ref('stg_pendo__poll') }}"
-    poll_event: "{{ ref('stg_pendo__poll_event') }}"
-    visitor_account_history: "{{ ref('stg_pendo__visitor_account_history') }}"
+    account_history: "{{ source('pendo', 'account_history') }}"
+    application_history: "{{ source('pendo', 'application_history') }}"
+    event: "{{ source('pendo', 'event') }}"
+    feature_event: "{{ source('pendo', 'feature_event') }}"
+    feature_history: "{{ source('pendo', 'feature_history') }}"
+    group: "{{ source('pendo', 'group') }}"
+    guide_event: "{{ source('pendo', 'guide_event') }}"
+    guide_history: "{{ source('pendo', 'guide_history') }}"
+    guide_step_history: "{{ source('pendo', 'guide_step_history') }}"
+    page_event: "{{ source('pendo', 'page_event') }}"
+    page_history: "{{ source('pendo', 'page_history') }}"
+    page_rule_history: "{{ source('pendo', 'page_rule_history') }}"
+    user: "{{ source('pendo', 'user') }}"
+    visitor_history: "{{ source('pendo', 'visitor_history') }}"
+    poll: "{{ source('pendo', 'poll') }}"
+    poll_event: "{{ source('pendo', 'poll_event') }}"
+    visitor_account_history: "{{ source('pendo', 'visitor_account_history') }}"
     pendo__event_pass_through_columns: []
     pendo__feature_event_pass_through_columns: []
     pendo__page_event_pass_through_columns: []

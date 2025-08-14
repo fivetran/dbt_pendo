@@ -1,7 +1,7 @@
 with guide_event as (
 
     select *
-    from {{ var('guide_event') }}
+    from {{ ref('stg_pendo__guide_event') }}
 ),
 
 guide as (

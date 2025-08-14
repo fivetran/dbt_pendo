@@ -1,7 +1,7 @@
 with feature_event as (
 
     select *
-    from {{ var('feature_event') }}
+    from {{ ref('stg_pendo__feature_event') }}
 ),
 
 feature as (

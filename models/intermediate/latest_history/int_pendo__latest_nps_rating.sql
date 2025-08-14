@@ -1,7 +1,7 @@
 with poll as (
 
     select *
-    from {{ var('poll') }}
+    from {{ ref('stg_pendo__poll') }}
 
     where lower(attribute_type) = 'npsrating'
 
@@ -10,7 +10,7 @@ with poll as (
 poll_event as (
 
     select *
-    from {{ var('poll_event') }}
+    from {{ ref('stg_pendo__poll_event') }}
 ),
 
 limit_to_nps_polls as (
