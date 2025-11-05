@@ -1,4 +1,9 @@
-{% set exclude_cols = ['_fivetran_synced'] + var('consistency_test_exclude_metrics', ['source_relation']) %}
+{{ config(
+    tags="fivetran_validations",
+    enabled=var('fivetran_validation_tests_enabled', false)
+) }}
+
+{% set exclude_cols = var('consistency_test_exclude', []) %}
 
 -- this test ensures the pendo__feature end model matches the prior version
 with prod as (
