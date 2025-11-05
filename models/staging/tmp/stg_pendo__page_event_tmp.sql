@@ -1,2 +1,8 @@
-select * 
-from {{ var('page_event') }}
+{{
+    pendo.pendo_union_connections(
+        connection_dictionary='pendo_sources',
+        single_source_name='pendo',
+        single_table_name='page_event',
+        default_identifier='page_event'
+    )
+}}

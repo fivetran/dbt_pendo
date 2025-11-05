@@ -8,12 +8,12 @@ with page_event as (
 ),
 
 first_time_metrics as (
-    
-    select 
+
+    select
         *,
         -- get the first time this visitor/account has viewed this page
-        min(occurred_on) over (partition by visitor_id, page_id) as visitor_first_event_on,
-        min(occurred_on) over (partition by account_id, page_id) as account_first_event_on
+        min(occurred_on) over (partition by visitor_id, page_id {{ pendo.partition_by_source_relation() }}) as visitor_first_event_on,
+        min(occurred_on) over (partition by account_id, page_id {{ pendo.partition_by_source_relation() }}) as account_first_event_on
 
     from page_event
 ),
@@ -21,6 +21,7 @@ first_time_metrics as (
 daily_metrics as (
 
     select
+        source_relation,
         occurred_on,
         page_id,
         sum(num_events) as sum_pageviews,
@@ -30,25 +31,26 @@ daily_metrics as (
         count(distinct case when occurred_on = visitor_first_event_on then visitor_id end) as count_first_time_visitors,
         count(distinct case when occurred_on = account_first_event_on then account_id end) as count_first_time_accounts,
         sum(num_minutes) as sum_minutes
-        
+
     from first_time_metrics
-    group by 1,2
+    group by 1,2,3
 ),
 
 total_page_metrics as (
 
     select
         *,
-        sum(sum_pageviews) over (partition by occurred_on) as total_pageviews,
-        sum(count_visitors) over (partition by occurred_on) as total_page_visitors,
-        sum(count_accounts) over (partition by occurred_on) as total_page_accounts
+        sum(sum_pageviews) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_pageviews,
+        sum(count_visitors) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_page_visitors,
+        sum(count_accounts) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_page_accounts
 
     from daily_metrics
 ),
 
 final as (
 
-    select 
+    select
+        source_relation,
         occurred_on,
         page_id,
         sum_pageviews,
@@ -64,7 +66,7 @@ final as (
         round(100.0 * sum_pageviews / nullif(total_pageviews,0) , 3) as percent_of_daily_pageviews,
         round(100.0 * count_visitors / nullif(total_page_visitors,0) , 3) as percent_of_daily_page_visitors,
         round(100.0 * count_accounts / nullif(total_page_accounts,0) , 3) as percent_of_daily_page_accounts
-    
+
     from total_page_metrics
 )
 

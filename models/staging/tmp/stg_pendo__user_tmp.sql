@@ -1,2 +1,8 @@
-select * 
-from {{ var('user') }}
+{{
+    pendo.pendo_union_connections(
+        connection_dictionary='pendo_sources',
+        single_source_name='pendo',
+        single_table_name='user',
+        default_identifier='user'
+    )
+}}

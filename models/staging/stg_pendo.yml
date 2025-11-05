@@ -7,6 +7,8 @@ models:
       Table capturing the historical records of each account utilizing your product via Pendo. 
       Note that this table may contain custom metadata columns which can be passed through via `pendo__account_history_pass_through_columns`.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Unique identifier of the account.
       - name: first_visit_at
@@ -23,6 +25,8 @@ models:
   - name: stg_pendo__application_history
     description: Table capturing changes to your tracked application(s).
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: agent_policy_prod
         description: Production application policy.
       - name: agent_policy_staging
@@ -69,6 +73,8 @@ models:
       Table capturing all recorded click and pageview events (tagged or untagged).
       May contain custom columns passed through via the `pendo__event_pass_through_columns` variable.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Foreign key referencing the `ACCOUNT` associated with the event, if any.
       - name: app_id
@@ -92,7 +98,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: event_key
-        description: Unique key hashed on ['visitor_id', 'timestamp', 'account_id', 'user_agent', 'server_name', 'remote_ip', '_fivetran_id'].
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'user_agent', 'server_name', 'remote_ip', '_fivetran_id'].
         tests:
           - unique
           - not_null
@@ -104,6 +110,8 @@ models:
       Table capturing all recorded click events matching tagged features. Contains custom
       columns passed through via the `pendo__feature_event_pass_through_columns` variable.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Foreign key referencing the `ACCOUNT` associated with the event, if any.
       - name: app_id
@@ -127,7 +135,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: feature_event_key
-        description: Unique key hashed on ['visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id'].
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id'].
         tests:
           - unique
           - not_null
@@ -137,6 +145,8 @@ models:
   - name: stg_pendo__feature_history
     description: Table capturing historical records of features in Pendo.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: app_id
         description: Foreign key referencing the `APPLICATION` that the feature is a part of.
       - name: created_at
@@ -171,6 +181,8 @@ models:
   - name: stg_pendo__group
     description: Table capturing the product areas (groups) that pages and features can be tagged with.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: app_id
         description: Foreign key referencing the `APPLICATION` that the product area lives in.
       - name: created_at
@@ -182,7 +194,6 @@ models:
       - name: group_id
         description: Unique identifier of the product area.
         tests:
-          - unique
           - not_null 
       - name: last_updated_at
         description: Timestamp of when the product area was last updated.
@@ -196,6 +207,8 @@ models:
   - name: stg_pendo__guide_event
     description: Table capturing events related to guides. Each row is a unique event around `guideAdvanced`, `guideSeen`, `guideDismissed`, `guideSnoozed`, `guideTimeout`, `guideActivity`.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Foreign key referencing the `ACCOUNT` associated with the event triggerer, if any. 
       - name: app_id
@@ -229,7 +242,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created primary key.
       - name: guide_event_key
-        description: Unique key hashed on ['visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id']
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id']
         tests:
           - unique
           - not_null
@@ -239,6 +252,8 @@ models:
   - name: stg_pendo__guide_history
     description: Table capturing historical records of guides in pendo.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: app_id
         description: Foreign key referencing the `APPLICATION` that the guide belongs in.
       - name: device_type
@@ -279,8 +294,10 @@ models:
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
 
   - name: stg_pendo__guide_step_history
-    description: Table associating guides with the steps they include. 
+    description: Table associating guides with the steps they include.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: guide_id
         description: Foreign key referencing the `GUIDE` with steps.
       - name: guide_last_updated_at
@@ -295,6 +312,8 @@ models:
       Table capturing all recorded pageviews matching tagged pages. Contains custom
       columns passed through the `pendo__page_event_pass_through_columns` variable.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Foreign key referencing the `ACCOUNT` associated with the event, if any.
       - name: app_id
@@ -322,7 +341,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created id hashed on the `param_*` fields.
       - name: page_event_key
-        description: Unique key hashed on ['visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
         tests:
           - unique
           - not_null
@@ -332,6 +351,8 @@ models:
   - name: stg_pendo__page_history
     description: Table capturing the historical records of pages tagged in Pendo.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: app_id
         description: Foreign key referencing the `APPLICATION` that the page is associated with.
       - name: created_at
@@ -360,8 +381,10 @@ models:
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
 
   - name: stg_pendo__page_rule_history
-    description: Table capturing historical records of rules associated with pages. 
+    description: Table capturing historical records of rules associated with pages.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: designer_hint
         description: String of what the page's url will look like, including site domain. 
       - name: page_id
@@ -378,6 +401,8 @@ models:
   - name: stg_pendo__user
     description: Table capturing internal Pendo users.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: deleted_at
         description: Timestamp of when the user was deleted at.
       - name: first_name
@@ -385,7 +410,6 @@ models:
       - name: user_id
         description: Unique identifier of the user.
         tests:
-          - unique
           - not_null
       - name: last_name
         description: Last name of the user. 
@@ -399,6 +423,8 @@ models:
   - name: stg_pendo__visitor_history
     description: Table capturing historical records of visitors.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: >
           Foreign key referencing the `ACCOUNT` associated with this visitor. Visitors can belong to multiple accounts, however.
@@ -429,8 +455,10 @@ models:
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
 
   - name: stg_pendo__poll
-    description: Table capturing polls administered via Pendo. 
+    description: Table capturing polls administered via Pendo.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: attribute_display
         description: Type of way to answer (ie select, radio, null for freeform answers).
       - name: follow_up_poll_id
@@ -442,7 +470,6 @@ models:
       - name: poll_id
         description: Unique identifier of the poll.
         tests:
-          - unique
           - not_null
       - name: question
         description: The content of the poll question.
@@ -454,6 +481,8 @@ models:
   - name: stg_pendo__poll_event
     description: Table capturing individual responses to polls.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Foreign key referencing the `ACCOUNT` associated with the event, if any.
       - name: app_id
@@ -493,7 +522,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created primary key.
       - name: poll_event_key
-        description: Unique key hashed on ['visitor_id', 'timestamp', 'account_id', 'server_name', 'poll_id', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'poll_id', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
         tests:
           - unique
           - not_null
@@ -503,8 +532,10 @@ models:
   - name: stg_pendo__visitor_account_history
     description: >
       Table of historical records of associations between visitors and accounts. Though the visitor
-      table has an `account_id` column, refer to this table for all potential related accounts.  
+      table has an `account_id` column, refer to this table for all potential related accounts.
     columns:
+      - name: source_relation
+        description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Foreign key referencing the `ACCOUNT` that the visitor is associated with.
       - name: visitor_id

@@ -7,6 +7,7 @@ with feature_event as (
 calculate_metrics as (
 
     select
+        source_relation,
         visitor_id,
         feature_id,
         feature_name,
@@ -20,12 +21,13 @@ calculate_metrics as (
         count(distinct {{ dbt.date_trunc('day', 'occurred_at') }} ) as count_active_days
 
     from feature_event
-    {{ dbt_utils.group_by(n=5) }}
+    {{ dbt_utils.group_by(n=6) }}
 ),
 
 final as (
 
     select
+        source_relation,
         visitor_id,
         feature_id,
         feature_name,

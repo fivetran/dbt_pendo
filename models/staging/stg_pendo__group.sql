@@ -15,13 +15,15 @@ fields as (
                 staging_columns=get_group_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         id as group_id,
         app_id,
         created_at,

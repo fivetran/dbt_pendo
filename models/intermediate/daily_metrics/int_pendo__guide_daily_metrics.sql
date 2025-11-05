@@ -8,13 +8,12 @@ with guide_event as (
 ),
 
 first_time_metrics as (
-    
-    select 
+
+    select
         *,
         -- get the first time this visitor/account has viewed this page
-        min(occurred_on) over (partition by visitor_id, guide_id) as visitor_first_event_on,
-        min(occurred_on) over (partition by account_id, guide_id) as account_first_event_on
-
+        min(occurred_on) over (partition by visitor_id, guide_id {{ pendo.partition_by_source_relation() }}) as visitor_first_event_on,
+        min(occurred_on) over (partition by account_id, guide_id {{ pendo.partition_by_source_relation() }}) as account_first_event_on
 
     from guide_event
 ),
@@ -22,6 +21,7 @@ first_time_metrics as (
 daily_metrics as (
 
     select
+        source_relation,
         occurred_on,
         guide_id,
         count(distinct visitor_id) as count_visitors,
@@ -30,11 +30,11 @@ daily_metrics as (
         count(distinct case when occurred_on = visitor_first_event_on then visitor_id end) as count_first_time_visitors,
         count(distinct case when occurred_on = account_first_event_on then visitor_id end) as count_first_time_accounts,
 
-        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'), 
+        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'),
                             prefix='count_visitors_', agg='count', then_value='visitor_id', else_value='null', distinct=true) }}
-        
+
     from first_time_metrics
-    group by 1,2
+    group by 1,2,3
 )
 
 select *

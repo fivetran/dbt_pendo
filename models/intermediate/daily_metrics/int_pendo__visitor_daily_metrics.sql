@@ -27,7 +27,8 @@ page_event as (
 
 daily_event_metrics as (
 
-    select 
+    select
+        source_relation,
         occurred_on,
         visitor_id,
         sum(num_minutes) as sum_minutes,
@@ -35,29 +36,31 @@ daily_event_metrics as (
         count(*) as count_event_records
 
     from events
-    group by 1,2
+    group by 1,2,3
 ),
 
 daily_feature_metrics as (
 
-    select 
+    select
+        source_relation,
         occurred_on,
         visitor_id,
         count(distinct feature_id) as count_features_clicked
 
     from feature_event
-    group by  1,2
+    group by 1,2,3
 ),
 
 daily_page_metrics as (
 
-    select 
+    select
+        source_relation,
         occurred_on,
         visitor_id,
         count(distinct page_id) as count_pages_viewed
-        
+
     from page_event
-    group by  1,2
+    group by 1,2,3
 ),
 
 daily_metric_join as (
@@ -70,11 +73,13 @@ daily_metric_join as (
     from daily_event_metrics
     -- this should include tagged and untagged events so we can left join with specific event tables
     left join daily_page_metrics
-        on daily_event_metrics.occurred_on = daily_page_metrics.occurred_on
+        on daily_event_metrics.source_relation = daily_page_metrics.source_relation
+        and daily_event_metrics.occurred_on = daily_page_metrics.occurred_on
         and daily_event_metrics.visitor_id = daily_page_metrics.visitor_id
 
     left join daily_feature_metrics
-        on daily_event_metrics.occurred_on = daily_feature_metrics.occurred_on
+        on daily_event_metrics.source_relation = daily_feature_metrics.source_relation
+        and daily_event_metrics.occurred_on = daily_feature_metrics.occurred_on
         and daily_event_metrics.visitor_id = daily_feature_metrics.visitor_id
 )
 

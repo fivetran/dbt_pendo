@@ -8,12 +8,12 @@ with feature_event as (
 ),
 
 first_time_metrics as (
-    
-    select 
+
+    select
         *,
         -- get the first time this visitor/account has clicked on this feature
-        min(occurred_on) over (partition by visitor_id, feature_id) as visitor_first_event_on,
-        min(occurred_on) over (partition by account_id, feature_id) as account_first_event_on
+        min(occurred_on) over (partition by visitor_id, feature_id {{ pendo.partition_by_source_relation() }}) as visitor_first_event_on,
+        min(occurred_on) over (partition by account_id, feature_id {{ pendo.partition_by_source_relation() }}) as account_first_event_on
 
     from feature_event
 ),
@@ -21,6 +21,7 @@ first_time_metrics as (
 daily_metrics as (
 
     select
+        source_relation,
         occurred_on,
         feature_id,
         sum(num_events) as sum_clicks, -- note the difference between these two columns
@@ -30,25 +31,26 @@ daily_metrics as (
         count(distinct case when occurred_on = visitor_first_event_on then visitor_id end) as count_first_time_visitors,
         count(distinct case when occurred_on = account_first_event_on then account_id end) as count_first_time_accounts,
         sum(num_minutes) as sum_minutes
-        
+
     from first_time_metrics
-    group by 1,2
+    group by 1,2,3
 ),
 
 total_feature_metrics as (
 
     select
         *,
-        sum(sum_clicks) over (partition by occurred_on) as total_feature_clicks,
-        sum(count_visitors) over (partition by occurred_on) as total_feature_visitors,
-        sum(count_accounts) over (partition by occurred_on) as total_feature_accounts
+        sum(sum_clicks) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_feature_clicks,
+        sum(count_visitors) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_feature_visitors,
+        sum(count_accounts) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_feature_accounts
 
     from daily_metrics
 ),
 
 final as (
 
-    select 
+    select
+        source_relation,
         occurred_on,
         feature_id,
         sum_clicks,
@@ -64,7 +66,7 @@ final as (
         round(100.0 * sum_clicks / nullif(total_feature_clicks,0) , 3) as percent_of_daily_feature_clicks,
         round(100.0 * count_visitors / nullif(total_feature_visitors,0) , 3) as percent_of_daily_feature_visitors,
         round(100.0 * count_accounts / nullif(total_feature_accounts,0) , 3) as percent_of_daily_feature_accounts
-    
+
     from total_feature_metrics
 )
 

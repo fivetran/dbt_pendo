@@ -8,7 +8,7 @@ with application_history as (
 latest_application as (
     select
       *,
-      row_number() over(partition by application_id order by last_updated_at desc) as latest_application_index
+      row_number() over(partition by application_id {{ pendo.partition_by_source_relation() }} order by last_updated_at desc) as latest_application_index
     from application_history
 )
 

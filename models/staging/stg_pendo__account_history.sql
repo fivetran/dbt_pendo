@@ -15,13 +15,15 @@ fields as (
                 staging_columns=get_account_history_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         id as account_id,
         last_updated_at,
         id_hash as account_id_hash,

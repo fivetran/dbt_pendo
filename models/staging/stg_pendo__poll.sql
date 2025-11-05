@@ -15,13 +15,15 @@ fields as (
                 staging_columns=get_poll_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         id as poll_id,
         attribute_display,
         attribute_follow_up as follow_up_poll_id,

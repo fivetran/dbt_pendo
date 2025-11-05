@@ -15,13 +15,15 @@ fields as (
                 staging_columns=get_guide_history_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         id as guide_id,
         name as guide_name,
         app_id,
@@ -40,7 +42,6 @@ final as (
         reset_at,
         root_version_id,
         stable_version_id,
-        
         _fivetran_synced
 
     from fields

@@ -15,20 +15,22 @@ daily_metrics as (
 visitor_timeline as (
 
     select
+        source_relation,
         visitor_id,
         min(occurred_on) as first_event_on
 
     from daily_metrics
-    group by 1
+    group by 1,2
 ),
 
 visitor_spine as (
 
-    select 
+    select
+        visitor_timeline.source_relation,
         spine.date_day,
         visitor_timeline.visitor_id
-    
-    from spine 
+
+    from spine
     join visitor_timeline
         on spine.date_day >= visitor_timeline.first_event_on
         and spine.date_day <= cast( {{ dbt.current_timestamp_backcompat() }} as date)
@@ -38,6 +40,7 @@ visitor_spine as (
 final as (
 
     select
+        visitor_spine.source_relation,
         visitor_spine.date_day,
         visitor_spine.visitor_id,
         daily_metrics.sum_minutes,
@@ -48,7 +51,8 @@ final as (
 
     from visitor_spine
     left join daily_metrics
-        on visitor_spine.date_day = daily_metrics.occurred_on
+        on visitor_spine.source_relation = daily_metrics.source_relation
+        and visitor_spine.date_day = daily_metrics.occurred_on
         and visitor_spine.visitor_id = daily_metrics.visitor_id
 )
 

@@ -57,6 +57,9 @@ wheels/
 credentials.json
 service-account.json
 
+# Claude instructions
+CLAUDE.md
+
 # Temporary files
 .cache/
 *.temp

@@ -8,6 +8,7 @@ sources:
     loader: fivetran
 
     config:
+      enabled: "{{ var('pendo_sources', []) == [] }}"
       loaded_at_field: _fivetran_synced
       freshness:
         warn_after: {count: 72, period: hour}
@@ -15,7 +16,6 @@ sources:
 
 
     tables:
-
       - name: account_history
         identifier: "{{ var('pendo_account_history_identifier', 'account_history')}}"
         description: >

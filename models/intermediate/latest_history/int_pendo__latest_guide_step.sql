@@ -8,7 +8,7 @@ with guide_step_history as (
 latest_guide_step as (
     select
       *,
-      row_number() over(partition by guide_id, step_id order by guide_last_updated_at desc) as latest_guide_step_index
+      row_number() over(partition by guide_id, step_id {{ pendo.partition_by_source_relation() }} order by guide_last_updated_at desc) as latest_guide_step_index
     from guide_step_history
 )
 

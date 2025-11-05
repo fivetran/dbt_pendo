@@ -45,18 +45,22 @@ feature_join as (
         updater.first_name || ' ' || updater.last_name as last_updated_by_user_full_name,
         updater.username as last_updated_by_user_username
 
-
     from feature
     left join page
-        on feature.page_id = page.page_id
+        on feature.source_relation = page.source_relation
+        and feature.page_id = page.page_id
     left join product_area
-        on feature.group_id = product_area.group_id
-    left join application 
-        on feature.app_id = application.application_id
+        on feature.source_relation = product_area.source_relation
+        and feature.group_id = product_area.group_id
+    left join application
+        on feature.source_relation = application.source_relation
+        and feature.app_id = application.application_id
     left join pendo_user as creator
-        on feature.created_by_user_id = creator.user_id 
+        on feature.source_relation = creator.source_relation
+        and feature.created_by_user_id = creator.user_id
     left join pendo_user as updater
-        on feature.last_updated_by_user_id = updater.user_id 
+        on feature.source_relation = updater.source_relation
+        and feature.last_updated_by_user_id = updater.user_id 
 )
 
 select *

@@ -14,21 +14,23 @@ daily_metrics as (
 -- could also do what we do in the _event tables 
 account_timeline as (
 
-    select 
+    select
+        source_relation,
         account_id,
         min(occurred_on) as first_event_on
 
     from daily_metrics
-    group by 1
+    group by 1,2
 ),
 
 account_spine as (
 
-    select 
+    select
+        account_timeline.source_relation,
         spine.date_day,
         account_timeline.account_id
-    
-    from spine 
+
+    from spine
     join account_timeline
         on spine.date_day >= account_timeline.first_event_on
         and spine.date_day <= cast( {{ dbt.current_timestamp_backcompat() }} as date)
@@ -38,6 +40,7 @@ account_spine as (
 final as (
 
     select
+        account_spine.source_relation,
         account_spine.date_day,
         account_spine.account_id,
         daily_metrics.count_active_visitors,
@@ -51,7 +54,8 @@ final as (
 
     from account_spine
     left join daily_metrics
-        on account_spine.date_day = daily_metrics.occurred_on
+        on account_spine.source_relation = daily_metrics.source_relation
+        and account_spine.date_day = daily_metrics.occurred_on
         and account_spine.account_id = daily_metrics.account_id
 )
 

@@ -15,13 +15,15 @@ fields as (
                 staging_columns=get_event_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         visitor_id,
         account_id,
         app_id,
@@ -34,7 +36,7 @@ final as (
         num_minutes,
         _fivetran_synced,
         _fivetran_id,
-        {{ dbt_utils.generate_surrogate_key(['visitor_id', 'timestamp', 'account_id', 'server_name', 'user_agent', 'remote_ip', '_fivetran_id']) }} 
+        {{ dbt_utils.generate_surrogate_key(['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'user_agent', 'remote_ip', '_fivetran_id']) }}
             as event_key
 
         --The below macro adds the fields defined within your pendo__event_pass_through_columns variable into the staging model

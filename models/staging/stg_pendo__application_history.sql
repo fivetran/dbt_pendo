@@ -4,8 +4,6 @@ with base as (
     select * 
     from {{ ref('stg_pendo__application_history_tmp') }}
 
-    where not coalesce(is_deleted, false)
-
 ),
 
 fields as (
@@ -17,13 +15,15 @@ fields as (
                 staging_columns=get_application_history_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         id as application_id,
         agent_policy_prod,
         agent_policy_staging,
@@ -49,3 +49,4 @@ final as (
 
 select * 
 from final
+where not coalesce(is_deleted, false)

@@ -15,13 +15,15 @@ fields as (
                 staging_columns=get_visitor_history_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
+    select
+        source_relation,
         id as visitor_id,
         account_id,
         first_visit as first_visit_at,

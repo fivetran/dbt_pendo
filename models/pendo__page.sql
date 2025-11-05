@@ -7,6 +7,7 @@ with page_event as (
 calculate_metrics as (
 
     select
+        source_relation,
         page_id,
         count(distinct visitor_id) as count_visitors,
         count(distinct account_id) as count_accounts,
@@ -18,7 +19,7 @@ calculate_metrics as (
         sum(num_events) / nullif(count(distinct visitor_id),0) as avg_visitor_pageviews
 
     from page_event
-    group by 1
+    group by 1,2
 ),
 
 page_info as (
@@ -41,9 +42,10 @@ final as (
         coalesce(round(calculate_metrics.avg_visitor_minutes, 3), 0) as avg_visitor_minutes,
         coalesce(round(calculate_metrics.avg_visitor_pageviews, 3), 0) as avg_visitor_pageviews
 
-    from page_info 
-    left join calculate_metrics 
-        on page_info.page_id = calculate_metrics.page_id
+    from page_info
+    left join calculate_metrics
+        on page_info.source_relation = calculate_metrics.source_relation
+        and page_info.page_id = calculate_metrics.page_id
 )
 
 select *

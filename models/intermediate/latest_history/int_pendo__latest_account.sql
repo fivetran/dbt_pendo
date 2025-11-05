@@ -8,7 +8,7 @@ with account_history as (
 latest_account as (
     select
       *,
-      row_number() over(partition by account_id order by last_updated_at desc) as latest_account_index
+      row_number() over(partition by account_id {{ pendo.partition_by_source_relation() }} order by last_updated_at desc) as latest_account_index
     from account_history
 )
 

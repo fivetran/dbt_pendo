@@ -15,14 +15,15 @@ fields as (
                 staging_columns=get_page_rule_history_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
-
+    select
+        source_relation,
         designer_hint,
         page_id,
         page_last_updated_at,
