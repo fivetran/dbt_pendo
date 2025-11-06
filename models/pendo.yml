@@ -439,7 +439,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created primary key.
       - name: guide_event_key
-        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id', 'source_relation'].
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
         tests:
           - unique
           - not_null
@@ -599,7 +599,7 @@ models:
       - name: _fivetran_id
         description: Fivetran created id hashed on the `param_*` fields.
       - name: page_event_key
-        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id', 'source_relation'].
+        description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
         tests:
           - unique
           - not_null

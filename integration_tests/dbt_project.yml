@@ -34,13 +34,6 @@ vars:
     - previous_page_event_at
     - previous_page_num_events
     - previous_page_num_minutes
-    ## For union updates
-    - source_relation
-    - event_key
-    - feature_event_key
-    - page_event_key
-    - guide_event_key
-    - poll_event_key
 
   pendo:
     pendo_schema: pendo_integration_tests
