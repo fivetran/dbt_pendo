@@ -239,6 +239,7 @@ models:
       - name: feature_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id', 'source_relation'].
         tests:
+          - unique
           - not_null
       - name: previous_feature_id
         description: Foreign key referencing the `feature` that the visitor previously interacted with. 
@@ -440,6 +441,7 @@ models:
       - name: guide_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id', 'source_relation'].
         tests:
+          - unique
           - not_null
       - name: guide_name
         description: Name of the guide. 
@@ -599,6 +601,7 @@ models:
       - name: page_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id', 'source_relation'].
         tests:
+          - unique
           - not_null
       - name: previous_page_id
         description: Foreign key referencing the `page` that the visitor previously interacted with. 
