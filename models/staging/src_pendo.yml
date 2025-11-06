@@ -203,10 +203,7 @@ sources:
 
       - name: group
         identifier: >
-          {%- if target.type == 'snowflake' -%}{{ var('pendo_group_identifier', 'GROUP') }}
-          {%- else -%}{{ var('pendo_group_identifier', 'group') }}{%- endif -%}
-        quoting:
-          identifier: true
+          {% if target.type == 'snowflake' %}{{ var('pendo_group_identifier', '"GROUP"') }}{% else %}{{ var('pendo_group_identifier', 'group') }}{% endif %}
         description: Table capturing the product areas.
         columns:
           - name: app_id
