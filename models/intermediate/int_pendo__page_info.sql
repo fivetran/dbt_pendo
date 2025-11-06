@@ -30,13 +30,14 @@ page_rule as (
 
 agg_page_rule as (
 
-    select 
+    select
+        source_relation,
         page_id,
         -- should we use a different/more apparent delimiter?
-        {{ fivetran_utils.string_agg( "rule", "', '" ) }} as rules 
-        
+        {{ fivetran_utils.string_agg( "rule", "', '" ) }} as rules
+
     from page_rule
-    group by 1
+    group by 1,2
 ),
 
 feature as (
@@ -48,6 +49,7 @@ feature as (
 active_features as (
 
     select
+        source_relation,
         page_id,
         count(feature_id) as count_active_features
 
@@ -56,7 +58,7 @@ active_features as (
     -- give a buffer of a month
     where {{ dbt.datediff('valid_through', dbt.current_timestamp_backcompat(), 'day' ) }} <= 30
 
-    group by 1
+    group by 1,2
 ),
 
 page_join as (
@@ -73,19 +75,25 @@ page_join as (
         updater.username as last_updated_by_user_username,
         coalesce(active_features.count_active_features, 0) as count_active_features
 
-    from page 
-    left join application 
-        on page.app_id = application.application_id
+    from page
+    left join application
+        on page.source_relation = application.source_relation
+        and page.app_id = application.application_id
     left join pendo_user as creator
-        on page.created_by_user_id = creator.user_id 
+        on page.source_relation = creator.source_relation
+        and page.created_by_user_id = creator.user_id
     left join pendo_user as updater
-        on page.last_updated_by_user_id = updater.user_id
+        on page.source_relation = updater.source_relation
+        and page.last_updated_by_user_id = updater.user_id
     left join product_area
-        on page.group_id = product_area.group_id 
+        on page.source_relation = product_area.source_relation
+        and page.group_id = product_area.group_id
     left join agg_page_rule
-        on page.page_id = agg_page_rule.page_id
+        on page.source_relation = agg_page_rule.source_relation
+        and page.page_id = agg_page_rule.page_id
     left join active_features
-        on page.page_id = active_features.page_id
+        on page.source_relation = active_features.source_relation
+        and page.page_id = active_features.page_id
 
 )
 

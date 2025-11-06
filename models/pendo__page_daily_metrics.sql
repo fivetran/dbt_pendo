@@ -22,14 +22,15 @@ page as (
 
 page_spine as (
 
-    select 
+    select
+        page.source_relation,
         spine.date_day,
         page.page_id,
         page.page_name,
         page.group_id, -- product_area ID
         page.product_area_name
-    
-    from spine 
+
+    from spine
     join page
         on spine.date_day >= page.created_on
         and spine.date_day <= cast( {{ ['page.valid_through', 'page.last_pageview_on'] | max }} as date) -- or should this just go up to today?
@@ -39,6 +40,7 @@ page_spine as (
 final as (
 
     select
+        page_spine.source_relation,
         page_spine.date_day,
         page_spine.page_id,
         page_spine.page_name,
@@ -61,7 +63,8 @@ final as (
 
     from page_spine
     left join daily_metrics
-        on page_spine.date_day = daily_metrics.occurred_on
+        on page_spine.source_relation = daily_metrics.source_relation
+        and page_spine.date_day = daily_metrics.occurred_on
         and page_spine.page_id = daily_metrics.page_id
 )
 

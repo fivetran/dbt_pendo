@@ -22,7 +22,8 @@ feature as (
 
 feature_spine as (
 
-    select 
+    select
+        feature.source_relation,
         spine.date_day,
         feature.feature_id,
         feature.feature_name,
@@ -30,8 +31,8 @@ feature_spine as (
         feature.product_area_name,
         feature.page_id,
         feature.page_name
-    
-    from spine 
+
+    from spine
     join feature
         on spine.date_day >= feature.created_on
         and spine.date_day <= cast( {{ ['feature.valid_through', 'feature.last_click_on'] | max }} as date) -- or should this just go up to today?
@@ -41,6 +42,7 @@ feature_spine as (
 final as (
 
     select
+        feature_spine.source_relation,
         feature_spine.date_day,
         feature_spine.feature_id,
         feature_spine.feature_name,
@@ -65,7 +67,8 @@ final as (
 
     from feature_spine
     left join daily_metrics
-        on feature_spine.date_day = daily_metrics.occurred_on
+        on feature_spine.source_relation = daily_metrics.source_relation
+        and feature_spine.date_day = daily_metrics.occurred_on
         and feature_spine.feature_id = daily_metrics.feature_id
 )
 

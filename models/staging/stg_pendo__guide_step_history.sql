@@ -15,14 +15,15 @@ fields as (
                 staging_columns=get_guide_step_history_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
-    
+    select
+        source_relation,
         guide_id,
         guide_last_updated_at,
         step_id,

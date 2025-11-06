@@ -7,6 +7,7 @@ with feature_event as (
 calculate_metrics as (
 
     select
+        source_relation,
         feature_id,
         count(distinct visitor_id) as count_visitors,
         count(distinct account_id) as count_accounts,
@@ -18,7 +19,7 @@ calculate_metrics as (
         sum(num_events) / nullif(count(distinct visitor_id),0) as avg_visitor_events
 
     from feature_event
-    group by 1
+    group by 1,2
 ),
 
 feature_info as (
@@ -41,9 +42,10 @@ final as (
         coalesce(round(calculate_metrics.avg_visitor_minutes, 3), 0) as avg_visitor_minutes,
         coalesce(round(calculate_metrics.avg_visitor_events, 3), 0) as avg_visitor_events
 
-    from feature_info 
-    left join calculate_metrics 
-        on feature_info.feature_id = calculate_metrics.feature_id
+    from feature_info
+    left join calculate_metrics
+        on feature_info.source_relation = calculate_metrics.source_relation
+        and feature_info.feature_id = calculate_metrics.feature_id
 )
 
 select *

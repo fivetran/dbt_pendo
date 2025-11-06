@@ -13,12 +13,13 @@ visitor_account as (
 
 agg_visitors as (
 
-    select 
+    select
+        source_relation,
         account_id,
         count(distinct visitor_id) as count_visitors
 
     from visitor_account
-    group by 1
+    group by 1, 2
 ),
 
 nps_ratings as (
@@ -30,13 +31,14 @@ nps_ratings as (
 nps_metrics as (
 
     select
-        account_id, 
+        source_relation,
+        account_id,
         min(nps_rating) as min_nps_rating,
         max(nps_rating) as max_nps_rating,
         avg(nps_rating) as avg_nps_rating
 
     from nps_ratings
-    group by 1
+    group by 1, 2
 ),
 
 daily_metrics as (
@@ -48,6 +50,7 @@ daily_metrics as (
 calculate_metrics as (
 
     select
+        source_relation,
         account_id,
         sum(count_active_visitors) as count_active_visitors, -- all-time, not currently
         sum(count_page_viewing_visitors) as count_page_viewing_visitors,
@@ -61,9 +64,9 @@ calculate_metrics as (
         sum(sum_events) / nullif(count(distinct occurred_on),0) as average_daily_events,
         min(occurred_on) as first_event_on,
         max(occurred_on) as last_event_on
-        
+
     from daily_metrics
-    group by 1
+    group by 1,2
 ),
 
 account_join as (
@@ -89,12 +92,15 @@ account_join as (
         calculate_metrics.last_event_on
 
     from account
-    left join agg_visitors 
-        on account.account_id = agg_visitors.account_id
+    left join agg_visitors
+        on account.source_relation = agg_visitors.source_relation
+        and account.account_id = agg_visitors.account_id
     left join nps_metrics
-        on account.account_id = nps_metrics.account_id
+        on account.source_relation = nps_metrics.source_relation
+        and account.account_id = nps_metrics.account_id
     left join calculate_metrics
-        on account.account_id = calculate_metrics.account_id
+        on account.source_relation = calculate_metrics.source_relation
+        and account.account_id = calculate_metrics.account_id
 )
 
 select *

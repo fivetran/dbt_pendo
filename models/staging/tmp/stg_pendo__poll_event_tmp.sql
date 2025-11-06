@@ -1,2 +1,7 @@
-select * 
-from {{ var('poll_event') }}
+{{
+    pendo.pendo_union_connections(
+        connection_dictionary='pendo_sources',
+        single_source_name='pendo',
+        single_table_name='poll_event'
+    )
+}}

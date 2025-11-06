@@ -15,13 +15,12 @@ with spine as (
     {% if execute %}
     {% set first_date_query %}
     -- start at the first event
-        select  min( created_at ) as min_date from {{ ref('stg_pendo__application_history') }}
+        select min( created_at ) as min_date from {{ ref('stg_pendo__application_history') }}
     {% endset %}
     {% set first_date = run_query(first_date_query).columns[0][0]|string %}
     
     {% else %} {% set first_date = "2016-01-01" %}
     {% endif %}
-
 
     select * 
     from (

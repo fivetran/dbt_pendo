@@ -15,14 +15,15 @@ fields as (
                 staging_columns=get_user_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
-
+    select
+        source_relation,
         id as user_id,
         deleted_at,
         first_name,

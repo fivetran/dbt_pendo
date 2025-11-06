@@ -15,14 +15,15 @@ fields as (
                 staging_columns=get_poll_event_columns()
             )
         }}
+        {{ pendo.apply_source_relation() }}
         
     from base
 ),
 
 final as (
     
-    select 
-
+    select
+        source_relation,
         account_id,
         app_id,
         country,
@@ -42,7 +43,7 @@ final as (
         visitor_id,
         _fivetran_synced,
         _fivetran_id,
-        {{ dbt_utils.generate_surrogate_key(['visitor_id', 'timestamp', 'account_id', 'server_name', 'poll_id', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id']) }} 
+        {{ dbt_utils.generate_surrogate_key(['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'poll_id', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id']) }}
             as poll_event_key
 
     from fields

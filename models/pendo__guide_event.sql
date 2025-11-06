@@ -35,11 +35,14 @@ guide_event_join as (
 
     from guide_event
     join guide
-        on guide.guide_id = guide_event.guide_id
-    left join visitor 
-        on visitor.visitor_id = guide_event.visitor_id
+        on guide_event.source_relation = guide.source_relation
+        and guide.guide_id = guide_event.guide_id
+    left join visitor
+        on guide_event.source_relation = visitor.source_relation
+        and visitor.visitor_id = guide_event.visitor_id
     left join account
-        on account.account_id = guide_event.account_id
+        on guide_event.source_relation = account.source_relation
+        and account.account_id = guide_event.account_id
 )
 
 select *

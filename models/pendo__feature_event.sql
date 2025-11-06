@@ -24,12 +24,12 @@ visitor as (
 
 add_previous_feature as (
 
-    select 
+    select
         *,
-        lag(feature_id) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_feature_id,
-        lag(occurred_at) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_feature_event_at,
-        lag(num_minutes) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_minutes,
-        lag(num_events) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_events
+        lag(feature_id) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_id,
+        lag(occurred_at) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_event_at,
+        lag(num_minutes) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_minutes,
+        lag(num_events) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_events
 
     from feature_event
 ), 
@@ -58,14 +58,18 @@ feature_event_join as (
 
     from add_previous_feature
     join feature as current_feature
-        on add_previous_feature.feature_id = current_feature.feature_id 
-    left join feature as previous_feature 
-        on add_previous_feature.previous_feature_id = previous_feature.feature_id
+        on add_previous_feature.source_relation = current_feature.source_relation
+        and add_previous_feature.feature_id = current_feature.feature_id
+    left join feature as previous_feature
+        on add_previous_feature.source_relation = previous_feature.source_relation
+        and add_previous_feature.previous_feature_id = previous_feature.feature_id
 
-    left join visitor 
-        on visitor.visitor_id = add_previous_feature.visitor_id
+    left join visitor
+        on add_previous_feature.source_relation = visitor.source_relation
+        and visitor.visitor_id = add_previous_feature.visitor_id
     left join account
-        on account.account_id = add_previous_feature.account_id
+        on add_previous_feature.source_relation = account.source_relation
+        and account.account_id = add_previous_feature.account_id
 )
 
 

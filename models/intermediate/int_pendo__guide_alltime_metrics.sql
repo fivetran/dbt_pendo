@@ -8,17 +8,18 @@ with guide_event as (
 calculate_metrics as (
 
     select
+        source_relation,
         guide_id,
         count(distinct visitor_id) as count_visitors,
         count(distinct account_id) as count_accounts,
         count(*) as count_events,
         min(occurred_at) as first_event_at,
         max(occurred_at) as last_event_at,
-        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'), 
+        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'),
                             prefix='count_visitors_', agg='count', then_value='visitor_id', else_value='null', distinct=true) }}
 
     from guide_event
-    group by 1
+    group by 1,2
 
 )
 

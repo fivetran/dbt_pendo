@@ -1,7 +1,7 @@
 config-version: 2
 
 name: 'pendo_integration_tests'
-version: '1.0.0'
+version: '1.1.0'
 
 profile: 'integration_tests'
 
@@ -9,16 +9,40 @@ dispatch:
   - macro_namespace: dbt_utils
     search_order: ['spark_utils', 'dbt_utils']
 
+models:
+  +schema: "pendo_{{ var('directed_schema','dev') }}"
+
 vars:
+  consistency_test_exclude:
+    ## String agg'd 
+    - rules
+    - page_rules
+    ## The previous logic can be unpredictable due to identical timestamps
+    - previous_feature_name
+    - previous_feature_page_id
+    - previous_feature_page_name
+    - previous_feature_product_area_name
+    - previous_feature_product_area_id
+    - previous_feature_id
+    - previous_feature_event_at
+    - previous_feature_num_minutes
+    - previous_feature_num_events
+    - previous_page_id
+    - previous_page_name
+    - previous_product_area_name
+    - previous_page_product_area_id
+    - previous_page_event_at
+    - previous_page_num_events
+    - previous_page_num_minutes
+
   pendo:
-    pendo_schema: pendo_integration_tests_2002
+    pendo_schema: pendo_integration_tests
     pendo_account_history_identifier: "account_history"
     pendo_application_history_identifier: "application_history"
     pendo_event_identifier: "event"
     pendo_feature_event_identifier: "feature_event"
     pendo_feature_history_identifier: "feature_history"
-    group: "{{ ref('group_data') }}" # @docs-ignore
-    # pendo_group_identifier: "group_data" # @docs-include
+    pendo_group_identifier: "group_data"
     pendo_guide_event_identifier: "guide_event"
     pendo_guide_history_identifier: "guide_history"
     pendo_guide_step_history_identifier: "guide_step_history"

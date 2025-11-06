@@ -1,3 +1,28 @@
+# dbt_pendo v1.1.0
+
+## Schema/Data Change
+**6 total changes • 5 possible breaking changes**
+
+| Data Model(s) | Change type | Old | New | Notes |
+| ------------- | ----------- | ----| --- | ----- |
+| All models | New column | | `source_relation` | Identifies the source connection when using multiple Pendo connections |
+| `stg_pendo__event` | Updated surrogate key | `event_key` = `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `user_agent` + `remote_ip` | `event_key` = `source_relation` + `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `user_agent` + `remote_ip` |  |
+| `pendo__feature_event`<br>`stg_pendo__feature_event` | Updated surrogate key | `feature_event_key` = `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `feature_id` + `user_agent` + `remote_ip` | `feature_event_key` = `source_relation` + `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `feature_id` + `user_agent` + `remote_ip` |  |
+| `pendo__guide_event`<br>`stg_pendo__guide_event` | Updated surrogate key | `guide_event_key` = `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `guide_id` + `user_agent` + `remote_ip` | `guide_event_key` = `source_relation` + `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `guide_id` + `user_agent` + `remote_ip` |  |
+| `pendo__page_event`<br>`stg_pendo__page_event` | Updated surrogate key | `page_event_key` = `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `page_id` + `user_agent` + `remote_ip` | `page_event_key` = `source_relation` + `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `page_id` + `user_agent` + `remote_ip` |  |
+| `stg_pendo__poll_event` | Updated surrogate key | `poll_event_key` = `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `poll_id` + `guide_id` + `user_agent` + `remote_ip` | `poll_event_key` = `source_relation` + `_fivetran_id` + `visitor_id` + `timestamp` + `account_id` + `server_name` + `poll_id` + `guide_id` + `user_agent` + `remote_ip` |  |
+
+## Feature Update
+- **Union Data Functionality**: This release supports running the package on multiple Pendo source connections. See the [README](https://github.com/fivetran/dbt_pendo/tree/main?tab=readme-ov-file#step-3-define-database-and-schema-variables) for details on how to leverage this feature.
+
+## Tests Update
+- Removes most uniqueness tests. The new unioning feature requires combination-of-column tests to consider the new `source_relation` column in addition to the existing primary key, but this is not supported across dbt versions.
+- These tests will be reintroduced once a version-agnostic solution is available.
+> We have retained tests on the surrogate keys listed above.
+
+## Under the Hood
+- Updates source configs for the `group` table aimed at avoiding reserved-keyword errors.
+
 # dbt_pendo v1.0.0
 
 [PR #34](https://github.com/fivetran/dbt_pendo/pull/34) includes the following updates:

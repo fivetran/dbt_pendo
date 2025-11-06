@@ -13,12 +13,13 @@ visitor_account as (
 
 agg_accounts as (
 
-    select 
+    select
+        source_relation,
         visitor_id,
         count(*) as count_associated_accounts
 
     from visitor_account
-    group by 1
+    group by 1,2
 ),
 
 nps_rating as (
@@ -36,6 +37,7 @@ daily_metrics as (
 calculate_metrics as (
 
     select
+        source_relation,
         visitor_id,
         count(distinct occurred_on) as count_active_days,
         count(distinct {{ dbt.date_trunc('month', 'occurred_on') }} ) as count_active_months,
@@ -46,9 +48,9 @@ calculate_metrics as (
         sum(sum_events) / nullif(count(distinct occurred_on),0) as average_daily_events,
         min(occurred_on) as first_event_on,
         max(occurred_on) as last_event_on
-        
+
     from daily_metrics
-    group by 1
+    group by 1,2
 ),
 
 visitor_join as (
@@ -69,12 +71,15 @@ visitor_join as (
         calculate_metrics.last_event_on
         
     from visitor
-    left join agg_accounts 
-        on visitor.visitor_id = agg_accounts.visitor_id
+    left join agg_accounts
+        on visitor.source_relation = agg_accounts.source_relation
+        and visitor.visitor_id = agg_accounts.visitor_id
     left join nps_rating
-        on visitor.visitor_id = nps_rating.visitor_id
+        on visitor.source_relation = nps_rating.source_relation
+        and visitor.visitor_id = nps_rating.visitor_id
     left join calculate_metrics
-        on visitor.visitor_id = calculate_metrics.visitor_id
+        on visitor.source_relation = calculate_metrics.source_relation
+        and visitor.visitor_id = calculate_metrics.visitor_id
 )
 
 select *

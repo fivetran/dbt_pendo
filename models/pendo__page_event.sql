@@ -24,14 +24,14 @@ visitor as (
 
 add_previous_page as (
 
-    select 
+    select
         *,
         -- using _fivetran_synced in case events are sent within the same hour-block
-        lag(page_id) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_page_id,
-        lag(occurred_at) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_page_event_at,
-        lag(num_minutes) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_page_num_minutes,
-        lag(num_events) over(partition by visitor_id order by occurred_at asc, _fivetran_synced asc) as previous_page_num_events
-    
+        lag(page_id) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_id,
+        lag(occurred_at) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_event_at,
+        lag(num_minutes) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_num_minutes,
+        lag(num_events) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_num_events
+
     from page_event
 ), 
 
@@ -56,13 +56,17 @@ page_event_join as (
 
     from add_previous_page
     join page as current_page
-        on add_previous_page.page_id = current_page.page_id 
+        on add_previous_page.source_relation = current_page.source_relation
+        and add_previous_page.page_id = current_page.page_id
     left join page as previous_page
-        on add_previous_page.previous_page_id = previous_page.page_id
-    left join visitor 
-        on visitor.visitor_id = add_previous_page.visitor_id
+        on add_previous_page.source_relation = previous_page.source_relation
+        and add_previous_page.previous_page_id = previous_page.page_id
+    left join visitor
+        on add_previous_page.source_relation = visitor.source_relation
+        and visitor.visitor_id = add_previous_page.visitor_id
     left join account
-        on account.account_id = add_previous_page.account_id
+        on add_previous_page.source_relation = account.source_relation
+        and account.account_id = add_previous_page.account_id
 )
 
 select *

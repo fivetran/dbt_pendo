@@ -8,7 +8,7 @@ with visitor_account_history as (
 latest_visitor_account as (
     select
       *,
-      row_number() over(partition by visitor_id, account_id order by visitor_last_updated_at desc) as latest_visitor_account_index
+      row_number() over(partition by visitor_id, account_id {{ pendo.partition_by_source_relation() }} order by visitor_last_updated_at desc) as latest_visitor_account_index
     from visitor_account_history
 )
 

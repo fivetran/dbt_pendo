@@ -12,12 +12,13 @@ guide_step as (
 
 agg_guide_steps as (
 
-    select 
+    select
+        source_relation,
         guide_id,
         count(distinct step_id) as count_steps
 
-    from guide_step 
-    group by 1
+    from guide_step
+    group by 1,2
 ),
 
 application as (
@@ -46,13 +47,17 @@ guide_join as (
 
     from guide
     left join agg_guide_steps
-        on guide.guide_id = agg_guide_steps.guide_id
-    left join application 
-        on guide.app_id = application.application_id
+        on guide.source_relation = agg_guide_steps.source_relation
+        and guide.guide_id = agg_guide_steps.guide_id
+    left join application
+        on guide.source_relation = application.source_relation
+        and guide.app_id = application.application_id
     left join pendo_user as creator
-        on guide.created_by_user_id = creator.user_id
+        on guide.source_relation = creator.source_relation
+        and guide.created_by_user_id = creator.user_id
     left join pendo_user as updater
-        on guide.last_updated_by_user_id = updater.user_id
+        on guide.source_relation = updater.source_relation
+        and guide.last_updated_by_user_id = updater.user_id
 )
 
 select *
