@@ -16,8 +16,12 @@
 - **Union Data Functionality**: This release supports running the package on multiple Pendo source connections. See the [README](https://github.com/fivetran/dbt_pendo/tree/main?tab=readme-ov-file#step-3-define-database-and-schema-variables) for details on how to leverage this feature.
 
 ## Tests Update
-- Removes uniqueness tests. The new unioning feature requires combination-of-column tests to consider the new `source_relation` column in addition to the existing primary key, but this is not supported across dbt versions.
+- Removes most uniqueness tests. The new unioning feature requires combination-of-column tests to consider the new `source_relation` column in addition to the existing primary key, but this is not supported across dbt versions.
 - These tests will be reintroduced once a version-agnostic solution is available.
+> We have retained tests on the surrogate keys listed above.
+
+## Under the Hood
+- Updates source configs for the `group` table aimed at avoiding reserved-keyword errors.
 
 # dbt_pendo v1.0.0
 
