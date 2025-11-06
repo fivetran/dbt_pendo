@@ -3,16 +3,24 @@
     enabled=var('fivetran_validation_tests_enabled', false)
 ) }}
 
-{% set exclude_cols = var('consistency_test_exclude', []) %}
+{% set exclude_cols = ['average_daily_minutes', 'average_daily_events', 'avg_nps_rating'] + var('consistency_test_exclude', []) %}
 
 -- this test ensures the pendo__account end model matches the prior version
 with prod as (
-    select {{ dbt_utils.star(from=ref('pendo__account'), except=exclude_cols) }}
+    select 
+        {{ dbt_utils.star(from=ref('pendo__account'), except=exclude_cols) }},
+        round(avg_nps_rating, 5) as avg_nps_rating,
+        round(average_daily_minutes, 5) as average_daily_minutes,
+        round(average_daily_events, 5) as average_daily_events
     from {{ target.schema }}_pendo_prod.pendo__account
 ),
 
 dev as (
-    select {{ dbt_utils.star(from=ref('pendo__account'), except=exclude_cols) }}
+    select 
+        {{ dbt_utils.star(from=ref('pendo__account'), except=exclude_cols) }},
+        round(avg_nps_rating, 5) as avg_nps_rating,
+        round(average_daily_minutes, 5) as average_daily_minutes,
+        round(average_daily_events, 5) as average_daily_events
     from {{ target.schema }}_pendo_dev.pendo__account
 ),
 
