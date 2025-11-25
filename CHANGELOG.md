@@ -1,3 +1,10 @@
+# dbt_pendo v1.2.0
+
+[PR #40](https://github.com/fivetran/dbt_pendo/pull/40) includes the following updates:
+
+## Features
+  - Increases the required dbt version upper limit to v3.0.0
+
 # dbt_pendo v1.1.0
 
 ## Schema/Data Change
