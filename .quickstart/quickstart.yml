@@ -41,21 +41,21 @@ table_variables:
 supported_vars:
   pendo__feature_event_pass_through_columns:
     type: dictionary
-    description: "Addtional `FEATURE_EVENT` columns to include in `pendo__feature_event`"
+    description: "Additional `FEATURE_EVENT` columns to include in `pendo__feature_event`"
     display_name: "Additional Feature Event Columns"
 
   pendo__page_event_pass_through_columns:
     type: dictionary
-    description: "Addtional `PAGE_EVENT` columns to include in `pendo__feature_event`"
+    description: "Additional `PAGE_EVENT` columns to include in `pendo__feature_event`"
     display_name: "Additional Page Event Columns"
 
   pendo__account_history_pass_through_columns:
     type: dictionary
-    description: "Addtional `ACCOUNT_HISTORY` columns to include in `pendo__account`, `pendo__feature_event`, and `pendo__page_event`"
+    description: "Additional `ACCOUNT_HISTORY` columns to include in `pendo__account`, `pendo__feature_event`, and `pendo__page_event`"
     display_name: "Additional Account Columns"
 
   pendo__visitor_history_pass_through_columns:
     type: dictionary
-    description: "Addtional `VISITOR_HISTORY` columns to include in `pendo__visitor`, `pendo__feature_event`, and `pendo__page_event`"
+    description: "Additional `VISITOR_HISTORY` columns to include in `pendo__visitor`, `pendo__feature_event`, and `pendo__page_event`"
     display_name: "Additional Visitor Columns"
 
