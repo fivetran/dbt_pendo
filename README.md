@@ -1,4 +1,5 @@
-# Pendo Transformation dbt Package ([Docs](https://fivetran.github.io/dbt_pendo/))
+<!--section="pendo_transformation_model"-->
+# Pendo dbt Package
 
 <p align="left">
     <a alt="License"
@@ -11,50 +12,85 @@
     <a alt="PRs">
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
     <a alt="Fivetran Quickstart Compatible"
-        href="https://fivetran.com/docs/transformations/dbt/quickstart">
+        href="https://fivetran.com/docs/transformations/data-models/quickstart-management#quickstartmanagement">
         <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
 
+This dbt package transforms data from Fivetran's Pendo connector into analytics-ready tables.
+
+## Resources
+
+- Number of materialized models¹: 68
+- Connector documentation
+  - [Pendo connector documentation](https://fivetran.com/docs/connectors/applications/pendo)
+  - [Pendo ERD](https://fivetran.com/docs/connectors/applications/pendo#schemainformation)
+- dbt package documentation
+  - [GitHub repository](https://github.com/fivetran/dbt_pendo)
+  - [dbt Docs](https://fivetran.github.io/dbt_pendo/#!/overview)
+  - [DAG](https://fivetran.github.io/dbt_pendo/#!/overview?g_v=1)
+  - [Changelog](https://github.com/fivetran/dbt_pendo/blob/main/CHANGELOG.md)
+
 ## What does this dbt package do?
-- Produces modeled tables that pendoage Pendo data from [Fivetran's connector](https://fivetran.com/docs/applications/pendo) in the format described by [this ERD](https://fivetran.com/docs/applications/pendo#schemainformation).
+This package enables you to understand how users are experiencing and adopting your product. It creates enriched models with metrics focused on feature usage, page activity, and guide interactions.
 
-- Enables you to understand how users are experiencing and adopting your product. It achieves thi by:
-  - Calculating usage of features, pages, guides, and the overall product at the account and individual visitor level
-  - Enhancing event stream tables with visitor and product information, referring pages, and features to track the customer journey through the application
-  - Creating daily activity timelines for features, pages, and guides that reflect their adoption rates, discoverability, and usage promotion efficacy
-  - Directly tying visitors and features together to determine activation rates, power-usage, and churn risk
+### Output schema
+Final output tables are generated in the following target schema:
 
-<!--section=“pendo_transformation_model"-->
+```
+<your_database>.<connector/schema_name>_pendo
+```
 
-The following table provides a detailed list of all tables materialized within this package by default.
-> TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_pendo/#!/overview?g_v=1).
+### Final output tables
 
-| **Table**                | **Description**                                                                                                                                |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| [pendo__account](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__account)             | Each record represents a unique account in Pendo, enriched with metrics regarding associated visitors and their feature, page, and overall product activity (total and daily averages). Also includes their aggregated NPS ratings and the frequency and longevity of their product usage. |
-| [pendo__feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__feature)             | Each record represents a unique tagged feature in Pendo, enriched with information about the page it lives on, the application and product area it is a part of, and the internal users who created and/or updated it last. Also includes metrics regarding the visitors' time spent using the feature and click-interactions with individual visitors and accounts. |
-| [pendo__page](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__page)             | Each record represents a unique tagged page in Pendo, enriched with information about its URL rules, the application and product area it is a part of, the internal users who created and/or updated it last, and the features that are currently live on it. Also includes metrics regarding the visitors' time spent on the page and pageview-interactions with individual visitors and accounts. |
-| [pendo__visitor](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor)             | Each record represents a unique visitor in Pendo, enriched with metrics regarding associated accounts and the visitor's latest NPS rating, as well as the frequency, longevity, and average length of their daily product usage.  |
-| [pendo_guide](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide)             | Each record represents a unique guide presented to visitors via Pendo. Includes metrics about the number of visitors and accounts performing various activities upon guides, such as completing or dismissing them. |
-| [pendo__account_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__account_daily_metrics)             | A daily historical timeline of the overall product, feature, and page activity associated with each account, along with the number of associated users performing each kind of interaction. |
-| [pendo__feature_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__feature_daily_metrics)             | A daily historical timeline, beginning at the creation of each feature, of the accounts and visitors clicking on each feature, the average daily time spent using the feature, and the percent share of total daily feature activity pertaining to this particular feature. |
-| [pendo__page_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__page_daily_metrics)             | A daily historical timeline, beginning at the creation of each page, of the accounts and visitors loading on each page, the average daily time spent on the page, and the percent share of total daily pageview activity pertaining to this particular page. |
-| [pendo__visitor_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor_daily_metrics)             | A daily historical timeline of the overall product, feature, and page activity tracked for an individual visitor. Includes the daily number of different pages and features interacted with. |
-| [pendo__guide_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | A daily historical timeline of the accounts and individual visitors interacting with guides via different types of actions. |
-| [pendo__feature_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | The event stream of clicks on tagged features in Pendo. Enriched with any visitor and/or account passthrough columns, the previous feature and page that the visitor interacted with, the application and platform the event occurred on, and information on the feature and its product area. |
-| [pendo__page_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | The event stream of views of tagged pages in Pendo. Enriched with any visitor and/or account passthrough columns, the previous page that the visitor interacted with, the application and platform the event occurred on, and information on the page and its product area. |
-| [pendo__guide_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics)             | The event stream of different kinds of interactions visitors have with guides. Enriched with any visitor and/or account passthrough columns, as well as the application and platform that the event occurred on. |
-| [pendo__visitor_feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor_feature)             | Each record represents a unique combination of visitors and features, aimed at making "power-users" of particular features easy to find. Includes metrics reflecting the longevity and frequency of feature usage. |
+By default, this package materializes the following final tables:
 
-### Materialized Models
-Each Quickstart transformation job run materializes 68 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
-<!--section-end-->
+| Table | Description |
+| :---- | :---- |
+| [pendo__account](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__account) | Consolidates account profiles with visitor counts, aggregated NPS ratings (min, max, avg), activity metrics (events, minutes, active days/months), feature and page interaction counts, and daily averages to measure account engagement and product adoption. <br></br>**Example Analytics Questions:**<ul><li>Which accounts have the highest count_associated_visitors and avg_nps_rating with the most active engagement (sum_events, sum_minutes)?</li><li>How do average_daily_minutes and average_daily_events vary by count_active_months and count_feature_clicking_visitors?</li><li>What is the time between first_event_on and last_event_on for accounts with different count_page_viewing_visitors levels?</li></ul>|
+| [pendo__feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__feature) | Provides comprehensive feature profiles with page and product area associations, creator/updater details, core event tagging, and engagement metrics (clicks, visitors, accounts, time spent) to identify high-value features and optimize feature placement. <br></br>**Example Analytics Questions:**<ul><li>Which features have the highest sum_clicks and count_visitors relative to their product_area_name and page_name?</li><li>How do features marked is_core_event = true compare in avg_visitor_minutes and avg_visitor_events versus non-core features?</li><li>What is the time between created_at and first_click_at for features by app_platform and created_by_user_username?</li></ul>|
+| [pendo__page](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__page) | Consolidates page profiles with URL rules, product area associations, active feature counts, creator/updater details, and pageview metrics (visitors, accounts, time spent) to analyze page performance and optimize page structure. <br></br>**Example Analytics Questions:**<ul><li>Which pages have the highest sum_pageviews and count_visitors by product_area_name and app_platform?</li><li>How does count_active_features correlate with avg_visitor_minutes and avg_visitor_pageviews by page?</li><li>What is the time between created_at and first_pageview_at for pages with different app_display_name values?</li></ul>|
+| [pendo__visitor](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor) | Provides individual visitor profiles with account associations, latest NPS rating, browser/OS details, activity metrics (events, minutes, active days/months), and daily averages to segment users and analyze engagement patterns. <br></br>**Example Analytics Questions:**<ul><li>Which visitors have the highest sum_events and sum_minutes with the best latest_nps_rating scores?</li><li>How do average_daily_minutes and average_daily_events vary by last_browser_name, last_operating_system, and count_associated_accounts?</li><li>What is the distribution of count_active_days and count_active_months by visitor cohorts based on first_event_on?</li></ul>|
+| [pendo_guide](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide) | Each record represents a unique guide presented to visitors via Pendo. Includes metrics about the number of visitors and accounts performing various activities upon guides, such as completing or dismissing them. <br></br>Example Analytics Questions:<ul><li>Which guides have the highest reach (e.g., count_visitors_guideSeen, count_accounts_guideSeen) and strongest progression (e.g., count_visitors_guideAdvanced)? </li><li>What are the drop-off / friction signals by guide (e.g., count_visitors_guideDismissed, count_visitors_guideSnoozed, count_visitors_guideTimeout) and how do they compare to engagement signals (e.g., count_visitors_guideActivity)?</li><li>How does guide effectiveness change over its lifecycle (e.g., time between created_at and first observed activity, and between first and last observed interaction timestamps), and does it vary by app/platform fields (if present) or guide status?</li></ul> |
+| [pendo__account_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__account_daily_metrics) | Chronicles daily account activity timelines with visitor counts (active, page viewing, feature clicking), event metrics (minutes, events, records), and distinct page/feature interaction counts to track account engagement trends and identify usage patterns. <br></br>**Example Analytics Questions:**<ul><li>How do sum_minutes and sum_events trend over time (date_day) by account_id?</li><li>Which accounts have the highest count_active_visitors and count_features_clicked on specific days?</li><li>What is the ratio of count_page_viewing_visitors to count_feature_clicking_visitors by account and date?</li></ul>|
+| [pendo__feature_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__feature_daily_metrics) | Tracks daily feature engagement from creation with visitor/account counts (total, first-time, returning), click metrics, time spent, and relative share percentages to measure feature adoption velocity and compare feature popularity. <br></br>**Example Analytics Questions:**<ul><li>How do sum_clicks and count_visitors trend over time by feature_name and product_area_name?</li><li>What is the ratio of count_first_time_visitors to count_return_visitors by feature over time?</li><li>Which features have the highest percent_of_daily_feature_clicks and percent_of_daily_feature_visitors on specific days?</li></ul>|
+| [pendo__page_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__page_daily_metrics) | Chronicles daily page views from creation with visitor/account counts (total, first-time, returning), pageview metrics, time spent, and relative share percentages to measure page adoption and compare page traffic patterns. <br></br>**Example Analytics Questions:**<ul><li>How do sum_pageviews and count_visitors trend over time by page_name and product_area_name?</li><li>What is the ratio of count_first_time_visitors to count_return_visitors for pages over time?</li><li>Which pages have the highest percent_of_daily_pageviews and avg_daily_minutes_per_visitor on specific days?</li></ul>|
+| [pendo__visitor_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor_daily_metrics) | Tracks daily visitor activity timelines with event metrics (minutes, events, records) and distinct page/feature interaction counts to monitor individual engagement patterns and identify power users. <br></br>**Example Analytics Questions:**<ul><li>How do sum_minutes and sum_events trend over time by visitor_id?</li><li>Which visitors have the highest count_pages_viewed and count_features_clicked on specific days?</li><li>What is the average daily breadth of engagement (count_pages_viewed + count_features_clicked) per visitor?</li></ul>|
+| [pendo__guide_daily_metrics](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_daily_metrics) | Chronicles daily guide interactions with visitor/account counts (total, first-time), event counts, and action-specific metrics (guideSeen, guideDismissed, guideActivity, guideAdvanced, guideTimeout, guideSnoozed) to measure guide effectiveness and completion rates. <br></br>**Example Analytics Questions:**<ul><li>How do count_visitors_guideSeen versus count_visitors_guideAdvanced trend over time by guide_name?</li><li>What is the dismissal rate (count_visitors_guideDismissed / count_visitors_guideSeen) by guide and date?</li><li>Which guides have the highest count_first_time_visitors and lowest count_visitors_guideDismissed ratios?</li></ul>|
+| [pendo__feature_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__feature_event) | Streams individual feature click events with visitor/account IDs, timing, event/minute counts, previous feature context, IP/user agent details, and feature/page/product area associations to enable granular clickstream analysis and user journey mapping. <br></br>**Example Analytics Questions:**<ul><li>What are the most common feature navigation paths (previous_feature_name to feature_name) by product_area_name?</li><li>How does num_events and num_minutes vary by feature_name, app_platform, and occurred_at hour?</li><li>Which visitors have the longest feature engagement sessions (num_minutes) and highest click rates (num_events)?</li></ul>|
+| [pendo__page_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__page_event_metrics) | Streams individual page view events with visitor/account IDs, timing, event/minute counts, previous page context, IP/user agent details, and page/product area associations to enable page flow analysis and session path tracking. <br></br>**Example Analytics Questions:**<ul><li>What are the most common page navigation paths (previous_page_name to page_name) by product_area_name?</li><li>How does num_events and num_minutes vary by page_name, app_platform, and occurred_at hour?</li><li>Which pages serve as the most common entry points (previous_page_id is null) and exit points?</li></ul>|
+| [pendo__guide_event](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__guide_event) | Streams individual guide interaction events with visitor/account IDs, event type (guideSeen, guideDismissed, guideActivity, guideAdvanced, guideTimeout, guideSnoozed), step details, timing, location data, and app/platform context to analyze guide completion funnels and identify friction points. <br></br>**Example Analytics Questions:**<ul><li>What is the distribution of guide event types by guide_name and guide_step_id?</li><li>How do guide completion rates vary by app_platform, country, and region?</li><li>Which guide steps have the highest dismissal rates (type = guideDismissed) versus advancement rates (type = guideAdvanced)?</li></ul>|
+| [pendo__visitor_feature](https://fivetran.github.io/dbt_pendo/#!/model/model.pendo.pendo__visitor_feature) | Maps visitor-feature relationships with first/last click timing, total clicks, time spent, active days, and daily averages to identify feature power users, analyze feature stickiness, and segment users by feature engagement depth. <br></br>**Example Analytics Questions:**<ul><li>Which visitor-feature combinations have the highest sum_clicks and sum_minutes by product_area_name?</li><li>How do count_active_days and avg_daily_minutes correlate with feature adoption (first_click_at to last_click_at span)?</li><li>Who are the top power users (highest sum_clicks per feature) for each feature_name?</li></ul>|
 
-## How do I use the dbt package?
-### Step 1: Prerequisites
+¹ Each Quickstart transformation job run materializes these models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
+
+---
+
+## Prerequisites
 To use this dbt package, you must have the following:
+
 - At least one Fivetran Pendo connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
+
+## How do I use the dbt package?
+You can either add this dbt package in the Fivetran dashboard or import it into your dbt project:
+
+- To add the package in the Fivetran dashboard, follow our [Quickstart guide](https://fivetran.com/docs/transformations/data-models/quickstart-management).
+- To add the package to your dbt project, follow the setup instructions in the dbt package's [README file](https://github.com/fivetran/dbt_pendo/blob/main/README.md#how-do-i-use-the-dbt-package) to use this package.
+
+<!--section-end-->
+
+### Install the package
+Include the following pendo package version in your `packages.yml` file.
+> TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
+
+```yml
+# packages.yml
+packages:
+  - package: fivetran/pendo
+    version: [">=1.3.0", "<1.4.0"] # we recommend using ranges to capture non-breaking changes automatically
+```
+
+> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/pendo_source` in your `packages.yml` since this package has been deprecated.
 
 #### Databricks Dispatch Configuration
 If you are using a Databricks destination with this package you will need to add the below (or a variation of the below) dispatch configuration within your `dbt_project.yml`. This is required in order for the package to accurately search for macros within the `dbt-labs/spark_utils` then the `dbt-labs/dbt_utils` packages respectively.
@@ -64,20 +100,7 @@ dispatch:
     search_order: ['spark_utils', 'dbt_utils']
 ```
 
-### Step 2: Install the package
-Include the following pendo package version in your `packages.yml` file.
-> TIP: Check [dbt Hub](https://hub.getdbt.com/) for the latest installation instructions or [read the dbt docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
-
-```yml
-# packages.yml
-packages:
-  - package: fivetran/pendo
-    version: [">=1.2.0", "<1.3.0"] # we recommend using ranges to capture non-breaking changes automatically
-```
-
-> All required sources and staging models are now bundled into this transformation package. Do not include `fivetran/pendo_source` in your `packages.yml` since this package has been deprecated.
-
-### Step 3: Define database and schema variables
+### Define database and schema variables
 
 #### Option A: Single connection
 By default, this package runs using your [destination](https://docs.getdbt.com/docs/running-a-dbt-project/using-the-command-line-interface/configure-your-profile) and the `pendo` schema. If this is not where your Pendo data is (for example, if your Pendo schema is named `pendo_fivetran`), add the following configuration to your root `dbt_project.yml` file:
@@ -136,8 +159,6 @@ sources:
     tables: # copy and paste from pendo/models/staging/src_pendo.yml - see https://support.atlassian.com/bitbucket-cloud/docs/yaml-anchors/ for how to use anchors to only do so once
 ```
 
-> **Note**: If there are source tables you do not have (see [Step 4](https://github.com/fivetran/dbt_pendo?tab=readme-ov-file#step-4-disable-models-for-non-existent-sources)), you may still include them, as long as you have set the right variables to `False`.
-
 2. Set the `has_defined_sources` variable (scoped to the `pendo` package) to `True`, like such:
 ```yml
 # dbt_project.yml
@@ -146,7 +167,7 @@ vars:
     has_defined_sources: true
 ```
 
-### (Optional) Step 4: Additional configurations
+### (Optional) Additional configurations
 <details open><summary>Expand/Collapse details</summary>
 
 #### Passthrough Columns
@@ -224,11 +245,11 @@ sources:
 ```
 </details>
 
-### (Optional) Step 5: Orchestrate your models with Fivetran Transformations for dbt Core™
+### (Optional) Orchestrate your models with Fivetran Transformations for dbt Core™
 <details><summary>Expand for details</summary>
 <br>
 
-Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt#setupguide).
+Fivetran offers the ability for you to orchestrate your dbt project through [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt#transformationsfordbtcore). Learn how to set up your project for orchestration through Fivetran in our [Transformations for dbt Core setup guides](https://fivetran.com/docs/transformations/dbt/setup-guide#transformationsfordbtcoresetupguide).
 </details>
 
 ## Does this package have dependencies?
@@ -248,14 +269,18 @@ packages:
       version: [">=0.3.0", "<0.4.0"]
 ```
 
+<!--section="pendo_maintenance"-->
 ## How is this package maintained and can I contribute?
+
 ### Package Maintenance
-The Fivetran team maintaining this package _only_ maintains the latest version of the package. We highly recommend you stay consistent with the [latest version](https://hub.getdbt.com/fivetran/pendo/latest/) of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_pendo/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
+The Fivetran team maintaining this package only maintains the [latest version](https://hub.getdbt.com/fivetran/pendo/latest/) of the package. We highly recommend you stay consistent with the latest version of the package and refer to the [CHANGELOG](https://github.com/fivetran/dbt_pendo/blob/main/CHANGELOG.md) and release notes for more information on changes across versions.
 
 ### Contributions
 A small team of analytics engineers at Fivetran develops these dbt packages. However, the packages are made better by community contributions.
 
-We highly encourage and welcome contributions to this package. Check out [this dbt Discourse article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657) on the best workflow for contributing to a package.
+We highly encourage and welcome contributions to this package. Learn how to contribute to a package in dbt's [Contributing to an external dbt package article](https://discourse.getdbt.com/t/contributing-to-a-dbt-package/657).
+
+<!--section-end-->
 
 ## Are there any resources available?
 - If you have questions or want to reach out for help, see the [GitHub Issue](https://github.com/fivetran/dbt_pendo/issues/new/choose) section to find the right avenue of support for you.

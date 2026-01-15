@@ -25,3 +25,37 @@ public_models: [
   "pendo__account_daily_metrics",
   "pendo__page"
 ]
+
+table_variables:
+  _fivetran_quickstart_guide_step_history:
+    - guide_step_history
+  _fivetran_quickstart_page_rule_history:
+    - page_rule_history
+  _fivetran_quickstart_poll:
+    - poll
+  _fivetran_quickstart_poll_event:
+    - poll_event
+  _fivetran_quickstart_user:
+    - user
+
+supported_vars:
+  pendo__feature_event_pass_through_columns:
+    type: dictionary
+    description: "Additional `FEATURE_EVENT` columns to include in `pendo__feature_event`"
+    display_name: "Additional Feature Event Columns"
+
+  pendo__page_event_pass_through_columns:
+    type: dictionary
+    description: "Additional `PAGE_EVENT` columns to include in `pendo__feature_event`"
+    display_name: "Additional Page Event Columns"
+
+  pendo__account_history_pass_through_columns:
+    type: dictionary
+    description: "Additional `ACCOUNT_HISTORY` columns to include in `pendo__account`, `pendo__feature_event`, and `pendo__page_event`"
+    display_name: "Additional Account Columns"
+
+  pendo__visitor_history_pass_through_columns:
+    type: dictionary
+    description: "Additional `VISITOR_HISTORY` columns to include in `pendo__visitor`, `pendo__feature_event`, and `pendo__page_event`"
+    display_name: "Additional Visitor Columns"
+
