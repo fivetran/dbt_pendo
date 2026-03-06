@@ -1,7 +1,7 @@
 # dbt_pendo v1.3.1
 
 ## Bug Fix
-- Removes dynamic `count_visitors_*` columns from the `pendo__guide` and `pendo__guide_daily_metrics` models in `pendo.yml` to prevent `persist_docs` errors when any of those event types do not exist in a given environment. ([#42](https://github.com/fivetran/dbt_pendo/pull/42))
+- Removes dynamic `count_visitors_*` columns from the `pendo__guide` and `pendo__guide_daily_metrics` models in `pendo.yml` to prevent `persist_docs` errors when these columns are not present. ([#42](https://github.com/fivetran/dbt_pendo/pull/42))
 
 # dbt_pendo v1.3.0
 
