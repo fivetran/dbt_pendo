@@ -1,7 +1,7 @@
 config-version: 2
 
 name: 'pendo_integration_tests'
-version: '1.3.0'
+version: '1.3.1'
 
 profile: 'integration_tests'
 
@@ -10,6 +10,9 @@ dispatch:
     search_order: ['spark_utils', 'dbt_utils']
 
 models:
+  +persist_docs:
+    relation: true
+    columns: "{{ false if target.type in ('databricks') else true }}"
   +schema: "pendo_{{ var('directed_schema','dev') }}"
 
 vars:

@@ -348,18 +348,6 @@ models:
         description: Timestamp of when the guide was last interacted with.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
-      - name: count_visitors_guideSeen
-        description: Count of visitors who have been presented with a guide.
-      - name: count_visitors_guideDismissed
-        description: Count of visitors who have dismissed a guide.
-      - name: count_visitors_guideActivity
-        description: Count of visitors who have interacted with a guide. 
-      - name: count_visitors_guideAdvanced
-        description: Count of visitors who have advanced a step in a guide. 
-      - name: count_visitors_guideTimeout
-        description: Count of visitors who have timed out on a guide. 
-      - name: count_visitors_guideSnoozed
-        description: Count of visitors who have snoozed a guide.
 
   - name: pendo__guide_daily_metrics
     description: >
@@ -386,18 +374,6 @@ models:
         description: Count of visitors interacting with the guide for the first time on this day. 
       - name: count_first_time_accounts
         description: Count of accounts interacting with the guide for the first time on this day. 
-      - name: count_visitors_guideSeen
-        description: Count of visitors who have been presented with a guide on this day.
-      - name: count_visitors_guideDismissed
-        description: Count of visitors who have dismissed a guide on this day.
-      - name: count_visitors_guideActivity
-        description: Count of visitors who have interacted with a guide on this day.
-      - name: count_visitors_guideAdvanced
-        description: Count of visitors who have advanced a step in a guide on this day.
-      - name: count_visitors_guideTimeout
-        description: Count of visitors who have timed out on a guide on this day. 
-      - name: count_visitors_guideSnoozed
-        description: Count of visitors who have snoozed a guide on this day.
 
   - name: pendo__guide_event
     description: >
