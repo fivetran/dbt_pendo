@@ -69,54 +69,81 @@ seeds:
     show: False
   pendo_integration_tests:
     +quote_columns: "{{ true if target.type == 'redshift' else false }}"
-    +column_types:
-      _fivetran_synced: timestamp
-    guide_event:
+    account_history:
       +column_types:
-        latitude: numeric
-        longitude: numeric
-        timestamp: timestamp
+        _fivetran_synced: timestamp
+        id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
     application_history:
       +column_types:
+        _fivetran_synced: timestamp
         subscription_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-    guide_history:
+    event:
       +column_types:
-        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
-        created_at: timestamp
-    account_history:
+        _fivetran_synced: timestamp
+    feature_event:
       +column_types:
-        id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        _fivetran_synced: timestamp
+        timestamp: timestamp
     feature_history:
       +column_types:
+        _fivetran_synced: timestamp
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         group_id: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
         created_at: timestamp
-    feature_event:
-      +column_types:
-        timestamp: timestamp
     group_data:
       +column_types:
+        _fivetran_synced: timestamp
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         color: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
         id: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
-    user:
+    guide_event:
       +column_types:
-        id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        _fivetran_synced: timestamp
+        latitude: numeric
+        longitude: numeric
+        timestamp: timestamp
+    guide_history:
+      +column_types:
+        _fivetran_synced: timestamp
+        created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+        created_at: timestamp
+    guide_step_history:
+      +column_types:
+        _fivetran_synced: timestamp
+    page_event:
+      +column_types:
+        _fivetran_synced: timestamp
+        timestamp: timestamp
     page_history:
       +column_types:
+        _fivetran_synced: timestamp
         created_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         last_updated_by_user_id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
         group_id: "{{ 'string' if target.name in ['bigquery','spark','databricks'] else 'varchar' }}"
         created_at: timestamp
-    page_event:
+    page_rule_history:
       +column_types:
-        timestamp: timestamp
+        _fivetran_synced: timestamp
+    poll:
+      +column_types:
+        _fivetran_synced: timestamp
+    poll_event:
+      +column_types:
+        _fivetran_synced: timestamp
+    user:
+      +column_types:
+        _fivetran_synced: timestamp
+        id: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
+    visitor_account_history:
+      +column_types:
+        _fivetran_synced: timestamp
     visitor_history:
       +column_types:
+        _fivetran_synced: timestamp
         id_hash: "{{ 'int64' if target.name == 'bigquery' else 'bigint' }}"
 
 flags:
