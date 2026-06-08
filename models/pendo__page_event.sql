@@ -27,10 +27,10 @@ add_previous_page as (
     select
         *,
         -- using _fivetran_synced in case events are sent within the same hour-block
-        lag(page_id) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_id,
-        lag(occurred_at) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_event_at,
-        lag(num_minutes) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_num_minutes,
-        lag(num_events) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_page_num_events
+        lag(page_id) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_page_id,
+        lag(occurred_at) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_page_event_at,
+        lag(num_minutes) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_page_num_minutes,
+        lag(num_events) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_page_num_events
 
     from page_event
 ), 

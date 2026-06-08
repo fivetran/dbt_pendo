@@ -12,8 +12,8 @@ first_time_metrics as (
     select
         *,
         -- get the first time this visitor/account has viewed this page
-        min(occurred_on) over (partition by visitor_id, guide_id {{ pendo.partition_by_source_relation() }}) as visitor_first_event_on,
-        min(occurred_on) over (partition by account_id, guide_id {{ pendo.partition_by_source_relation() }}) as account_first_event_on
+        min(occurred_on) over (partition by visitor_id, guide_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as visitor_first_event_on,
+        min(occurred_on) over (partition by account_id, guide_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as account_first_event_on
 
     from guide_event
 ),

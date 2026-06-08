@@ -50,7 +50,7 @@ sources:
           - name: application_flags_cname
             description: >
               Boolean that is true if CNAMEs are configured. CNAMES allows you to create hostnames under your own 
-              application’s domain which will be used in place of Pendo hostnames for both sending events and 
+              application's domain which will be used in place of Pendo hostnames for both sending events and 
               downloading guide content
           - name: application_flags_disabled
             description: Boolean that is false if the application is disabled.
@@ -371,8 +371,8 @@ sources:
           - name: num_minutes
             description: >
               Page time on site calculations are in 1 minute buckets. So if you are logged in to your app as a user (Pendo Visitor) 
-              when you load a page’s URL, 1 minute time on site is calculated. Every time you click on that page, the time on site 
-              calculation keeps running and totaling the successive minutes you’ve spent on that page.
+              when you load a page's URL, 1 minute time on site is calculated. Every time you click on that page, the time on site 
+              calculation keeps running and totaling the successive minutes you've spent on that page.
               See https://support.pendo.io/hc/en-us/articles/360032203171-How-is-Site-Page-Interaction-Calculated-.
           - name: page_id
             description: Foreign key referencing the `PAGE` being loaded.
