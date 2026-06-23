@@ -15,7 +15,7 @@ fields as (
                 staging_columns=get_page_history_columns()
             )
         }}
-        {{ pendo.apply_source_relation() }}
+        {{ fivetran_utils.apply_source_relation(package_name='pendo') }}
         
     from base
 ),

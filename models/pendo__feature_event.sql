@@ -26,10 +26,10 @@ add_previous_feature as (
 
     select
         *,
-        lag(feature_id) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_id,
-        lag(occurred_at) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_event_at,
-        lag(num_minutes) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_minutes,
-        lag(num_events) over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_events
+        lag(feature_id) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_id,
+        lag(occurred_at) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_event_at,
+        lag(num_minutes) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_minutes,
+        lag(num_events) over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at asc, _fivetran_synced asc) as previous_feature_num_events
 
     from feature_event
 ), 

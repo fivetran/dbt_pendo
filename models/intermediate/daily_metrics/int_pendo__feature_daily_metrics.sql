@@ -12,8 +12,8 @@ first_time_metrics as (
     select
         *,
         -- get the first time this visitor/account has clicked on this feature
-        min(occurred_on) over (partition by visitor_id, feature_id {{ pendo.partition_by_source_relation() }}) as visitor_first_event_on,
-        min(occurred_on) over (partition by account_id, feature_id {{ pendo.partition_by_source_relation() }}) as account_first_event_on
+        min(occurred_on) over (partition by visitor_id, feature_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as visitor_first_event_on,
+        min(occurred_on) over (partition by account_id, feature_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as account_first_event_on
 
     from feature_event
 ),
@@ -40,9 +40,9 @@ total_feature_metrics as (
 
     select
         *,
-        sum(sum_clicks) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_feature_clicks,
-        sum(count_visitors) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_feature_visitors,
-        sum(count_accounts) over (partition by occurred_on {{ pendo.partition_by_source_relation() }}) as total_feature_accounts
+        sum(sum_clicks) over (partition by occurred_on {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as total_feature_clicks,
+        sum(count_visitors) over (partition by occurred_on {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as total_feature_visitors,
+        sum(count_accounts) over (partition by occurred_on {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }}) as total_feature_accounts
 
     from daily_metrics
 ),

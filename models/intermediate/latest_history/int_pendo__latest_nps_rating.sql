@@ -28,7 +28,7 @@ order_responses as (
 
     select
         *,
-        row_number() over(partition by visitor_id {{ pendo.partition_by_source_relation() }} order by occurred_at desc) as latest_response_index
+        row_number() over(partition by visitor_id {{ fivetran_utils.partition_by_source_relation(package_name='pendo') }} order by occurred_at desc) as latest_response_index
     from limit_to_nps_polls
 ),
 
