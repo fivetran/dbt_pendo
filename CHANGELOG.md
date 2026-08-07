@@ -1,3 +1,11 @@
+# dbt_pendo v1.4.1
+
+[PR #46](https://github.com/fivetran/dbt_pendo/pull/46) includes the following updates:
+
+## Feature Updates
+- Adds DuckDB as a supported destination.
+
+
 # dbt_pendo v1.4.0
 
 [PR #44](https://github.com/fivetran/dbt_pendo/pull/44) includes the following updates:
