@@ -26,7 +26,7 @@ Final output tables are generated in the following target schema:
 ```
 <your_database>.<connector/schema_name>_pendo
 ```
-
+ 
 ### Final output tables
 
 By default, this package materializes the following final tables:
