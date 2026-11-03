@@ -35,7 +35,7 @@ feature_spine as (
     from spine
     join feature
         on spine.date_day >= feature.created_on
-        and spine.date_day <= cast( {{ ['feature.valid_through', 'feature.last_click_on'] | max }} as date) -- or should this just go up to today?
+        and spine.date_day <= greatest(cast(feature.valid_through as date), coalesce(feature.last_click_on, cast(feature.valid_through as date))) -- or should this just go up to today?
 
 ),
 

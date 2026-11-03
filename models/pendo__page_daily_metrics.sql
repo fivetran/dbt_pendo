@@ -33,7 +33,7 @@ page_spine as (
     from spine
     join page
         on spine.date_day >= page.created_on
-        and spine.date_day <= cast( {{ ['page.valid_through', 'page.last_pageview_on'] | max }} as date) -- or should this just go up to today?
+        and spine.date_day <= greatest(cast(page.valid_through as date), coalesce(page.last_pageview_on, cast(page.valid_through as date))) -- or should this just go up to today?
 
 ),
 
