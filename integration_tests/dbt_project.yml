@@ -151,3 +151,6 @@ flags:
 
 
   use_colors: True
+
+  # install skills shipped by dependencies (e.g. fivetran_utils) into .claude/skills on `dbt deps`
+  ai_provider: claude
