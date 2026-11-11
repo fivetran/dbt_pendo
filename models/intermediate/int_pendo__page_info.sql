@@ -34,7 +34,7 @@ agg_page_rule as (
         source_relation,
         page_id,
         -- should we use a different/more apparent delimiter?
-        {{ fivetran_utils.string_agg( "rule", "', '" ) }} as rules
+        {{ dbt.listagg( "rule", "', '" ) }} as rules
 
     from page_rule
     group by 1,2
