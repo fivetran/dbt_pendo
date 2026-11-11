@@ -3,8 +3,8 @@
     SOURCE table(s) the staging layer reads from. The source is what changes, so it is read
     directly, not through the built stg_pendo__<table>_tmp view (only a copy that goes stale).
 
-    Everything is keyed by the source table name exactly as in src_pendo.yml (account_history,
-    event, group, ...).
+    Every source table in the expected-columns map is diffed; tables that don't exist are reported as
+    source_missing. Keys are source table names exactly as in src_pendo.yml (account_history, event, ...).
 
     get_column_diffs() is the package's entry point for the fivetran-source-config skill. It returns
     only the differences, as {source table: {missing, extra, source_missing, source_schemas}}:
@@ -19,8 +19,6 @@
 
     When several connections are unioned (pendo_sources), a column counts as present if any of them
     has it, matching how the union is built.
-
-    At parse time (execute is false) the source can't be inspected, so empty results are returned.
 -#}
 
 {#- Expected columns per source table name. A static map, so adding a table is one edit here next to
@@ -48,89 +46,61 @@
     }) }}
 {% endmacro %}
 
-{#- Resolve the source relation(s) for a source table the same way stg_pendo__<table>_tmp does
-    (fivetran_utils.union_connections): the pendo_sources connections if set, else the single source.
-    The identifier comes from the pendo_<table>_identifier var, as in union_connections. -#}
-{% macro pendo_source_relations(source_name) %}
-    {% set relations = [] %}
-    {% set connections = var('pendo_sources', []) %}
-    {% set identifier = var('pendo_' ~ source_name ~ '_identifier', source_name) %}
-
-    {% if connections | length > 0 %}
-        {% for connection in connections %}
-            {% if var('has_defined_sources', false) %}
-                {% set src = source(connection.name, source_name) %}
-                {% set rel = adapter.get_relation(database=src.database, schema=src.schema, identifier=src.identifier) %}
-            {% else %}
-                {% set rel = adapter.get_relation(
-                    database=connection.database if connection.database else target.database,
-                    schema=connection.schema if connection.schema else 'pendo',
-                    identifier=identifier) %}
-            {% endif %}
-            {% if rel is not none %}{% do relations.append(rel) %}{% endif %}
-        {% endfor %}
-
-    {% else %}
-        {% set src = source('pendo', source_name) %}
-        {% set rel = adapter.get_relation(database=src.database, schema=src.schema, identifier=identifier) %}
-        {% if rel is not none %}{% do relations.append(rel) %}{% endif %}
-    {% endif %}
-
-    {{ return(relations) }}
-{% endmacro %}
-
-{% macro get_column_diff(source_name) %}
-    {% if not execute %}
-        {{ return({'missing': [], 'extra': [], 'source_missing': false, 'source_schemas': []}) }}
-    {% endif %}
-
-    {% set expected_by_source = pendo.pendo_expected_columns() %}
-    {% if source_name not in expected_by_source %}
-        {{ exceptions.raise_compiler_error("get_column_diff: unknown source table '" ~ source_name ~ "'. Expected one of: " ~ expected_by_source.keys() | sort | join(', ')) }}
-    {% endif %}
-
-    {% set relations = pendo.pendo_source_relations(source_name) %}
-    {% set actual = [] %}
-    {% for relation in relations %}
-        {% for column in adapter.get_columns_in_relation(relation) %}
-            {% do actual.append(column.name | lower) %}
-        {% endfor %}
-    {% endfor %}
-    {% set actual = actual | unique | list %}
-    {% set expected = expected_by_source[source_name] | map(attribute='name') | map('lower') | list %}
-
-    {{ return({
-        'missing': expected | reject('in', actual) | list,
-        'extra': actual | reject('in', expected) | list,
-        'source_missing': relations | length == 0,
-        'source_schemas': relations | map(attribute='schema') | unique | list
-    }) }}
-{% endmacro %}
-
-{#- Source tables the package reads right now, from the staging models in the graph (so any disabled
-    ones are skipped), keeping those with an expected-columns entry. -#}
-{% macro pendo_source_tables() %}
-    {% set expected_by_source = pendo.pendo_expected_columns() %}
-    {% set tables = [] %}
-    {% for node in graph.nodes.values() if node.resource_type == 'model' and node.package_name == 'pendo' and node.name.startswith('stg_pendo__') and node.name.endswith('_tmp') %}
-        {% set source_name = node.name[11:-4] %}
-        {% if source_name in expected_by_source %}
-            {% do tables.append(source_name) %}
+{#- The relation(s) holding a source table, found as stg_pendo__<table>_tmp finds them: one per pendo_sources
+    connection, else the single `pendo` source. Where sources are declared in dbt (has_defined_sources, or
+    the single source) source() gives the location; otherwise the connection's own database and schema do.
+    The table is named by its pendo_<table>_identifier var, as in fivetran_utils.union_connections.
+    Tables that aren't there are skipped. -#}
+{% macro pendo_source_relations(table) %}
+    {% set identifier = var('pendo_' ~ table ~ '_identifier', table) %}
+    {% set places = [] %}
+    {% for c in var('pendo_sources', []) %}
+        {% if var('has_defined_sources', false) %}
+            {% set src = source(c.name, table) %}
+            {% do places.append({'database': src.database, 'schema': src.schema}) %}
+        {% else %}
+            {% do places.append({'database': c.database or target.database, 'schema': c.schema or 'pendo'}) %}
         {% endif %}
+    {% else %}
+        {% set src = source('pendo', table) %}
+        {% do places.append({'database': src.database, 'schema': src.schema}) %}
     {% endfor %}
-    {{ return(tables | sort) }}
+
+    {% set relations = [] %}
+    {% for p in places %}
+        {% set relation = adapter.get_relation(database=p.database, schema=p.schema, identifier=identifier) %}
+        {% if relation is not none %}{% do relations.append(relation) %}{% endif %}
+    {% endfor %}
+    {{ return(relations) }}
 {% endmacro %}
 
 {% macro get_column_diffs() %}
     {% set result = {} %}
-    {% for source_name in pendo.pendo_source_tables() %}
-        {% set diff = pendo.get_column_diff(source_name) %}
-        {% if diff.missing or diff.extra %}
-            {% do result.update({source_name: diff}) %}
+    {% if execute %}
+        {% set expected_by_source = pendo.pendo_expected_columns() %}
+        {% for source_name in expected_by_source.keys() | sort %}
+            {% set relations = pendo.pendo_source_relations(source_name) %}
+            {% set actual = [] %}
+            {% for relation in relations %}
+                {% for column in adapter.get_columns_in_relation(relation) %}
+                    {% do actual.append(column.name | lower) %}
+                {% endfor %}
+            {% endfor %}
+            {% set expected = expected_by_source[source_name] | map(attribute='name') | map('lower') | list %}
+            {% set missing = expected | reject('in', actual) | list %}
+            {% set extra = actual | unique | reject('in', expected) | list %}
+            {% if missing or extra %}
+                {% do result.update({source_name: {
+                    'missing': missing,
+                    'extra': extra,
+                    'source_missing': relations | length == 0,
+                    'source_schemas': relations | map(attribute='schema') | unique | list
+                }}) %}
+            {% endif %}
+        {% endfor %}
+        {% if flags.WHICH == 'run-operation' %}
+            {{ log(tojson(result), info=True) }}
         {% endif %}
-    {% endfor %}
-    {% if execute and flags.WHICH == 'run-operation' %}
-        {{ log(tojson(result), info=True) }}
     {% endif %}
     {{ return(result) }}
 {% endmacro %}
