@@ -1,3 +1,5 @@
+{%- set guide_event_types = (dbt_utils.get_column_values(table=ref('pendo__guide_event'), column='type') or []) if execute and flags.WHICH in ('run', 'build') else [] -%}
+
 with guide_event as (
 
     select 
@@ -28,10 +30,11 @@ daily_metrics as (
         count(distinct account_id) as count_accounts,
         count(*) as count_guide_events,
         count(distinct case when occurred_on = visitor_first_event_on then visitor_id end) as count_first_time_visitors,
-        count(distinct case when occurred_on = account_first_event_on then visitor_id end) as count_first_time_accounts,
-
-        {{ dbt_utils.pivot(column='type', values=dbt_utils.get_column_values(ref('pendo__guide_event'), 'type'),
+        count(distinct case when occurred_on = account_first_event_on then visitor_id end) as count_first_time_accounts
+        {% if guide_event_types | length > 0 %}
+        , {{ dbt_utils.pivot(column='type', values=guide_event_types,
                             prefix='count_visitors_', agg='count', then_value='visitor_id', else_value='null', distinct=true) }}
+        {% endif %}
 
     from first_time_metrics
     group by 1,2,3
