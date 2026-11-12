@@ -41,8 +41,6 @@ models:
         description: Foreign key referencing the `USER` who created the application.
       - name: description
         description: Description of the application. 
-      - name: disabled_at
-        description: Timestamp of when the application version was disabled. 
       - name: display_name
         description: Display name of the application. 
       - name: event_count

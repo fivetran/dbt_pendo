@@ -55,6 +55,8 @@ models:
         description: Date on which the last event was tracked for this account.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_account_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__account_daily_metrics
     description: >
@@ -348,6 +350,8 @@ models:
         description: Timestamp of when the guide was last interacted with.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_guide_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__guide_daily_metrics
     description: >
@@ -495,6 +499,8 @@ models:
         description: Average sum of pageview events per visitor (ignoring 0-event visitors).
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_page_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__page_daily_metrics
     description: >
@@ -667,6 +673,8 @@ models:
         description: Date on which the last event was tracked for this visitor.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_visitor_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__visitor_daily_metrics
     description: >
