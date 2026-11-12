@@ -7,3 +7,4 @@ under_the_hood:
   left them out.
 - Removes `disabled_at` from `stg_pendo__application_history`. The source `application_history`
   table has this column, but the model does not select it.
+date: '2026-11-12'
