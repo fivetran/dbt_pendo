@@ -6,6 +6,13 @@ models:
     description: >
       Table capturing the historical records of each account utilizing your product via Pendo. 
       Note that this table may contain custom metadata columns which can be passed through via `pendo__account_history_pass_through_columns`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -24,6 +31,13 @@ models:
 
   - name: stg_pendo__application_history
     description: Table capturing changes to your tracked application(s).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - application_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -144,6 +158,13 @@ models:
 
   - name: stg_pendo__feature_history
     description: Table capturing historical records of features in Pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - feature_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -180,6 +201,12 @@ models:
 
   - name: stg_pendo__group
     description: Table capturing the product areas (groups) that pages and features can be tagged with.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - group_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -251,6 +278,13 @@ models:
 
   - name: stg_pendo__guide_history
     description: Table capturing historical records of guides in pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - guide_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -295,6 +329,14 @@ models:
 
   - name: stg_pendo__guide_step_history
     description: Table associating guides with the steps they include.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - guide_id
+              - guide_last_updated_at
+              - step_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -350,6 +392,13 @@ models:
 
   - name: stg_pendo__page_history
     description: Table capturing the historical records of pages tagged in Pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - page_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -382,6 +431,14 @@ models:
 
   - name: stg_pendo__page_rule_history
     description: Table capturing historical records of rules associated with pages.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - page_id
+              - page_last_updated_at
+              - rule
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -400,6 +457,12 @@ models:
 
   - name: stg_pendo__user
     description: Table capturing internal Pendo users.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - user_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -422,6 +485,13 @@ models:
 
   - name: stg_pendo__visitor_history
     description: Table capturing historical records of visitors.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - visitor_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -456,6 +526,12 @@ models:
 
   - name: stg_pendo__poll
     description: Table capturing polls administered via Pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - poll_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -533,6 +609,14 @@ models:
     description: >
       Table of historical records of associations between visitors and accounts. Though the visitor
       table has an `account_id` column, refer to this table for all potential related accounts.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - visitor_last_updated_at
+              - visitor_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
