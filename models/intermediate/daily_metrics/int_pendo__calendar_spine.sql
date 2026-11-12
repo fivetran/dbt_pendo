@@ -12,13 +12,14 @@
 
 with spine as (
 
-    {% if execute %}
+    {% if execute and flags.WHICH in ('run', 'build') %}
     {% set first_date_query %}
     -- start at the first event
         select min( created_at ) as min_date from {{ ref('stg_pendo__application_history') }}
     {% endset %}
-    {% set first_date = run_query(first_date_query).columns[0][0]|string %}
-    
+    {% set first_date_raw = run_query(first_date_query).columns[0][0] %}
+    {% set first_date = "2016-01-01" if first_date_raw is none else first_date_raw|string %}
+
     {% else %} {% set first_date = "2016-01-01" %}
     {% endif %}
 
@@ -36,7 +37,7 @@ with spine as (
     {% if is_incremental() %}
     -- compare to the earliest possible open_until date so that if a resolved issue is updated after a long period of inactivity, we don't need a full refresh
     -- essentially we need to be able to backfill
-    where date_day >= (select max(date_day) from {{ this }} )
+    where cast(date_day as date) >= (select max(date_day) from {{ this }} )
     {% endif %}
 )
 
