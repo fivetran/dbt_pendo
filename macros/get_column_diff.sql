@@ -24,7 +24,7 @@
 {#- Expected columns per source table name. A static map, so adding a table is one edit here next to
     its get_<table>_columns() macro. Sibling macros are called as pendo.<macro>() so they resolve when
     this package is used as a dependency. -#}
-{% macro pendo_expected_columns() %}
+{% macro expected_columns() %}
     {{ return({
         'account_history': pendo.get_account_history_columns(),
         'application_history': pendo.get_application_history_columns(),
@@ -51,7 +51,7 @@
     the single source) source() gives the location; otherwise the connection's own database and schema do.
     The table is named by its pendo_<table>_identifier var, as in fivetran_utils.union_connections.
     Tables that aren't there are skipped. -#}
-{% macro pendo_source_relations(table) %}
+{% macro source_relations(table) %}
     {% set identifier = var('pendo_' ~ table ~ '_identifier', table) %}
     {% set places = [] %}
     {% for c in var('pendo_sources', []) %}
@@ -77,9 +77,9 @@
 {% macro get_column_diffs() %}
     {% set result = {} %}
     {% if execute %}
-        {% set expected_by_source = pendo.pendo_expected_columns() %}
+        {% set expected_by_source = pendo.expected_columns() %}
         {% for source_name in expected_by_source.keys() | sort %}
-            {% set relations = pendo.pendo_source_relations(source_name) %}
+            {% set relations = pendo.source_relations(source_name) %}
             {% set actual = [] %}
             {% for relation in relations %}
                 {% for column in adapter.get_columns_in_relation(relation) %}
