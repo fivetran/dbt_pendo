@@ -1,3 +1,10 @@
+# dbt_pendo v1.4.2
+
+[PR #52](https://github.com/fivetran/dbt_pendo/pull/52) includes the following updates:
+
+## Bug Fix
+- `dbt compile` fails on a new schema because the `int_pendo__guide_daily_metrics`, `int_pendo__guide_alltime_metrics`, and `int_pendo__calendar_spine` models query package-built tables before they exist. These models now run those queries only during `dbt run` and `dbt build`. The calendar spine also falls back to 2016-01-01 when `stg_pendo__application_history` is empty.
+
 # dbt_pendo v1.4.1
 
 [PR #46](https://github.com/fivetran/dbt_pendo/pull/46) includes the following updates:
