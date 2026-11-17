@@ -1,3 +1,11 @@
+# dbt_pendo v1.4.3
+
+[PR #53](https://github.com/fivetran/dbt_pendo/pull/53) includes the following updates:
+
+## Under the Hood
+- Documents the `latest_account_index`, `latest_guide_index`, `latest_page_index`, and `latest_visitor_index` columns in `pendo__account`, `pendo__guide`, `pendo__page`, and `pendo__visitor`. The models already select these columns, but the documentation left them out.
+- Removes `disabled_at` from `stg_pendo__application_history`. The source `application_history` table has this column, but the model does not select it.
+
 # dbt_pendo v1.4.2
 
 [PR #52](https://github.com/fivetran/dbt_pendo/pull/52) includes the following updates:

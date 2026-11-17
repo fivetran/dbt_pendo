@@ -4,3 +4,9 @@ new_features:
 - description: Raises the minimum supported dbt version from v1.3.0 to v1.10.0.
 under_the_hood:
 - description: Adds `dbt_utils.unique_combination_of_columns` tests to the staging and end models. The tests use the `arguments` syntax introduced in dbt v1.10.0, the new minimum supported version.
+- Documents the `latest_account_index`, `latest_guide_index`, `latest_page_index`,
+  and `latest_visitor_index` columns in `pendo__account`, `pendo__guide`, `pendo__page`,
+  and `pendo__visitor`. The models already select these columns, but the documentation
+  left them out.
+- Removes `disabled_at` from `stg_pendo__application_history`. The source `application_history`
+  table has this column, but the model does not select it.
