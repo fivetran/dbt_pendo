@@ -1,3 +1,15 @@
+# dbt_pendo v1.5.0
+
+[PR #54](https://github.com/fivetran/dbt_pendo/pull/54) includes the following updates:
+
+## Feature Update
+- Raises the minimum dbt version to 1.10.0.
+- Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_pendo/issues/new/choose).
+
+## Under the Hood
+- Documents the `latest_account_index`, `latest_guide_index`, `latest_page_index`, and `latest_visitor_index` columns in `pendo__account`, `pendo__guide`, `pendo__page`, and `pendo__visitor`. The models already select these columns, but the documentation left them out.
+- Removes `disabled_at` from `stg_pendo__application_history`. The source `application_history` table has this column, but the model does not select it.
+
 # dbt_pendo v1.4.2
 
 [PR #52](https://github.com/fivetran/dbt_pendo/pull/52) includes the following updates:
