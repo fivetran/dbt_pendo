@@ -7,8 +7,7 @@
 - Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_pendo/issues/new/choose).
 
 ## Under the Hood
-- Documents the `latest_account_index`, `latest_guide_index`, `latest_page_index`, and `latest_visitor_index` columns in `pendo__account`, `pendo__guide`, `pendo__page`, and `pendo__visitor`.
-- Removes `disabled_at` from `stg_pendo__application_history`.
+- Updates yml column documentation to match model output.
 
 # dbt_pendo v1.4.2
 
