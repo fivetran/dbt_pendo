@@ -7,6 +7,6 @@ new_features:
 under_the_hood:
 - Documents the `latest_account_index`, `latest_guide_index`, `latest_page_index`,
   and `latest_visitor_index` columns in `pendo__account`, `pendo__guide`, `pendo__page`,
-  and `pendo__visitor`. 
+  and `pendo__visitor`.
 - Removes `disabled_at` from `stg_pendo__application_history`.
 date: '2026-11-18'
