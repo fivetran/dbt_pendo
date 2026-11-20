@@ -6,12 +6,18 @@ models:
     description: >
       Table capturing accounts - their latest state enhanced with metrics. Includes any custom columns 
       passed through via the `pendo__account_history_pass_through_columns` variable.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Unique identifier of the account.
-        tests:
+        data_tests:
           - not_null
       - name: first_visit_at
         description: The timestamp (UTC) of when the account or visitor was created. 
@@ -55,11 +61,20 @@ models:
         description: Date on which the last event was tracked for this account.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_account_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__account_daily_metrics
     description: >
       Table capturing daily event metrics for tracked accounts, from the day that ane event was first tracked for this
       account to the current date.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - date_day
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -86,6 +101,12 @@ models:
 
   - name: pendo__feature
     description: Table capturing features - their latest state enhanced with metrics and relational information.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - feature_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -101,7 +122,7 @@ models:
         description: Foreign key referencing the `GROUP` (product area) that the feature is tagged under.
       - name: feature_id
         description: Unique identifier of the feature.
-        tests:
+        data_tests:
           - not_null
       - name: is_core_event
         description: Boolean that is true if the feature is tagged as a core event/key feature of the product.
@@ -162,6 +183,13 @@ models:
     description: >
       Table capturing daily event metrics for tracked features, from the day that the feature was created to either
       it's `valid_through` date or the date of its last tracked event (whichever is later).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - feature_id
+              - date_day
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -238,7 +266,7 @@ models:
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: feature_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id', 'source_relation'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: previous_feature_id
@@ -281,6 +309,12 @@ models:
       Table capturing guides - their latest state enhanced with metrics and relational information.
       Pendo tracks a variety of events around guides, and event-type-specific visitor-count-metrics are dynamically
       pivoted out in this table.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - guide_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -294,7 +328,7 @@ models:
         description: Foreign key referencing the `USER` who created the guide. 
       - name: guide_id
         description: Unique identifier of the guide.
-        tests:
+        data_tests:
           - not_null
       - name: is_multi_step
         description: Returns true if guide has multiple steps (walkthrough).
@@ -348,6 +382,8 @@ models:
         description: Timestamp of when the guide was last interacted with.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_guide_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__guide_daily_metrics
     description: >
@@ -355,6 +391,13 @@ models:
       the current date.
       Pendo tracks a variety of events around guides, and event-type-specific visitor-count-metrics are dynamically
       pivoted out in this table.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - guide_id
+              - date_day
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -416,7 +459,7 @@ models:
         description: Fivetran created primary key.
       - name: guide_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: guide_name
@@ -430,6 +473,12 @@ models:
 
   - name: pendo__page
     description: Table capturing pages - their latest state enhanced with metrics and relational information.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - page_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -445,7 +494,7 @@ models:
         description: Foreign key referencing the `GROUP` (product area) that the page is tagged under.
       - name: page_id
         description: Unique identifier of the page.
-        tests:
+        data_tests:
           - not_null
       - name: last_updated_at
         description: Timestamp of when the page was updated. 
@@ -495,11 +544,20 @@ models:
         description: Average sum of pageview events per visitor (ignoring 0-event visitors).
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_page_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__page_daily_metrics
     description: >
       Table capturing daily event metrics for tracked pages, from the day that the feature was created to either
       it's `valid_through` date or the date of its last tracked event (whichever is later).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - page_id
+              - date_day
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -576,7 +634,7 @@ models:
         description: Fivetran created id hashed on the `param_*` fields.
       - name: page_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: previous_page_id
@@ -612,6 +670,12 @@ models:
     description: >
       Table capturing individual visitors - their latest state enhanced with metrics. Includes any custom columns
       passed through via the `pendo__account_history_pass_through_columns` variable.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - visitor_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -623,7 +687,7 @@ models:
         description: Timestamp of when an event was first captured for the visitor.
       - name: visitor_id
         description: Unique identifier of the visitor.
-        tests:
+        data_tests:
           - not_null
       - name: visitor_id_hash
         description: 32-bit hash of the visitor ID. 
@@ -667,11 +731,20 @@ models:
         description: Date on which the last event was tracked for this visitor.
       - name: _fivetran_synced
         description: UTC timestamp that indicates the time when Fivetran last successfully synced the row.
+      - name: latest_visitor_index
+        description: "{{ doc('latest_index') }}"
 
   - name: pendo__visitor_daily_metrics
     description: >
       Table capturing daily event metrics for tracked visitors, from the day that ane event was first tracked for this
       visitor to the current date.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - visitor_id
+              - date_day
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -694,6 +767,13 @@ models:
     description: >
       Table aggregating interactions between individual users and features.
       Visitor-feature combinations without any interactions to date do not appear here.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - visitor_id
+              - feature_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"

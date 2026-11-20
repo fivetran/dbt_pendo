@@ -1,3 +1,14 @@
+# dbt_pendo v1.5.0
+
+[PR #54](https://github.com/fivetran/dbt_pendo/pull/54) includes the following updates:
+
+## Feature Update
+- **Breaking change**: Raises the minimum dbt version to 1.10.0.
+- Adds `dbt_utils.unique_combination_of_columns` tests to staging and end models. If a test fails, please [open an issue](https://github.com/fivetran/dbt_pendo/issues/new/choose).
+
+## Under the Hood
+- Updates yml column documentation to match model output.
+
 # dbt_pendo v1.4.2
 
 [PR #52](https://github.com/fivetran/dbt_pendo/pull/52) includes the following updates:
