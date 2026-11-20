@@ -17,7 +17,7 @@ models:
         description: "{{ doc('source_relation') }}"
       - name: account_id
         description: Unique identifier of the account.
-        tests:
+        data_tests:
           - not_null
       - name: first_visit_at
         description: The timestamp (UTC) of when the account or visitor was created. 
@@ -122,7 +122,7 @@ models:
         description: Foreign key referencing the `GROUP` (product area) that the feature is tagged under.
       - name: feature_id
         description: Unique identifier of the feature.
-        tests:
+        data_tests:
           - not_null
       - name: is_core_event
         description: Boolean that is true if the feature is tagged as a core event/key feature of the product.
@@ -266,7 +266,7 @@ models:
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: feature_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id', 'source_relation'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: previous_feature_id
@@ -328,7 +328,7 @@ models:
         description: Foreign key referencing the `USER` who created the guide. 
       - name: guide_id
         description: Unique identifier of the guide.
-        tests:
+        data_tests:
           - not_null
       - name: is_multi_step
         description: Returns true if guide has multiple steps (walkthrough).
@@ -459,7 +459,7 @@ models:
         description: Fivetran created primary key.
       - name: guide_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: guide_name
@@ -494,7 +494,7 @@ models:
         description: Foreign key referencing the `GROUP` (product area) that the page is tagged under.
       - name: page_id
         description: Unique identifier of the page.
-        tests:
+        data_tests:
           - not_null
       - name: last_updated_at
         description: Timestamp of when the page was updated. 
@@ -634,7 +634,7 @@ models:
         description: Fivetran created id hashed on the `param_*` fields.
       - name: page_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: previous_page_id
@@ -687,7 +687,7 @@ models:
         description: Timestamp of when an event was first captured for the visitor.
       - name: visitor_id
         description: Unique identifier of the visitor.
-        tests:
+        data_tests:
           - not_null
       - name: visitor_id_hash
         description: 32-bit hash of the visitor ID. 

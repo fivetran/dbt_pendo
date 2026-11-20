@@ -111,7 +111,7 @@ models:
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'user_agent', 'server_name', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -148,7 +148,7 @@ models:
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: feature_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -218,7 +218,7 @@ models:
         description: Description of the product area.
       - name: group_id
         description: Unique identifier of the product area.
-        tests:
+        data_tests:
           - not_null 
       - name: last_updated_at
         description: Timestamp of when the product area was last updated.
@@ -268,7 +268,7 @@ models:
         description: Fivetran created primary key.
       - name: guide_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id']
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -382,7 +382,7 @@ models:
         description: Fivetran created id hashed on the `param_*` fields.
       - name: page_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -470,7 +470,7 @@ models:
         description: First name of the user.
       - name: user_id
         description: Unique identifier of the user.
-        tests:
+        data_tests:
           - not_null
       - name: last_name
         description: Last name of the user. 
@@ -543,7 +543,7 @@ models:
         description: Type of poll question.
       - name: poll_id
         description: Unique identifier of the poll.
-        tests:
+        data_tests:
           - not_null
       - name: question
         description: The content of the poll question.
@@ -597,7 +597,7 @@ models:
         description: Fivetran created primary key.
       - name: poll_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'poll_id', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
