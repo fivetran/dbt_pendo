@@ -6,6 +6,13 @@ models:
     description: >
       Table capturing the historical records of each account utilizing your product via Pendo. 
       Note that this table may contain custom metadata columns which can be passed through via `pendo__account_history_pass_through_columns`.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -24,6 +31,13 @@ models:
 
   - name: stg_pendo__application_history
     description: Table capturing changes to your tracked application(s).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - application_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -41,8 +55,6 @@ models:
         description: Foreign key referencing the `USER` who created the application.
       - name: description
         description: Description of the application. 
-      - name: disabled_at
-        description: Timestamp of when the application version was disabled. 
       - name: display_name
         description: Display name of the application. 
       - name: event_count
@@ -99,7 +111,7 @@ models:
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'user_agent', 'server_name', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -136,7 +148,7 @@ models:
         description: Fivetran created id hashed on the `property_*` and `param_*` fields.
       - name: feature_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'feature_id', 'remote_ip', 'user_agent', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -144,6 +156,13 @@ models:
 
   - name: stg_pendo__feature_history
     description: Table capturing historical records of features in Pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - feature_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -180,6 +199,12 @@ models:
 
   - name: stg_pendo__group
     description: Table capturing the product areas (groups) that pages and features can be tagged with.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - group_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -193,7 +218,7 @@ models:
         description: Description of the product area.
       - name: group_id
         description: Unique identifier of the product area.
-        tests:
+        data_tests:
           - not_null 
       - name: last_updated_at
         description: Timestamp of when the product area was last updated.
@@ -243,7 +268,7 @@ models:
         description: Fivetran created primary key.
       - name: guide_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id']
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -251,6 +276,13 @@ models:
 
   - name: stg_pendo__guide_history
     description: Table capturing historical records of guides in pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - guide_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -295,6 +327,14 @@ models:
 
   - name: stg_pendo__guide_step_history
     description: Table associating guides with the steps they include.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - guide_id
+              - guide_last_updated_at
+              - step_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -342,7 +382,7 @@ models:
         description: Fivetran created id hashed on the `param_*` fields.
       - name: page_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'page_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -350,6 +390,13 @@ models:
 
   - name: stg_pendo__page_history
     description: Table capturing the historical records of pages tagged in Pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - page_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -382,6 +429,14 @@ models:
 
   - name: stg_pendo__page_rule_history
     description: Table capturing historical records of rules associated with pages.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - page_id
+              - page_last_updated_at
+              - rule
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -400,6 +455,12 @@ models:
 
   - name: stg_pendo__user
     description: Table capturing internal Pendo users.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - user_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -409,7 +470,7 @@ models:
         description: First name of the user.
       - name: user_id
         description: Unique identifier of the user.
-        tests:
+        data_tests:
           - not_null
       - name: last_name
         description: Last name of the user. 
@@ -422,6 +483,13 @@ models:
 
   - name: stg_pendo__visitor_history
     description: Table capturing historical records of visitors.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - visitor_id
+              - last_updated_at
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -456,6 +524,12 @@ models:
 
   - name: stg_pendo__poll
     description: Table capturing polls administered via Pendo.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - poll_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
@@ -469,7 +543,7 @@ models:
         description: Type of poll question.
       - name: poll_id
         description: Unique identifier of the poll.
-        tests:
+        data_tests:
           - not_null
       - name: question
         description: The content of the poll question.
@@ -523,7 +597,7 @@ models:
         description: Fivetran created primary key.
       - name: poll_event_key
         description: Unique key hashed on ['source_relation', 'visitor_id', 'timestamp', 'account_id', 'server_name', 'poll_id', 'guide_id', 'user_agent', 'remote_ip', '_fivetran_id'].
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: _fivetran_synced
@@ -533,6 +607,14 @@ models:
     description: >
       Table of historical records of associations between visitors and accounts. Though the visitor
       table has an `account_id` column, refer to this table for all potential related accounts.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - source_relation
+              - account_id
+              - visitor_last_updated_at
+              - visitor_id
     columns:
       - name: source_relation
         description: "{{ doc('source_relation') }}"
